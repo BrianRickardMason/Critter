@@ -25,4 +25,12 @@ class BalanceMessageProcessor(MessageProcessor):
             aMessage: The message.
 
         """
-        self.mLogger.debug("Dropping unknown message: %s" % aMessage.messageName)
+        if aMessage.sender.nick == self.mCritterData.mNick:
+            self.mLogger.debug("Dropping critter's own message: %s." % aMessage.messageName)
+
+        elif aMessage.messageName == 'CommandWorkExecutionAnnouncement':
+            # TODO: Start here.
+            pass
+
+        else:
+            self.mLogger.debug("Dropping unknown message: %s" % aMessage.messageName)

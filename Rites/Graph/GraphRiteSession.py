@@ -45,6 +45,7 @@ class GraphRiteSession(threading.Thread):
 
     def run(self):
         """Starts the main loop of the session."""
+        # TODO: Remove hardcoded values.
         # States of works.
         # 0 - 'Not started'.
         # 1 - 'Started'.
@@ -56,22 +57,24 @@ class GraphRiteSession(threading.Thread):
             self.mWorkStates[work] = 0
 
         while self.__isCycleActive():
-            # Find works to be executed.
+            # Browse all works.
             for work in self.mWorks:
-                if work in self.mWorkPredecessors:
-                    execute = True
+                # Work is in 'Not started' state.
+                if self.mWorkStates[work] == 0:
+                    if work in self.mWorkPredecessors:
+                        execute = True
 
-                    for workPredecessor in self.mWorkPredecessors[work]:
-                        if self.mWorkStates[workPredecessor] == 0:
-                            execute = False
+                        for workPredecessor in self.mWorkPredecessors[work]:
+                            if self.mWorkStates[workPredecessor] == 0:
+                                execute = False
+
+                        # Should be executed.
+                        if execute:
+                            self.__commandWorkExecutionAnnouncement(work)
 
                     # Should be executed.
-                    if execute:
-                        pass
-
-                # Should be executed.
-                else:
-                    pass
+                    else:
+                        self.__commandWorkExecutionAnnouncement(work)
 
             # TODO: Remove hardcoded value.
             time.sleep(1)
@@ -98,3 +101,26 @@ class GraphRiteSession(threading.Thread):
                 return False
 
         return False
+
+    def __commandWorkExecutionAnnouncement(self, aWorkName):
+        """Commands the work execution.
+
+        Arguments:
+            aWorkName: The name of the work.
+
+        """
+        # TODO: Add logging.
+
+        assert aWorkName in self.mWorkStates, "Work %s has not its state attached." % aWorkName
+
+        # Set the state.
+        self.mWorkStates[aWorkName] = 1
+
+        # Send the message.
+        envelope = self.mRite.mPostOffice.encode(
+            'CommandWorkExecutionAnnouncement',
+            {'sender':    self.mRite.mCritterData,
+             'graphName': self.mGraphName,
+             'cycle':     self.mCycle,
+             'workName':  aWorkName})
+        self.mRite.mPostOffice.putOutgoingAnnouncement(envelope)

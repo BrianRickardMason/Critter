@@ -25,26 +25,25 @@ class MessageEncoder(object):
 
         """
         try:
-            if aMessageName == 'DetermineGraphCycleRequest':
+            if aMessageName == 'CommandWorkExecutionAnnouncement':
+                return self.__commandWorkExecutionAnnouncement(aData['sender'],
+                                                               aData['graphName'],
+                                                               aData['cycle'],
+                                                               aData['workName'])
+
+            elif aMessageName == 'DetermineGraphCycleRequest':
                 return self.__determineGraphCycleRequest(aData['sender'], aData['graphName'])
 
-            if aMessageName == 'DetermineGraphCycleResponse':
+            elif aMessageName == 'DetermineGraphCycleResponse':
                 return self.__determineGraphCycleResponse(aData['sender'],
                                                           aData['receiver'],
                                                           aData['graphName'],
                                                           aData['cycle'])
 
-            elif aMessageName == "ExecuteGraphAnnouncement":
+            elif aMessageName == 'ExecuteGraphAnnouncement':
                 return self.__executeGraphAnnouncement(aData['critterData'], aData['graphName'])
 
-            elif aMessageName == "ExecuteWorkAnnouncement":
-                return self.__executeWorkAnnouncement(aData['critterData'],
-                                                      aData['graphName'],
-                                                      aData['cycleSeq'],
-                                                      aData['workName'],
-                                                      aData['consoleText'])
-
-            elif aMessageName == "HeartbeatAnnouncement":
+            elif aMessageName == 'HeartbeatAnnouncement':
                 return self.__heartbeatAnnouncement(aData['critterData'], aData['timestamp'])
 
             elif aMessageName == 'LoadGraphAndWorkRequest':
@@ -57,13 +56,13 @@ class MessageEncoder(object):
                                                        aData['workDictionaries'],
                                                        aData['workPredecessorDictionaries'])
 
-            elif aMessageName == "PokeAnnouncement":
+            elif aMessageName == 'PokeAnnouncement':
                 return self.__pokeAnnouncement(aData['critterData'])
 
-            elif aMessageName == "PresentYourselfRequest":
+            elif aMessageName == 'PresentYourselfRequest':
                 return self.__presentYourselfRequest(aData['critterDataSender'], aData['critterDataReceiver'])
 
-            elif aMessageName == "PresentYourselfResponse":
+            elif aMessageName == 'PresentYourselfResponse':
                 return self.__presentYourselfResponse(aData['critterDataSender'], aData['critterDataReceiver'])
 
             else:
@@ -75,6 +74,30 @@ class MessageEncoder(object):
             # TODO: Handle this more gracefully
             print e
             sys.exit(1)
+
+    def __commandWorkExecutionAnnouncement(self, aSender, aGraphName, aCycle, aWorkName):
+        """Encodes CommandWorkExecutionAnnouncement.
+
+        Arguments:
+            aSender:    The critter data of sender.
+            aReceiver:  The critter data of receiver.
+            aGraphName: The name of the graph.
+            aCycle:     The cycle of the graph.
+            aWorkName:  The name of the work.
+
+        Returns:
+            CommandWorkExecutionAnnouncement envelope.
+
+        """
+        payload = Messages_pb2.CommandWorkExecutionAnnouncement()
+        payload.messageName = 'CommandWorkExecutionAnnouncement'
+        payload.sender.type = aSender.mType
+        payload.sender.nick = aSender.mNick
+        payload.graphName   = aGraphName
+        payload.cycle       = aCycle
+        payload.workName    = aWorkName
+
+        return self.__putIntoAnEnvelope(COMMAND_WORK_EXECUTION_ANNOUNCEMENT, payload)
 
     def __determineGraphCycleRequest(self, aSender, aGraphName):
         """Encodes DetermineGraphCycleRequest.
@@ -102,7 +125,7 @@ class MessageEncoder(object):
             aSender:    The critter data of sender.
             aReceiver:  The critter data of receiver.
             aGraphName: The name of the graph.
-            aCycle:     The cycle number.
+            aCycle:     The cycle of the graph.
 
         Returns:
             DetermineGraphCycleResponse envelope.
@@ -131,37 +154,12 @@ class MessageEncoder(object):
 
         """
         payload = Messages_pb2.ExecuteGraphAnnouncement()
-        payload.messageName = "ExecuteGraphAnnouncement"
+        payload.messageName = 'ExecuteGraphAnnouncement'
         payload.sender.type = aCritterData.mType
         payload.sender.nick = aCritterData.mNick
         payload.graphName   = aGraphName
 
         return self.__putIntoAnEnvelope(EXECUTE_GRAPH_ANNOUNCEMENT, payload)
-
-    def __executeWorkAnnouncement(self, aCritterData, aGraphName, aCycleSeq, aWorkName, aConsoleText):
-        """Encodes ExecuteGraphAnnouncement.
-
-        Arguments:
-            aCritterData: The critter data.
-            aGraphName:   The name of the graph.
-            aCycleSeq:    The sequential number of the cycle.
-            aWorkName:    The name of the work.
-            aConsoleText: The console text.
-
-        Returns:
-            ExecuteWorkAnnouncement envelope.
-
-        """
-        payload = Messages_pb2.ExecuteWorkAnnouncement()
-        payload.messageName = "ExecuteWorkAnnouncement"
-        payload.sender.type = aCritterData.mType
-        payload.sender.nick = aCritterData.mNick
-        payload.graphName   = aGraphName
-        payload.cycleSeq    = aCycleSeq
-        payload.workName    = aWorkName
-        payload.consoleText = aConsoleText
-
-        return self.__putIntoAnEnvelope(EXECUTE_WORK_ANNOUNCEMENT, payload)
 
     def __heartbeatAnnouncement(self, aCritterData, aTimestamp):
         """Encodes HeartbeatAnnouncement.
@@ -174,7 +172,7 @@ class MessageEncoder(object):
 
         """
         payload = Messages_pb2.HeartbeatAnnouncement()
-        payload.messageName = "HeartbeatAnnouncement"
+        payload.messageName = 'HeartbeatAnnouncement'
         payload.sender.type = aCritterData.mType
         payload.sender.nick = aCritterData.mNick
         payload.timestamp   = aTimestamp
@@ -253,7 +251,7 @@ class MessageEncoder(object):
 
         """
         payload = Messages_pb2.PokeAnnouncement()
-        payload.messageName = "PokeAnnouncement"
+        payload.messageName = 'PokeAnnouncement'
         payload.sender.type = aCritterData.mType
         payload.sender.nick = aCritterData.mNick
 

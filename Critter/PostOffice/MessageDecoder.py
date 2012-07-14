@@ -22,7 +22,10 @@ class MessageDecoder(object):
 
         # TODO: Clean me up fast!
 
-        if envelope.header.id == DETERMINE_GRAPH_CYCLE_REQUEST:
+        if envelope.header.id == COMMAND_WORK_EXECUTION_ANNOUNCEMENT:
+            message = Messages_pb2.CommandWorkExecutionAnnouncement()
+
+        elif envelope.header.id == DETERMINE_GRAPH_CYCLE_REQUEST:
             message = Messages_pb2.DetermineGraphCycleRequest()
 
         elif envelope.header.id == DETERMINE_GRAPH_CYCLE_RESPONSE:
@@ -30,9 +33,6 @@ class MessageDecoder(object):
 
         elif envelope.header.id == EXECUTE_GRAPH_ANNOUNCEMENT:
             message = Messages_pb2.ExecuteGraphAnnouncement()
-
-        elif envelope.header.id == EXECUTE_WORK_ANNOUNCEMENT:
-            message = Messages_pb2.ExecuteWorkAnnouncement()
 
         elif envelope.header.id == HEARTBEAT_ANNOUNCEMENT:
             message = Messages_pb2.HeartbeatAnnouncement()

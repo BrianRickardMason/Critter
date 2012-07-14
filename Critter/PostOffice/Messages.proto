@@ -54,16 +54,6 @@ message ExecuteGraphAnnouncement
     optional string      graphName   = 3;
 }
 
-message ExecuteWorkAnnouncement
-{
-    optional string      messageName = 1;
-    optional CritterData sender      = 2;
-    optional string      graphName   = 3;
-    optional uint32      cycleSeq    = 4;
-    optional string      workName    = 5;
-    optional string      consoleText = 6;
-}
-
 // LoadGraphAndWorkRequest/Response: GraphYeeti -> Cribrarian -> GraphYeeti.
 
 message GraphData
@@ -115,4 +105,15 @@ message DetermineGraphCycleResponse
     optional CritterData receiver    = 3;
     optional string      graphName   = 4;
     optional uint32      cycle       = 5;
+}
+
+// CommandWorkExecutionAnnouncement: GraphYeeti -> Balancer.
+
+message CommandWorkExecutionAnnouncement
+{
+    optional string      messageName = 1;
+    optional CritterData sender      = 2;
+    optional string      graphName   = 3;
+    optional uint32      cycle       = 4;
+    optional string      workName    = 5;
 }
