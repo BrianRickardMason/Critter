@@ -1,0 +1,118 @@
+message Header
+{
+    optional uint32 id = 1;
+}
+
+message Payload
+{
+    optional bytes payload = 1;
+}
+
+message Envelope
+{
+    optional Header  header  = 1;
+    optional Payload payload = 2;
+}
+
+message CritterData
+{
+    optional string type = 1;
+    optional string nick = 2;
+}
+
+message HeartbeatAnnouncement
+{
+    optional string      messageName = 1;
+    optional CritterData sender      = 2;
+    optional double      timestamp   = 3;
+}
+
+message PresentYourselfRequest
+{
+    optional string      messageName = 1;
+    optional CritterData sender      = 2;
+    optional CritterData receiver    = 3;
+}
+
+message PresentYourselfResponse
+{
+    optional string      messageName = 1;
+    optional CritterData sender      = 2;
+    optional CritterData receiver    = 3;
+}
+
+message PokeAnnouncement
+{
+    optional string      messageName = 1;
+    optional CritterData sender      = 2;
+}
+
+message ExecuteGraphAnnouncement
+{
+    optional string      messageName = 1;
+    optional CritterData sender      = 2;
+    optional string      graphName   = 3;
+}
+
+message ExecuteWorkAnnouncement
+{
+    optional string      messageName = 1;
+    optional CritterData sender      = 2;
+    optional string      graphName   = 3;
+    optional uint32      cycleSeq    = 4;
+    optional string      workName    = 5;
+    optional string      consoleText = 6;
+}
+
+// LoadGraphAndWorkRequest/Response: GraphYeeti -> Cribrarian -> GraphYeeti.
+
+message GraphData
+{
+    optional string graphName = 1;
+}
+
+message WorkData
+{
+    optional string graphName = 1;
+    optional string workName  = 2;
+}
+
+message WorkPredecessorData
+{
+    optional string workName            = 1;
+    optional string predecessorWorkName = 2;
+}
+
+message LoadGraphAndWorkRequest
+{
+    optional string      messageName = 1;
+    optional CritterData sender      = 2;
+}
+
+message LoadGraphAndWorkResponse
+{
+    optional string              messageName      = 1;
+    optional CritterData         sender           = 2;
+    optional CritterData         receiver         = 3;
+    repeated GraphData           graphs           = 4;
+    repeated WorkData            works            = 5;
+    repeated WorkPredecessorData workPredecessors = 6;
+}
+
+// DetermineGraphCycleRequest/Response: GraphYeeti -> Cribrarian -> GraphYeeti.
+
+message DetermineGraphCycleRequest
+{
+    optional string      messageName = 1;
+    optional CritterData sender      = 2;
+    optional string      graphName   = 3;
+}
+
+message DetermineGraphCycleResponse
+{
+    optional string      messageName = 1;
+    optional CritterData sender      = 2;
+    optional CritterData receiver    = 3;
+    optional string      graphName   = 4;
+    optional uint32      cycle       = 5;
+}
