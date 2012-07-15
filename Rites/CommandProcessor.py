@@ -15,35 +15,27 @@ class CommandProcessor(threading.Thread):
     """The command processor of a rite.
 
     Attributes:
-        mRite:        The rite.
-        mCritterData: The critter data.
-        mPostOffice:  The post office.
-        mLogger:      The logger.
-        mQueue:       The queue of commands.
+        mRite:   The rite.
+        mLogger: The logger.
+        mQueue:  The queue of commands.
 
     """
 
-    def __init__(self, aRite, aCritterData, aPostOffice, aRiteName):
+    def __init__(self, aRite):
         """Initializes the command processor.
 
         Arguments:
-            aRite:        The rite.
-            aCritterData: The critter data.
-            aPostOffice:  The post office.
-            aRiteName:    The rite name.
+            aRite: The rite.
 
         """
-        self.mLogger = logging.getLogger(aRiteName + 'CommandProcessor')
+        self.mLogger = logging.getLogger(aRite.mRiteName + 'CommandProcessor')
         self.mLogger.setLevel(logging.INFO)
 
         self.mRite = aRite
 
-        self.mCritterData = aCritterData
-        self.mPostOffice  = aPostOffice
-
         self.mQueue = Queue()
 
-        threading.Thread.__init__(self, name=aRiteName + 'CommandProcessor')
+        threading.Thread.__init__(self, name=aRite.mRiteName + 'CommandProcessor')
 
     def run(self):
         """Starts the main loop of the command processor.

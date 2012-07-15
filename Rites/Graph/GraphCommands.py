@@ -28,11 +28,11 @@ class GraphCommandInitializeGraphExecution(object):
             aCommandProcessor: The command processor to be visited.
 
         """
-        envelope = aCommandProcessor.mPostOffice.encode(
+        envelope = aCommandProcessor.mRite.mPostOffice.encode(
             'DetermineGraphCycleRequest',
-            {'sender':    aCommandProcessor.mCritterData,
+            {'sender':    aCommandProcessor.mRite.mCritterData,
              'graphName': self.mMessage.graphName})
-        aCommandProcessor.mPostOffice.putOutgoingAnnouncement(envelope)
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
 class GraphCommandSpawnGraphExecution(object):
     """SpawnGraphExecution command.

@@ -65,13 +65,13 @@ class DatabaseCommandDetermineGraphCycle(object):
 
         receiverCritterData = CritterData(self.mMessage.sender.type, self.mMessage.sender.nick)
 
-        envelope = aCommandProcessor.mPostOffice.encode(
+        envelope = aCommandProcessor.mRite.mPostOffice.encode(
             'DetermineGraphCycleResponse',
-            {'sender':    aCommandProcessor.mCritterData,
+            {'sender':    aCommandProcessor.mRite.mCritterData,
              'receiver':  receiverCritterData,
              'graphName': self.mMessage.graphName,
              'cycle':     cycle})
-        aCommandProcessor.mPostOffice.putOutgoingAnnouncement(envelope)
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
 class DatabaseCommandFoo(object):
     """Foo command.
@@ -154,11 +154,11 @@ class DatabaseCommandLoadGraphsAndWorks(object):
 
         receiverCritterData = CritterData(self.mMessage.sender.type, self.mMessage.sender.nick)
 
-        envelope = aCommandProcessor.mPostOffice.encode(
+        envelope = aCommandProcessor.mRite.mPostOffice.encode(
             'LoadGraphAndWorkResponse',
-            {'critterDataSender': aCommandProcessor.mCritterData,
+            {'critterDataSender': aCommandProcessor.mRite.mCritterData,
              'critterDataReceiver': receiverCritterData,
              'graphDictionaries': graphDictionaries,
              'workDictionaries': workDictionaries,
              'workPredecessorDictionaries': workPredecessorDictionaries})
-        aCommandProcessor.mPostOffice.putOutgoingAnnouncement(envelope)
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)

@@ -42,7 +42,7 @@ class Rite(threading.Thread):
         self.mRiteName    = aRiteName
 
         self.mLogger.info("Spawning the command processor.")
-        self.mCommandProcessor = CommandProcessor(self, aCritterData, aPostOffice, aRiteName)
+        self.mCommandProcessor = CommandProcessor(self)
         self.mCommandProcessor.setDaemon(True)
         self.mCommandProcessor.start()
 

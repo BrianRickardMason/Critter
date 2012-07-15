@@ -27,8 +27,8 @@ class SchedulerCommandCheckSchedule(object):
             aCommandProcessor.mLogger.debug("Sending the ExecuteGraphAnnouncement.")
             # FIXME: A jealous class.
             graphNames = ['GraphName1', 'GraphName2', 'GraphName3', 'GraphName4']
-            envelope = aCommandProcessor.mPostOffice.encode(
+            envelope = aCommandProcessor.mRite.mPostOffice.encode(
                 'ExecuteGraphAnnouncement',
-                {'critterData': aCommandProcessor.mCritterData,
+                {'critterData': aCommandProcessor.mRite.mCritterData,
                  'graphName':   random.choice(graphNames)})
-            aCommandProcessor.mPostOffice.putOutgoingAnnouncement(envelope)
+            aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)

@@ -75,14 +75,14 @@ class RegistryCommandPresentYourself(object):
             aCommandProcessor: The command processor to be visited.
 
         """
-        if self.mMessage.receiver.nick == aCommandProcessor.mCritterData.mNick:
+        if self.mMessage.receiver.nick == aCommandProcessor.mRite.mCritterData.mNick:
             receiverCritterData = CritterData(self.mMessage.sender.type, self.mMessage.sender.nick)
 
-            envelope = aCommandProcessor.mPostOffice.encode(
+            envelope = aCommandProcessor.mRite.mPostOffice.encode(
                 "PresentYourselfResponse",
-                {'critterDataSender': aCommandProcessor.mCritterData,
+                {'critterDataSender': aCommandProcessor.mRite.mCritterData,
                  'critterDataReceiver': receiverCritterData})
-            aCommandProcessor.mPostOffice.putOutgoingAnnouncement(envelope)
+            aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
         else:
             aCommandProcessor.mLogger.debug("The message is not addressed to me.")
 
@@ -112,7 +112,7 @@ class RegistryCommandRegisterCritter(object):
             aCommandProcessor: The command processor to be visited.
 
         """
-        if self.mMessage.receiver.nick == aCommandProcessor.mCritterData.mNick:
+        if self.mMessage.receiver.nick == aCommandProcessor.mRite.mCritterData.mNick:
             critterData = CritterData(self.mMessage.sender.type, self.mMessage.sender.nick)
             nick = critterData.mNick
 
@@ -159,11 +159,11 @@ class RegistryCommandStoreHeartbeat(object):
 
             unknownCritterData = CritterData(self.mMessage.sender.type, self.mMessage.sender.nick)
 
-            envelope = aCommandProcessor.mPostOffice.encode(
+            envelope = aCommandProcessor.mRite.mPostOffice.encode(
                 "PresentYourselfRequest",
-                {'critterDataSender': aCommandProcessor.mCritterData,
+                {'critterDataSender': aCommandProcessor.mRite.mCritterData,
                  'critterDataReceiver': unknownCritterData})
-            aCommandProcessor.mPostOffice.putOutgoingAnnouncement(envelope)
+            aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
         else:
             aCommandProcessor.mLogger.debug("Critter: %s. Storing the heartbeat's timestamp." % nick)
             aCommandProcessor.mRite.mKnownCrittersHeartbeats[nick] = self.mMessage.timestamp
