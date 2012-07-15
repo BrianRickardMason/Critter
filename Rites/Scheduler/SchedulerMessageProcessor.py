@@ -7,16 +7,14 @@ from Rites.MessageProcessor import MessageProcessor
 class SchedulerMessageProcessor(MessageProcessor):
     """The message processor of the scheduler rite."""
 
-    def __init__(self, aRite, aCritterData, aPostOffice):
+    def __init__(self, aRite):
         """Initializes the message processor.
 
         Arguments:
-            aRite:        The rite.
-            aCritterData: The critter data.
-            aPostOffice:  The post office.
+            aRite: The rite.
 
         """
-        MessageProcessor.__init__(self, aRite, aCritterData, aPostOffice, Rites.RiteCommon.SCHEDULER)
+        MessageProcessor.__init__(self, aRite)
 
     def processMessage(self, aMessage):
         """Processes the message.

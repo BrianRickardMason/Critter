@@ -12,6 +12,7 @@ class Rite(threading.Thread):
 
     Attributes:
         mCritter:     The critter.
+        mRiteName:    The name of the rite.
         mCritterData: The critter data.
         mSettings:    The settings.
         mPostOffice:  The post office.
@@ -38,6 +39,7 @@ class Rite(threading.Thread):
         self.mCritterData = aCritterData
         self.mSettings    = aSettings
         self.mPostOffice  = aPostOffice
+        self.mRiteName    = aRiteName
 
         self.mLogger.info("Spawning the command processor.")
         self.mCommandProcessor = CommandProcessor(self, aCritterData, aPostOffice, aRiteName)
@@ -45,7 +47,7 @@ class Rite(threading.Thread):
         self.mCommandProcessor.start()
 
         self.mLogger.info("Spawning the message processor.")
-        self.mMessageProcessor = aMessageProcessorType(self, aCritterData, aPostOffice)
+        self.mMessageProcessor = aMessageProcessorType(self)
         self.mMessageProcessor.setDaemon(True)
         self.mMessageProcessor.start()
 

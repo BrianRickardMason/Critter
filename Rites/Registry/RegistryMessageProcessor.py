@@ -10,16 +10,14 @@ from Rites.Registry.RegistryCommands import RegistryCommandStoreHeartbeat
 class RegistryMessageProcessor(MessageProcessor):
     """The message processor of the registry rite."""
 
-    def __init__(self, aRite, aCritterData, aPostOffice):
+    def __init__(self, aRite):
         """Initializes the message processor.
 
         Arguments:
-            aRite:        The rite.
-            aCritterData: The critter data.
-            aPostOffice:  The post office.
+            aRite: The rite.
 
         """
-        MessageProcessor.__init__(self, aRite, aCritterData, aPostOffice, Rites.RiteCommon.REGISTRY)
+        MessageProcessor.__init__(self, aRite)
 
     def processMessage(self, aMessage):
         """Processes the message.
@@ -28,20 +26,20 @@ class RegistryMessageProcessor(MessageProcessor):
             aMessage: The message.
 
         """
-        if aMessage.sender.nick == self.mCritterData.mNick:
+        if aMessage.sender.nick == self.mRite.mCritterData.mNick:
             self.mLogger.debug("Dropping critter's own message: %s." % aMessage.messageName)
 
         elif aMessage.messageName == 'HeartbeatAnnouncement':
             command = RegistryCommandStoreHeartbeat(aMessage)
-            self.mPostOffice.putCommand(Rites.RiteCommon.REGISTRY, command)
+            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.REGISTRY, command)
 
         elif aMessage.messageName == 'PresentYourselfRequest':
             command = RegistryCommandPresentYourself(aMessage)
-            self.mPostOffice.putCommand(Rites.RiteCommon.REGISTRY, command)
+            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.REGISTRY, command)
 
         elif aMessage.messageName == 'PresentYourselfResponse':
             command = RegistryCommandRegisterCritter(aMessage)
-            self.mPostOffice.putCommand(Rites.RiteCommon.REGISTRY, command)
+            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.REGISTRY, command)
 
         else:
             self.mLogger.debug("Dropping unknown message: %s" % aMessage.messageName)

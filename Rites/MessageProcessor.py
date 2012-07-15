@@ -15,35 +15,27 @@ class MessageProcessor(threading.Thread):
     """The message processor of the a rite.
 
     Attributes:
-        mRite:        The rite.
-        mCritterData: The critter data.
-        mPostOffice:  The post office.
-        mLogger:      The logger.
-        mQueue:       The queue of messages.
+        mRite:   The rite.
+        mLogger: The logger.
+        mQueue:  The queue of messages.
 
     """
 
-    def __init__(self, aRite, aCritterData, aPostOffice, aRiteName):
+    def __init__(self, aRite):
         """Initializes the message processor.
 
         Arguments:
-            aRite:        The rite.
-            aCritterData: The critter data.
-            aPostOffice:  The post office.
-            aRiteName:    The rite name.
+            aRite: The rite.
 
         """
-        self.mLogger = logging.getLogger(aRiteName + 'MessageProcessor')
+        self.mLogger = logging.getLogger(aRite.mRiteName + 'MessageProcessor')
         self.mLogger.setLevel(logging.INFO)
 
         self.mRite = aRite
 
-        self.mCritterData = aCritterData
-        self.mPostOffice  = aPostOffice
-
         self.mQueue = Queue()
 
-        threading.Thread.__init__(self, name=aRiteName + 'MessageProcessor')
+        threading.Thread.__init__(self, name=aRite.mRiteName + 'MessageProcessor')
 
     def run(self):
         """Starts the main loop of the message processor.

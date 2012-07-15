@@ -7,16 +7,14 @@ from Rites.MessageProcessor import MessageProcessor
 class BalanceMessageProcessor(MessageProcessor):
     """The message processor of the balance rite."""
 
-    def __init__(self, aRite, aCritterData, aPostOffice):
+    def __init__(self, aRite):
         """Initializes the message processor.
 
         Arguments:
-            aRite:        The rite.
-            aCritterData: The critter data.
-            aPostOffice:  The post office.
+            aRite: The rite.
 
         """
-        MessageProcessor.__init__(self, aRite, aCritterData, aPostOffice, Rites.RiteCommon.BALANCE)
+        MessageProcessor.__init__(self, aRite)
 
     def processMessage(self, aMessage):
         """Processes the message.
@@ -25,7 +23,7 @@ class BalanceMessageProcessor(MessageProcessor):
             aMessage: The message.
 
         """
-        if aMessage.sender.nick == self.mCritterData.mNick:
+        if aMessage.sender.nick == self.mRite.mCritterData.mNick:
             self.mLogger.debug("Dropping critter's own message: %s." % aMessage.messageName)
 
         elif aMessage.messageName == 'CommandWorkExecutionAnnouncement':
