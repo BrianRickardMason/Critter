@@ -16,16 +16,17 @@ class PokeRite(Rite):
 
     """
 
-    def __init__(self, aCritterData, aSettings, aPostOffice):
+    def __init__(self, aCritter, aCritterData, aSettings, aPostOffice):
         """Initializes the rite.
 
         Arguments:
+            aCritter:     The critter.
             aCritterData: The critter data.
             aSettings:    The settings.
             aPostOffice:  The post office.
 
         """
-        Rite.__init__(self, aCritterData, aSettings, aPostOffice, Rites.RiteCommon.POKE, PokeMessageProcessor)
+        Rite.__init__(self, aCritter, aCritterData, aSettings, aPostOffice, Rites.RiteCommon.POKE, PokeMessageProcessor)
 
     def run(self):
         """Starts the main loop of the rite."""

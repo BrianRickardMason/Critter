@@ -33,7 +33,8 @@ def createRite(aCritter, aName):
 
     if aName in rites:
         def newInstance(type_, critter):
-            return type_(critter.getCritterData(),
+            return type_(critter,
+                         critter.getCritterData(),
                          critter.getSettings(),
                          critter.getPostOffice())
 

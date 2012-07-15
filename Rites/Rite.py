@@ -11,6 +11,7 @@ class Rite(threading.Thread):
     """The graph rite.
 
     Attributes:
+        mCritter:     The critter.
         mCritterData: The critter data.
         mSettings:    The settings.
         mPostOffice:  The post office.
@@ -18,10 +19,11 @@ class Rite(threading.Thread):
 
     """
 
-    def __init__(self, aCritterData, aSettings, aPostOffice, aRiteName, aMessageProcessorType):
+    def __init__(self, aCritter, aCritterData, aSettings, aPostOffice, aRiteName, aMessageProcessorType):
         """Initializes the rite.
 
         Arguments:
+            aCritter:              The critter.
             aCritterData:          The critter data.
             aSettings:             The settings.
             aPostOffice:           The post office.
@@ -32,6 +34,7 @@ class Rite(threading.Thread):
         self.mLogger = logging.getLogger(aRiteName + 'Rite')
         self.mLogger.setLevel(logging.DEBUG)
 
+        self.mCritter     = aCritter
         self.mCritterData = aCritterData
         self.mSettings    = aSettings
         self.mPostOffice  = aPostOffice

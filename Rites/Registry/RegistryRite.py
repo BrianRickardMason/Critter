@@ -17,10 +17,11 @@ class RegistryRite(Rite):
 
     """
 
-    def __init__(self, aCritterData, aSettings, aPostOffice):
+    def __init__(self, aCritter, aCritterData, aSettings, aPostOffice):
         """Initializes the rite.
 
         Arguments:
+            aCritter:     The critter.
             aCritterData: The critter data.
             aSettings:    The settings.
             aPostOffice:  The post office.
@@ -31,7 +32,13 @@ class RegistryRite(Rite):
         self.mKnownCritters           = {}
         self.mKnownCrittersHeartbeats = {}
 
-        Rite.__init__(self, aCritterData, aSettings, aPostOffice, Rites.RiteCommon.REGISTRY, RegistryMessageProcessor)
+        Rite.__init__(self,
+                      aCritter,
+                      aCritterData,
+                      aSettings,
+                      aPostOffice,
+                      Rites.RiteCommon.REGISTRY,
+                      RegistryMessageProcessor)
 
     def run(self):
         """Starts the main loop of the rite."""

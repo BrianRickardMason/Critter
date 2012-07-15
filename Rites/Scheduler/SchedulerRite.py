@@ -17,16 +17,23 @@ class SchedulerRite(Rite):
 
     """
 
-    def __init__(self, aCritterData, aSettings, aPostOffice):
+    def __init__(self, aCritter, aCritterData, aSettings, aPostOffice):
         """Initializes the rite.
 
         Arguments:
+            aCritter:     The critter.
             aCritterData: The critter data.
             aSettings:    The settings.
             aPostOffice:  The post office.
 
         """
-        Rite.__init__(self, aCritterData, aSettings, aPostOffice, Rites.RiteCommon.SCHEDULER, SchedulerMessageProcessor)
+        Rite.__init__(self,
+                      aCritter,
+                      aCritterData,
+                      aSettings,
+                      aPostOffice,
+                      Rites.RiteCommon.SCHEDULER,
+                      SchedulerMessageProcessor)
 
     def run(self):
         """Starts the main loop of the rite."""
