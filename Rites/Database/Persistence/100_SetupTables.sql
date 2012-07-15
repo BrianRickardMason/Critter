@@ -20,6 +20,15 @@ CREATE TABLE works
     workName  VARCHAR(88) PRIMARY KEY NOT NULL CHECK(workName <> '')
 );
 
+DROP TABLE IF EXISTS workCycles CASCADE;
+CREATE TABLE workCycles
+(
+    workName VARCHAR(88) REFERENCES works(workName) ON DELETE CASCADE,
+    cycle    INTEGER NOT NULL CHECK(cycle > 0),
+
+    UNIQUE(workName, cycle)
+);
+
 DROP TABLE IF EXISTS workPredecessors CASCADE;
 CREATE TABLE workPredecessors
 (
