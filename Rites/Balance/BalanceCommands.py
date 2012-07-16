@@ -9,7 +9,7 @@ class BalanceCommandCommandWorkExecution(object):
 
     Attributes:
         mName:    The name of the command.
-        mMessage: The CommandWorkExecution.
+        mMessage: The CommandWorkExecutionAnnouncement.
 
     """
 
@@ -17,7 +17,7 @@ class BalanceCommandCommandWorkExecution(object):
         """Initializes the command.
 
         Arguments:
-            aMessage: The PresentYourselfRequest.
+            aMessage: The CommandWorkExecutionAnnouncement.
 
         """
         self.mName    = 'CommandWorkExecution'
