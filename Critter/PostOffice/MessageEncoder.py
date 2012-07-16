@@ -40,6 +40,20 @@ class MessageEncoder(object):
                                                           aData['graphName'],
                                                           aData['cycle'])
 
+            elif aMessageName == 'DetermineWorkCycleRequest':
+                return self.__determineWorkCycleRequest(aData['sender'],
+                                                        aData['graphName'],
+                                                        aData['cycle'],
+                                                        aData['workName'])
+
+            elif aMessageName == 'DetermineWorkCycleResponse':
+                return self.__determineWorkCycleResponse(aData['sender'],
+                                                         aData['receiver'],
+                                                         aData['graphName'],
+                                                         aData['cycle'],
+                                                         aData['workName'],
+                                                         aData['workCycle'])
+
             elif aMessageName == 'ExecuteGraphAnnouncement':
                 return self.__executeGraphAnnouncement(aData['critterData'], aData['graphName'])
 
@@ -148,6 +162,57 @@ class MessageEncoder(object):
         payload.cycle         = aCycle
 
         return self.__putIntoAnEnvelope(DETERMINE_GRAPH_CYCLE_RESPONSE, payload)
+
+    def __determineWorkCycleRequest(self, aSender, aGraphName, aCycle, aWorkName):
+        """Encodes DetermineWorkCycleRequest.
+
+        Arguments:
+            aSender:    The critter data of sender.
+            aGraphName: The name of the graph.
+            aCycle:     The cycle of the graph.
+            aWorkName:  The name of the work.
+
+        Returns:
+            DetermineWorkCycleRequest envelope.
+
+        """
+        payload = Messages_pb2.DetermineWorkCycleRequest()
+        payload.messageName = 'DetermineWorkCycleRequest'
+        payload.sender.type = aSender.mType
+        payload.sender.nick = aSender.mNick
+        payload.graphName   = aGraphName
+        payload.cycle       = aCycle
+        payload.workName    = aWorkName
+
+        return self.__putIntoAnEnvelope(DETERMINE_WORK_CYCLE_REQUEST, payload)
+
+    def __determineWorkCycleResponse(self, aSender, aReceiver, aGraphName, aCycle, aWorkName, aWorkCycle):
+        """Encodes DetermineWorkCycleResponse.
+
+        Arguments:
+            aSender:    The critter data of sender.
+            aReceiver:  The critter data of receiver.
+            aGraphName: The name of the graph.
+            aCycle:     The cycle of the graph.
+            aWorkName:  The name of the work.
+            aWorkCycle: The cycle of the work.
+
+        Returns:
+            DetermineWorkCycleResponse envelope.
+
+        """
+        payload = Messages_pb2.DetermineWorkCycleResponse()
+        payload.messageName   = 'DetermineWorkCycleResponse'
+        payload.sender.type   = aSender.mType
+        payload.sender.nick   = aSender.mNick
+        payload.receiver.type = aReceiver.mType
+        payload.receiver.nick = aReceiver.mNick
+        payload.graphName     = aGraphName
+        payload.cycle         = aCycle
+        payload.workName      = aWorkName
+        payload.workCycle     = aWorkCycle
+
+        return self.__putIntoAnEnvelope(DETERMINE_WORK_CYCLE_RESPONSE, payload)
 
     def __executeGraphAnnouncement(self, aCritterData, aGraphName):
         """Encodes ExecuteGraphAnnouncement.

@@ -31,6 +31,12 @@ class MessageDecoder(object):
         elif envelope.header.id == DETERMINE_GRAPH_CYCLE_RESPONSE:
             message = Messages_pb2.DetermineGraphCycleResponse()
 
+        elif envelope.header.id == DETERMINE_WORK_CYCLE_REQUEST:
+            message = Messages_pb2.DetermineWorkCycleRequest()
+
+        elif envelope.header.id == DETERMINE_WORK_CYCLE_RESPONSE:
+            message = Messages_pb2.DetermineWorkCycleResponse()
+
         elif envelope.header.id == EXECUTE_GRAPH_ANNOUNCEMENT:
             message = Messages_pb2.ExecuteGraphAnnouncement()
 

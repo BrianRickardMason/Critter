@@ -129,3 +129,25 @@ message ExecuteWorkAnnouncement
     optional uint32      cycle       = 5;
     optional string      workName    = 6;
 }
+
+// DetermineWorkCycleRequest/Response: Worker -> Cribrarian -> Worker.
+
+message DetermineWorkCycleRequest
+{
+    optional string      messageName = 1;
+    optional CritterData sender      = 2;
+    optional string      graphName   = 3;
+    optional uint32      cycle       = 4;
+    optional string      workName    = 5;
+}
+
+message DetermineWorkCycleResponse
+{
+    optional string      messageName = 1;
+    optional CritterData sender      = 2;
+    optional CritterData receiver    = 3;
+    optional string      graphName   = 4;
+    optional uint32      cycle       = 5;
+    optional string      workName    = 6;
+    optional uint32      workCycle   = 7;
+}
