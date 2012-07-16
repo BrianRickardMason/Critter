@@ -121,3 +121,42 @@ class GraphCommandLoadGraphAndWork(object):
                 aCommandProcessor.mRite.mWorkPredecessors[predecessor.workName] = []
 
             aCommandProcessor.mRite.mWorkPredecessors[predecessor.workName].append(predecessor.predecessorWorkName)
+
+class GraphCommandMarkFinishedWork(object):
+    """MarkFinishedWork command.
+
+    Attributes:
+        mName:    The name of the command.
+        mMessage: The ReportFinishedWorkAnnouncement.
+
+    """
+
+    def __init__(self, aMessage):
+        """Initializes the command.
+
+        Arguments:
+            aMessage: The ReportFinishedWorkAnnouncement.
+
+        """
+        self.mName    = 'GraphCommandMarkFinishedWork'
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        """Executes the command.
+
+        Arguments:
+            aCommandProcessor: The command processor to be visited.
+
+        """
+        # TODO: Remove hardcoded value.
+        if self.mMessage.result == True:
+            state = 2
+        else:
+            state = 3
+
+        graphName  = self.mMessage.graphName
+        graphCycle = self.mMessage.graphCycle
+        workName   = self.mMessage.workName
+
+        # TODO: Please, do it nicer. Consider holding exceptional cases as well.
+        aCommandProcessor.mRite.mSessions[graphName][graphCycle].mWorkStates[workName] = state

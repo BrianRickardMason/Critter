@@ -4,6 +4,7 @@ import Rites.RiteCommon
 
 from Rites.Graph.GraphCommands import GraphCommandInitializeGraphExecution
 from Rites.Graph.GraphCommands import GraphCommandLoadGraphAndWork
+from Rites.Graph.GraphCommands import GraphCommandMarkFinishedWork
 from Rites.Graph.GraphCommands import GraphCommandSpawnGraphExecution
 from Rites.MessageProcessor    import MessageProcessor
 
@@ -43,7 +44,8 @@ class GraphMessageProcessor(MessageProcessor):
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
 
         elif aMessage.messageName == 'ReportFinishedWorkAnnouncement':
-            pass
+            command = GraphCommandMarkFinishedWork(aMessage)
+            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
 
         else:
             self.mLogger.debug("Dropping unknown message: %s" % aMessage.messageName)
