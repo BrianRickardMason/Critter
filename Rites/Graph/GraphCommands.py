@@ -60,20 +60,23 @@ class GraphCommandSpawnGraphExecution(object):
             aCommandProcessor: The command processor to be visited.
 
         """
-        cycle     = self.mMessage.cycle
-        graphName = self.mMessage.graphName
+        if self.mMessage.receiver.nick == aCommandProcessor.mRite.mCritterData.mNick:
+            cycle     = self.mMessage.cycle
+            graphName = self.mMessage.graphName
 
-        assert cycle != 0, "Invalid cycle value determined."
+            assert cycle != 0, "Invalid cycle value determined."
 
-        # Create and run a session.
-        if graphName not in aCommandProcessor.mRite.mSessions:
-            aCommandProcessor.mRite.mSessions[graphName] = {}
+            # Create and run a session.
+            if graphName not in aCommandProcessor.mRite.mSessions:
+                aCommandProcessor.mRite.mSessions[graphName] = {}
 
-        aCommandProcessor.mRite.mSessions[graphName][cycle] = GraphRiteSession(aCommandProcessor.mRite,
-                                                                               graphName,
-                                                                               cycle)
-        aCommandProcessor.mRite.mSessions[graphName][cycle].setDaemon(True)
-        aCommandProcessor.mRite.mSessions[graphName][cycle].start()
+            aCommandProcessor.mRite.mSessions[graphName][cycle] = GraphRiteSession(aCommandProcessor.mRite,
+                                                                                   graphName,
+                                                                                   cycle)
+            aCommandProcessor.mRite.mSessions[graphName][cycle].setDaemon(True)
+            aCommandProcessor.mRite.mSessions[graphName][cycle].start()
+        else:
+            aCommandProcessor.mLogger.debug("The message is not addressed to me.")
 
 class GraphCommandLoadGraphAndWork(object):
     """CheckSchedule command.
