@@ -1,5 +1,7 @@
 """Balance rite commands."""
 
+from random import choice
+
 import Rites.RiteCommon
 
 class BalanceCommandCommandWorkExecution(object):
@@ -33,10 +35,13 @@ class BalanceCommandCommandWorkExecution(object):
         knownCritters = aCommandProcessor.mRite.mCritter.mRites[Rites.RiteCommon.REGISTRY].getKnownCritters()
 
         # Filter workers.
-        # TODO.
+        availableWorkers = []
+        for critterData in knownCritters.values():
+            if critterData.mType == 'Worker':
+                availableWorkers.append(critterData.mNick)
 
         # Balance the load.
-        # TODO.
+        foundWorker = choice(availableWorkers)
 
         # Command work execution.
         # TODO.
