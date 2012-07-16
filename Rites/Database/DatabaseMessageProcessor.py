@@ -3,7 +3,6 @@
 import Rites.RiteCommon
 
 from Rites.Database.DatabaseCommands import DatabaseCommandDetermineGraphCycle
-from Rites.Database.DatabaseCommands import DatabaseCommandFoo
 from Rites.Database.DatabaseCommands import DatabaseCommandLoadGraphsAndWorks
 from Rites.MessageProcessor          import MessageProcessor
 
@@ -31,10 +30,6 @@ class DatabaseMessageProcessor(MessageProcessor):
 
         elif aMessage.messageName == 'DetermineGraphCycleRequest':
             command = DatabaseCommandDetermineGraphCycle(aMessage)
-            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.DATABASE, command)
-
-        elif aMessage.messageName == 'ExecuteGraphAnnouncement':
-            command = DatabaseCommandFoo()
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.DATABASE, command)
 
         elif aMessage.messageName == 'LoadGraphAndWorkRequest':
