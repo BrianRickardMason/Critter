@@ -58,13 +58,21 @@ class WorkRiteSession(threading.Thread):
 
         # Succeed.
         if random.randint(0, 90) > 100:
-            pass
+            result = True
         # Failed.
         else:
-            pass
+            result = False
 
         # Report finished work.
-        pass
+        envelope = self.mRite.mPostOffice.encode(
+            'ReportFinishedWorkAnnouncement',
+            {'sender':     self.mRite.mCritterData,
+             'graphName':  self.mGraphName,
+             'graphCycle': self.mGraphCycle,
+             'workName':   self.mWorkName,
+             'workCycle':  self.mWorkCycle,
+             'result':     result})
+        self.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
         self.mLogger.info("Work ended: %s@%s: %s@%s." % (self.mGraphName,
                                                          self.mGraphCycle,

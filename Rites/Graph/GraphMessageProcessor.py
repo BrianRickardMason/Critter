@@ -42,5 +42,8 @@ class GraphMessageProcessor(MessageProcessor):
             command = GraphCommandLoadGraphAndWork(aMessage)
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
 
+        elif aMessage.messageName == 'ReportFinishedWorkAnnouncement':
+            pass
+
         else:
             self.mLogger.debug("Dropping unknown message: %s" % aMessage.messageName)
