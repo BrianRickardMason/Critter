@@ -1,5 +1,6 @@
 """The registry rite."""
 
+import copy
 import time
 
 import Rites.RiteCommon
@@ -49,6 +50,14 @@ class RegistryRite(Rite):
 
             self.mLogger.debug("Sleeping for a heartbeat.")
             time.sleep(self.mSettings.get('heartbeat', 'period'))
+
+    def getKnownCritters(self):
+        """Returns the dictionary of known critters.
+
+        Returns:
+            The copy of the dictionary of known critters.
+        """
+        return copy.deepcopy(self.mKnownCritters)
 
     def getNumberOfKnownCritters(self):
         """Returns the number of known critters.
