@@ -29,7 +29,7 @@ class BalanceCommandCommandWorkExecution(object):
 
         """
         # Get the list of known critters.
-        knownCritters = aCommandProcessor.mRites[Rites.RiteCommon.REGISTRY].getKnownCritters()
+        knownCritters = aCommandProcessor.mRite.mCritter.mRites[Rites.RiteCommon.REGISTRY].getKnownCritters()
 
         # Filter workers.
         # TODO.

@@ -2,7 +2,8 @@
 
 import Rites.RiteCommon
 
-from Rites.MessageProcessor import MessageProcessor
+from Rites.Balance.BalanceCommands import BalanceCommandCommandWorkExecution
+from Rites.MessageProcessor        import MessageProcessor
 
 class BalanceMessageProcessor(MessageProcessor):
     """The message processor of the balance rite."""
@@ -27,8 +28,8 @@ class BalanceMessageProcessor(MessageProcessor):
             self.mLogger.debug("Dropping critter's own message: %s." % aMessage.messageName)
 
         elif aMessage.messageName == 'CommandWorkExecutionAnnouncement':
-            # TODO: Start here.
-            pass
+            command = BalanceCommandCommandWorkExecution(aMessage)
+            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.BALANCE, command)
 
         else:
             self.mLogger.debug("Dropping unknown message: %s" % aMessage.messageName)
