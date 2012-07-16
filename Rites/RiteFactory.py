@@ -7,6 +7,7 @@ from Heartbeat.HeartbeatRite import HeartbeatRite
 from Poke.PokeRite           import PokeRite
 from Registry.RegistryRite   import RegistryRite
 from Scheduler.SchedulerRite import SchedulerRite
+from Work.WorkRite           import WorkRite
 
 def createRite(aCritter, aName):
     """Creates a rite.
@@ -28,7 +29,8 @@ def createRite(aCritter, aName):
         'Heartbeat': HeartbeatRite,
         'Poke':      PokeRite,
         'Registry':  RegistryRite,
-        'Scheduler': SchedulerRite
+        'Scheduler': SchedulerRite,
+        'Work':      WorkRite
     }
 
     if aName in rites:
