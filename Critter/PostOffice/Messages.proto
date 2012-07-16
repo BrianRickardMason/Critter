@@ -117,3 +117,15 @@ message CommandWorkExecutionAnnouncement
     optional uint32      cycle       = 4;
     optional string      workName    = 5;
 }
+
+// ExecuteWorkAnnouncement: Balancer -> Worker.
+
+message ExecuteWorkAnnouncement
+{
+    optional string      messageName = 1;
+    optional CritterData sender      = 2;
+    optional CritterData receiver    = 3;
+    optional string      graphName   = 4;
+    optional uint32      cycle       = 5;
+    optional string      workName    = 6;
+}

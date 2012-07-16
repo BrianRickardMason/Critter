@@ -34,6 +34,9 @@ class MessageDecoder(object):
         elif envelope.header.id == EXECUTE_GRAPH_ANNOUNCEMENT:
             message = Messages_pb2.ExecuteGraphAnnouncement()
 
+        elif envelope.header.id == EXECUTE_WORK_ANNOUNCEMENT:
+            message = Messages_pb2.ExecuteWorkAnnouncement()
+
         elif envelope.header.id == HEARTBEAT_ANNOUNCEMENT:
             message = Messages_pb2.HeartbeatAnnouncement()
 

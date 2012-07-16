@@ -43,6 +43,13 @@ class MessageEncoder(object):
             elif aMessageName == 'ExecuteGraphAnnouncement':
                 return self.__executeGraphAnnouncement(aData['critterData'], aData['graphName'])
 
+            elif aMessageName == 'ExecuteWorkAnnouncement':
+                return self.__executeWorkAnnouncement(aData['sender'],
+                                                      aData['receiver'],
+                                                      aData['graphName'],
+                                                      aData['cycle'],
+                                                      aData['workName'])
+
             elif aMessageName == 'HeartbeatAnnouncement':
                 return self.__heartbeatAnnouncement(aData['critterData'], aData['timestamp'])
 
@@ -160,6 +167,32 @@ class MessageEncoder(object):
         payload.graphName   = aGraphName
 
         return self.__putIntoAnEnvelope(EXECUTE_GRAPH_ANNOUNCEMENT, payload)
+
+    def __executeWorkAnnouncement(self, aSender, aReceiver, aGraphName, aCycle, aWorkName):
+        """Encodes ExecuteWorkAnnouncement.
+
+        Arguments:
+            aSender:    The critter data of sender.
+            aReceiver:  The critter data of receiver.
+            aGraphName: The name of the graph.
+            aCycle:     The cycle of the graph.
+            aWorkName:  The name of the work.
+
+        Returns:
+            ExecuteWorkAnnouncement envelope.
+
+        """
+        payload = Messages_pb2.ExecuteWorkAnnouncement()
+        payload.messageName   = 'ExecuteWorkAnnouncement'
+        payload.sender.type   = aSender.mType
+        payload.sender.nick   = aSender.mNick
+        payload.receiver.type = aReceiver.mType
+        payload.receiver.nick = aReceiver.mNick
+        payload.graphName     = aGraphName
+        payload.cycle         = aCycle
+        payload.workName      = aWorkName
+
+        return self.__putIntoAnEnvelope(EXECUTE_WORK_ANNOUNCEMENT, payload)
 
     def __heartbeatAnnouncement(self, aCritterData, aTimestamp):
         """Encodes HeartbeatAnnouncement.
