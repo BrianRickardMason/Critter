@@ -5,13 +5,17 @@ Handles a full, single graph execution from the beginning to the end.
 """
 
 import copy
+import logging
 import time
 import threading
+
+logging.basicConfig(format='[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
 
 class GraphRiteSession(threading.Thread):
     """The message processor of the a rite.
 
     Attributes:
+        mLogger:           The logger.
         mRite:             The rite.
         mGraphName:        The graph name.
         mCycle:            The cycle number.
@@ -30,6 +34,9 @@ class GraphRiteSession(threading.Thread):
             aCycle:     The cycle number.
 
         """
+        self.mLogger = logging.getLogger('GraphRiteSession')
+        self.mLogger.setLevel(logging.INFO)
+
         self.mRite      = aRite
         self.mGraphName = aGraphName
         self.mCycle     = aCycle
@@ -65,7 +72,7 @@ class GraphRiteSession(threading.Thread):
                         execute = True
 
                         for workPredecessor in self.mWorkPredecessors[work]:
-                            if self.mWorkStates[workPredecessor] == 0:
+                            if self.mWorkStates[workPredecessor] in [0, 1, 3]:
                                 execute = False
 
                         # Should be executed.
@@ -109,7 +116,7 @@ class GraphRiteSession(threading.Thread):
             aWorkName: The name of the work.
 
         """
-        # TODO: Add logging.
+        self.mLogger.info("Commanding work execution: %s@%s@%s." % (self.mGraphName, self.mCycle, aWorkName))
 
         assert aWorkName in self.mWorkStates, "Work %s has not its state attached." % aWorkName
 
