@@ -1,5 +1,7 @@
 """Work rite commands."""
 
+from WorkRiteSession import WorkRiteSession
+
 class WorkCommandInitializeWorkExecution(object):
     """InitializeWorkExecution command.
 
@@ -61,7 +63,25 @@ class WorkCommandSpawnWorkExecution(object):
 
         """
         if self.mMessage.receiver.nick == aCommandProcessor.mRite.mCritterData.mNick:
-            # TODO: Start here.
-            pass
+            graphName  = self.mMessage.graphName
+            # FIXME: Should be self.mMessage.workCycle.
+            graphCycle = self.mMessage.cycle
+            workName   = self.mMessage.workName
+            workCycle  = self.mMessage.workCycle
+
+            assert graphCycle > 0, "Invalid graphCycle value determined."
+            assert workCycle  > 0, "Invalid workCycle value determined."
+
+            # Create and run a session.
+            if workName not in aCommandProcessor.mRite.mSessions:
+                aCommandProcessor.mRite.mSessions[workName] = {}
+#
+            aCommandProcessor.mRite.mSessions[workName][workCycle] = WorkRiteSession(aCommandProcessor.mRite,
+                                                                                     graphName,
+                                                                                     graphCycle,
+                                                                                     workName,
+                                                                                     workCycle)
+            aCommandProcessor.mRite.mSessions[workName][workCycle].setDaemon(True)
+            aCommandProcessor.mRite.mSessions[workName][workCycle].start()
         else:
             aCommandProcessor.mLogger.debug("The message is not addressed to me.")
