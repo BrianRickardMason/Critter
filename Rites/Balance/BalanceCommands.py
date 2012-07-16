@@ -4,6 +4,8 @@ from random import choice
 
 import Rites.RiteCommon
 
+from Critter.CritterData import CritterData
+
 class BalanceCommandCommandWorkExecution(object):
     """CommandWorkExecution command.
 
@@ -44,4 +46,14 @@ class BalanceCommandCommandWorkExecution(object):
         foundWorker = choice(availableWorkers)
 
         # Command work execution.
-        # TODO.
+        # FIXME: Remove hardcodes.
+        foundWorkerData = CritterData('Worker', foundWorker)
+
+        envelope = aCommandProcessor.mRite.mPostOffice.encode(
+            'ExecuteWorkAnnouncement',
+            {'sender':    aCommandProcessor.mRite.mCritterData,
+             'receiver':  foundWorkerData,
+             'graphName': self.mMessage.graphName,
+             'cycle':     self.mMessage.cycle,
+             'workName':  self.mMessage.workName})
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
