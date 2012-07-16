@@ -4,6 +4,7 @@ import Rites.RiteCommon
 
 from Rites.MessageProcessor  import MessageProcessor
 from Rites.Work.WorkCommands import WorkCommandInitializeWorkExecution
+from Rites.Work.WorkCommands import WorkCommandSpawnWorkExecution
 
 class WorkMessageProcessor(MessageProcessor):
     """The message processor of the balance rite."""
@@ -26,6 +27,10 @@ class WorkMessageProcessor(MessageProcessor):
         """
         if aMessage.sender.nick == self.mRite.mCritterData.mNick:
             self.mLogger.debug("Dropping critter's own message: %s." % aMessage.messageName)
+
+        elif aMessage.messageName == 'DetermineWorkCycleResponse':
+            command = WorkCommandSpawnWorkExecution(aMessage)
+            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.WORK, command)
 
         elif aMessage.messageName == 'ExecuteWorkAnnouncement':
             command = WorkCommandInitializeWorkExecution(aMessage)

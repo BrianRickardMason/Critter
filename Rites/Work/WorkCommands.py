@@ -33,3 +33,35 @@ class WorkCommandInitializeWorkExecution(object):
              'cycle':     self.mMessage.cycle,
              'workName':  self.mMessage.workName})
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
+class WorkCommandSpawnWorkExecution(object):
+    """SpawnWorkExecution command.
+
+    Attributes:
+        mName:    The name of the command.
+        mMessage: The DetermineWorkCycleResponse.
+
+    """
+
+    def __init__(self, aMessage):
+        """Initializes the command.
+
+        Arguments:
+            aMessage: The DetermineWorkCycleResponse.
+
+        """
+        self.mName    = 'WorkCommandSpawnWorkExecution'
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        """Executes the command.
+
+        Arguments:
+            aCommandProcessor: The command processor to be visited.
+
+        """
+        if self.mMessage.receiver.nick == aCommandProcessor.mRite.mCritterData.mNick:
+            # TODO: Start here.
+            pass
+        else:
+            aCommandProcessor.mLogger.debug("The message is not addressed to me.")
