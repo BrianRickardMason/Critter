@@ -73,6 +73,76 @@ class DatabaseCommandDetermineGraphCycle(object):
              'cycle':     cycle})
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
+class DatabaseCommandDetermineWorkCycle(object):
+    """DetermineWorkCycle command.
+
+    Attributes:
+        mName:    The name of the command.
+        mMessage: The DetermineWorkCycleRequest.
+
+    """
+
+    def __init__(self, aMessage):
+        """Initializes the command.
+
+        Arguments:
+            aMessage: The DetermineWorkCycleRequest.
+
+        """
+        self.mName    = 'DatabaseCommandDetermineWorkCycle'
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        """Executes the command.
+
+        Arguments:
+            aCommandProcessor: The command processor to be visited.
+
+        """
+        try:
+            connection = psycopg2.connect("host='localhost' dbname='critter' user='brian' password='brianpassword'")
+            cursor = connection.cursor()
+        except psycopg2.DatabaseError, e:
+            sys.exit(1)
+
+        query = """
+                SELECT
+                    max(cycle)
+                FROM
+                    workCycles
+                WHERE
+                    workName = '%s'
+                """ % (self.mMessage.workName)
+        cursor.execute(query)
+
+        row = cursor.fetchone()
+        if row[0] == None:
+            cycle = 1
+        else:
+            cycle = row[0] + 1
+
+        query = """
+                INSERT INTO
+                    workCycles(workName, cycle)
+                VALUES
+                    ('%s', '%s')
+                """ % (self.mMessage.workName, cycle)
+        cursor.execute(query)
+
+        connection.commit()
+
+        receiverCritterData = CritterData(self.mMessage.sender.type, self.mMessage.sender.nick)
+
+        envelope = aCommandProcessor.mRite.mPostOffice.encode(
+            'DetermineWorkCycleResponse',
+            {'sender':    aCommandProcessor.mRite.mCritterData,
+             'receiver':  receiverCritterData,
+             'graphName': self.mMessage.graphName,
+             'cycle':     self.mMessage.cycle,
+             'workName':  self.mMessage.workName,
+             'workCycle': cycle})
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
 class DatabaseCommandLoadGraphsAndWorks(object):
     """LoadGraphsAndWorks command.
 
