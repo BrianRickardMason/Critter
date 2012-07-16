@@ -73,34 +73,6 @@ class DatabaseCommandDetermineGraphCycle(object):
              'cycle':     cycle})
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
-class DatabaseCommandFoo(object):
-    """Foo command.
-
-    Attributes:
-        mName: The name of the command.
-
-    """
-
-    def __init__(self):
-        """Initializes the command."""
-        self.mName = "DatabaseCommandFoo"
-
-    def execute(self, aCommandProcessor):
-        """Executes the command.
-
-        Arguments:
-            aCommandProcessor: The command processor to be visited.
-
-        """
-        try:
-            connection = psycopg2.connect("host='localhost' dbname='critter' user='brian' password='brianpassword'")
-            cursor = connection.cursor()
-        except psycopg2.DatabaseError, e:
-            sys.exit(1)
-
-        cursor.execute("SELECT * FROM graphs")
-        cursor.fetchall()
-
 class DatabaseCommandLoadGraphsAndWorks(object):
     """LoadGraphsAndWorks command.
 
