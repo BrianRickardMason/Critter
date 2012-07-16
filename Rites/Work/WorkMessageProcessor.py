@@ -2,7 +2,8 @@
 
 import Rites.RiteCommon
 
-from Rites.MessageProcessor import MessageProcessor
+from Rites.MessageProcessor  import MessageProcessor
+from Rites.Work.WorkCommands import WorkCommandInitializeWorkExecution
 
 class WorkMessageProcessor(MessageProcessor):
     """The message processor of the balance rite."""
@@ -25,6 +26,10 @@ class WorkMessageProcessor(MessageProcessor):
         """
         if aMessage.sender.nick == self.mRite.mCritterData.mNick:
             self.mLogger.debug("Dropping critter's own message: %s." % aMessage.messageName)
+
+        elif aMessage.messageName == 'ExecuteWorkAnnouncement':
+            command = WorkCommandInitializeWorkExecution(aMessage)
+            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.WORK, command)
 
         else:
             self.mLogger.debug("Dropping unknown message: %s" % aMessage.messageName)
