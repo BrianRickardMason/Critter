@@ -29,6 +29,7 @@ class BalanceCommandCommandWorkExecution(object):
 
         """
         # Get the list of known critters.
+        # FIXME: Jealous class.
         knownCritters = aCommandProcessor.mRite.mCritter.mRites[Rites.RiteCommon.REGISTRY].getKnownCritters()
 
         # Filter workers.
