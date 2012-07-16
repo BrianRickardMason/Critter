@@ -6,6 +6,8 @@ import Messages_pb2
 
 from MessageCommon import *
 
+# TODO: Pass dictionaries to private functions (instead of parameters).
+
 class MessageEncoder(object):
     """The message encoder delivers a message encoded in protobuf based upon delivered parameters.
 
@@ -85,6 +87,14 @@ class MessageEncoder(object):
 
             elif aMessageName == 'PresentYourselfResponse':
                 return self.__presentYourselfResponse(aData['critterDataSender'], aData['critterDataReceiver'])
+
+            elif aMessageName == 'ReportFinishedWorkAnnouncement':
+                return self.__reportFinishedWorkAnnouncement(aData['sender'],
+                                                             aData['graphName'],
+                                                             aData['graphCycle'],
+                                                             aData['workName'],
+                                                             aData['workCycle'],
+                                                             aData['result'])
 
             else:
                 # TODO: Handle this more gracefully
@@ -392,6 +402,32 @@ class MessageEncoder(object):
         payload.receiver.nick = aCritterDataReceiver.mNick
 
         return self.__putIntoAnEnvelope(PRESENT_YOURSELF_RESPONSE, payload)
+
+    def __reportFinishedWorkAnnouncement(self, aSender, aGraphName, aGraphCycle, aWorkName, aWorkCycle, aResult):
+        """Encodes ReportFinishedWorkAnnouncement
+
+        Arguments:
+            aSender:     The critter data of sender.
+            aGraphName:  The graph name.
+            aGraphCycle: The graph cycle.
+            aWorkName:   The work name.
+            aWorkCycle:  The work cycle.
+
+        Returns:
+            ReportFinishedWorkAnnouncement envelope.
+
+        """
+        payload = Messages_pb2.ReportFinishedWorkAnnouncement()
+        payload.messageName = 'ReportFinishedWorkAnnouncement'
+        payload.sender.type = aSender.mType
+        payload.sender.nick = aSender.mNick
+        payload.graphName   = aGraphName
+        payload.graphCycle  = aGraphCycle
+        payload.workName    = aWorkName
+        payload.workCycle   = aWorkCycle
+        payload.result      = aResult
+
+        return self.__putIntoAnEnvelope(REPORT_FINISHED_WORK_ANNOUNCEMENT, payload)
 
     def __putIntoAnEnvelope(self, aId, aPayload):
         """Puts the payload into an envelope.

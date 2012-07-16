@@ -61,6 +61,9 @@ class MessageDecoder(object):
         elif envelope.header.id == PRESENT_YOURSELF_RESPONSE:
             message = Messages_pb2.PresentYourselfResponse()
 
+        elif envelope.header.id == REPORT_FINISHED_WORK_ANNOUNCEMENT:
+            message = Messages_pb2.ReportFinishedWorkAnnouncement()
+
         else:
             return None
 

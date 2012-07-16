@@ -151,3 +151,18 @@ message DetermineWorkCycleResponse
     optional string      workName    = 6;
     optional uint32      workCycle   = 7;
 }
+
+// ReportFinishedWorkAnnouncement: Worker -> GraphYeeti.
+
+// TODO: Add missing information on whom inform about the result.
+
+message ReportFinishedWorkAnnouncement
+{
+    optional string      messageName = 1;
+    optional CritterData sender      = 2;
+    optional string      graphName   = 3;
+    optional uint32      graphCycle  = 4;
+    optional string      workName    = 5;
+    optional uint32      workCycle   = 6;
+    optional bool        result      = 7;
+}
