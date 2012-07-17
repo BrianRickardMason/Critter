@@ -13,6 +13,7 @@ logging.basicConfig(format='[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(
 
 # TODO: Introduce a graph timeout.
 # TODO: Consider introduction of a work timeout.
+# FIXME: Many threads access work states.
 
 class GraphRiteSession(threading.Thread):
     """The message processor of the a rite.
@@ -64,37 +65,24 @@ class GraphRiteSession(threading.Thread):
         for work in self.mWorks:
             self.mWorkStates[work] = GraphRiteSession.STATE_NOT_STARTED
 
-        # Spawn works to be executed.
         spawnChecker = SpawnChecker()
+        workFinder   = WorkFinder(self.mWorks, self.mWorkPredecessors)
 
+        # Spawn works to be executed.
         while spawnChecker.continueSpawning(self.mWorkStates):
-            # Browse all works.
-            for work in self.mWorks:
-                # Work is in 'STATE_NOT_STARTED' state.
-                if self.mWorkStates[work] == GraphRiteSession.STATE_NOT_STARTED:
-                    if work in self.mWorkPredecessors:
-                        execute = True
+            # Find works to be started.
+            worksToBeStarted = workFinder.findWorks(self.mWorkStates)
 
-                        for workPredecessor in self.mWorkPredecessors[work]:
-                            if self.mWorkStates[workPredecessor] in [GraphRiteSession.STATE_NOT_STARTED,
-                                                                     GraphRiteSession.STATE_STARTED,
-                                                                     GraphRiteSession.STATE_FAILED]:
-                                execute = False
-
-                        # Should be executed.
-                        if execute:
-                            self.__commandWorkExecutionAnnouncement(work)
-
-                    # Should be executed.
-                    else:
-                        self.__commandWorkExecutionAnnouncement(work)
+            # Start works.
+            for work in worksToBeStarted:
+                self.__commandWorkExecutionAnnouncement(work)
 
             # TODO: Remove hardcoded value.
             time.sleep(1)
 
-        # Wait for all started jobs to finish.
         awaiter = Awaiter()
 
+        # Wait for all started jobs to finish.
         while awaiter.keepWaiting(self.mWorkStates):
             # TODO: Remove hardcoded value.
             time.sleep(1)
@@ -160,6 +148,62 @@ class SpawnChecker(object):
 
         # There are only 'STATE_NOT_STARTED' and 'STATE_STARTED' and 'STATE_SUCCEED' states.
         return True
+
+class WorkFinder(object):
+    """Finds the works that should be spawned.
+
+    Attributes:
+        mWorks:            Keeps the available works.
+        mWorkPredecessors: Keeps the predecessors of the works.
+
+    """
+
+    def __init__(self, aWorks, aWorkPredecessors):
+        """Initializes the finder.
+
+        Arguments:
+            aWorks:            Keeps the available works.
+            aWorkPredecessors: Keeps the predecessors of the works.
+
+        """
+        self.mWorks            = aWorks
+        self.mWorkPredecessors = aWorkPredecessors
+
+    def findWorks(self, aWorkStates):
+        """Finds the works that should be started.
+
+        Arguments:
+            aWorkStates: Keeps the states of works.
+
+        Returns:
+            The array of works that should be started.
+
+        """
+        worksToBeStarted = []
+
+        for work in self.mWorks:
+            # The work is in 'STATE_NOT_STARTED' state.
+            if aWorkStates[work] == GraphRiteSession.STATE_NOT_STARTED:
+                # The work has predecessors.
+                if work in self.mWorkPredecessors:
+                    # The work wants to be executed...
+                    execute = True
+
+                    # ...and only if any of its predecessors is not in 'STATE_SUCCEED' can stop it.
+                    for workPredecessor in self.mWorkPredecessors[work]:
+                        if aWorkStates[workPredecessor] != GraphRiteSession.STATE_SUCCEED:
+                            execute = False
+
+                    # Should be executed.
+                    if execute:
+                        worksToBeStarted.append(work)
+
+                # Work has not predecessors.
+                # Should be executed.
+                else:
+                    worksToBeStarted.append(work)
+
+        return worksToBeStarted
 
 class Awaiter(object):
     """Check whether there's a need to keep waiting until all jobs are completed."""

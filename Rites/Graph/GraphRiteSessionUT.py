@@ -5,6 +5,7 @@ import unittest
 from GraphRiteSession import Awaiter
 from GraphRiteSession import GraphRiteSession
 from GraphRiteSession import SpawnChecker
+from GraphRiteSession import WorkFinder
 
 class SpawnChecker_ContinueSpawning(unittest.TestCase):
 
@@ -181,6 +182,216 @@ class SpawnChecker_ContinueSpawning(unittest.TestCase):
             'Work3': GraphRiteSession.STATE_STARTED
         }
         self.assertFalse(self.mSpawnChecker.continueSpawning(workStates))
+
+class WorkFinder_FindWorks_Graph1(unittest.TestCase):
+
+    def setUp(self):
+        self.mWorks = \
+        [
+            'Work1'
+        ]
+
+        self.mWorkPredecessors = \
+        {
+        }
+
+        self.mWorkFinder = WorkFinder(self.mWorks, self.mWorkPredecessors)
+
+    def testFindWorksReturnsACorrectArrayForNonStartedStateWithoutPredecessors(self):
+        workStates = \
+        {
+            'Work1': GraphRiteSession.STATE_NOT_STARTED
+        }
+        self.assertEqual(self.mWorkFinder.findWorks(workStates), ['Work1'])
+
+    def testFindWorksReturnsAnEmptyArrayForStartedStateWithoutPredecessors(self):
+        workStates = \
+        {
+            'Work1': GraphRiteSession.STATE_STARTED
+        }
+        self.assertEqual(self.mWorkFinder.findWorks(workStates), [])
+
+    def testFindWorksReturnsAnEmptyArrayForSucceedStateWithoutPredecessors(self):
+        workStates = \
+        {
+            'Work1': GraphRiteSession.STATE_SUCCEED
+        }
+        self.assertEqual(self.mWorkFinder.findWorks(workStates), [])
+
+    def testFindWorksReturnsAnEmptyArrayForFailedStateWithoutPredecessors(self):
+        workStates = \
+        {
+            'Work1': GraphRiteSession.STATE_FAILED
+        }
+        self.assertEqual(self.mWorkFinder.findWorks(workStates), [])
+
+class WorkFinder_FindWorks_Graph2(unittest.TestCase):
+
+    def setUp(self):
+        self.mWorks = \
+        [
+            'Work1',
+            'Work2',
+            'Work3'
+        ]
+
+        self.mWorkPredecessors = \
+        {
+        }
+
+        self.mWorkFinder = WorkFinder(self.mWorks, self.mWorkPredecessors)
+
+    def testFindWorksReturnsACorrectArrayForNonStartedStatesWithoutPredecessors(self):
+        workStates = \
+        {
+            'Work1': GraphRiteSession.STATE_NOT_STARTED,
+            'Work2': GraphRiteSession.STATE_NOT_STARTED,
+            'Work3': GraphRiteSession.STATE_NOT_STARTED,
+        }
+        self.assertEqual(self.mWorkFinder.findWorks(workStates), ['Work1', 'Work2', 'Work3'])
+
+    def testFindWorksReturnsAnEmptyArrayForStartedStatesWithoutPredecessors(self):
+        workStates = \
+        {
+            'Work1': GraphRiteSession.STATE_STARTED,
+            'Work2': GraphRiteSession.STATE_STARTED,
+            'Work3': GraphRiteSession.STATE_STARTED,
+        }
+        self.assertEqual(self.mWorkFinder.findWorks(workStates), [])
+
+    def testFindWorksReturnsAnEmptyArrayForSucceedStatesWithoutPredecessors(self):
+        workStates = \
+        {
+            'Work1': GraphRiteSession.STATE_SUCCEED,
+            'Work2': GraphRiteSession.STATE_SUCCEED,
+            'Work3': GraphRiteSession.STATE_SUCCEED
+        }
+        self.assertEqual(self.mWorkFinder.findWorks(workStates), [])
+
+    def testFindWorksReturnsAnEmptyArrayForFailedStatesWithoutPredecessors(self):
+        workStates = \
+        {
+            'Work1': GraphRiteSession.STATE_FAILED,
+            'Work2': GraphRiteSession.STATE_FAILED,
+            'Work3': GraphRiteSession.STATE_FAILED
+        }
+        self.assertEqual(self.mWorkFinder.findWorks(workStates), [])
+
+    def testFindWorksReturnsACorrectArrayForDifferentStatesWithoutPredecessors_Case1(self):
+        workStates = \
+        {
+            'Work1': GraphRiteSession.STATE_NOT_STARTED,
+            'Work2': GraphRiteSession.STATE_STARTED,
+            'Work3': GraphRiteSession.STATE_NOT_STARTED,
+        }
+        self.assertEqual(self.mWorkFinder.findWorks(workStates), ['Work1', 'Work3'])
+
+    def testFindWorksReturnsACorrectArrayForDifferentStatesWithoutPredecessors_Case2(self):
+        workStates = \
+        {
+            'Work1': GraphRiteSession.STATE_STARTED,
+            'Work2': GraphRiteSession.STATE_NOT_STARTED,
+            'Work3': GraphRiteSession.STATE_FAILED,
+        }
+        self.assertEqual(self.mWorkFinder.findWorks(workStates), ['Work2'])
+
+class WorkFinder_FindWorks_Graph3(unittest.TestCase):
+
+    def setUp(self):
+        self.mWorks = \
+        [
+            'Work1',
+            'Work2',
+            'Work3',
+            'Work4'
+        ]
+
+        self.mWorkPredecessors = \
+        {
+            'Work4': ['Work1', 'Work2', 'Work3']
+        }
+
+        self.mWorkFinder = WorkFinder(self.mWorks, self.mWorkPredecessors)
+
+    def testFindWorksReturnsACorrectArrayForNonStartedStatesWithPredecessors_PredecessorsNotStartedAndNotStartedAndNotStarted(self):
+        workStates = \
+        {
+            'Work1': GraphRiteSession.STATE_NOT_STARTED,
+            'Work2': GraphRiteSession.STATE_NOT_STARTED,
+            'Work3': GraphRiteSession.STATE_NOT_STARTED,
+            'Work4': GraphRiteSession.STATE_NOT_STARTED,
+        }
+        self.assertEqual(self.mWorkFinder.findWorks(workStates), ['Work1', 'Work2', 'Work3'])
+
+    def testFindWorksReturnsACorrectArrayForNonStartedStatesWithPredecessors_PredecessorsStartedAndNotStartedAndNotStarted(self):
+        workStates = \
+        {
+            'Work1': GraphRiteSession.STATE_STARTED,
+            'Work2': GraphRiteSession.STATE_NOT_STARTED,
+            'Work3': GraphRiteSession.STATE_NOT_STARTED,
+            'Work4': GraphRiteSession.STATE_NOT_STARTED,
+        }
+        self.assertEqual(self.mWorkFinder.findWorks(workStates), ['Work2', 'Work3'])
+
+    def testFindWorksReturnsACorrectArrayForNonStartedStatesWithPredecessors_PredecessorsStartedAndStartedAndNotStarted(self):
+        workStates = \
+        {
+            'Work1': GraphRiteSession.STATE_STARTED,
+            'Work2': GraphRiteSession.STATE_STARTED,
+            'Work3': GraphRiteSession.STATE_NOT_STARTED,
+            'Work4': GraphRiteSession.STATE_NOT_STARTED,
+        }
+        self.assertEqual(self.mWorkFinder.findWorks(workStates), ['Work3'])
+
+    def testFindWorksReturnsAnEmptyArrayForNonStartedStatesWithPredecessors_PredecessorsStartedAndStartedAndStarted(self):
+        workStates = \
+        {
+            'Work1': GraphRiteSession.STATE_STARTED,
+            'Work2': GraphRiteSession.STATE_STARTED,
+            'Work3': GraphRiteSession.STATE_STARTED,
+            'Work4': GraphRiteSession.STATE_NOT_STARTED,
+        }
+        self.assertEqual(self.mWorkFinder.findWorks(workStates), [])
+
+    def testFindWorksReturnsACorrectArrayForNonStartedStatesWithPredecessors_PredecessorsSucceedAndSucceedAndSucceed(self):
+        workStates = \
+        {
+            'Work1': GraphRiteSession.STATE_SUCCEED,
+            'Work2': GraphRiteSession.STATE_SUCCEED,
+            'Work3': GraphRiteSession.STATE_SUCCEED,
+            'Work4': GraphRiteSession.STATE_NOT_STARTED,
+        }
+        self.assertEqual(self.mWorkFinder.findWorks(workStates), ['Work4'])
+
+    def testFindWorksReturnsAnEmptyForNonStartedStatesWithPredecessors_PredecessorsSucceedAndSucceedAndFailed(self):
+        workStates = \
+        {
+            'Work1': GraphRiteSession.STATE_SUCCEED,
+            'Work2': GraphRiteSession.STATE_SUCCEED,
+            'Work3': GraphRiteSession.STATE_FAILED,
+            'Work4': GraphRiteSession.STATE_NOT_STARTED,
+        }
+        self.assertEqual(self.mWorkFinder.findWorks(workStates), [])
+
+    def testFindWorksReturnsAnEmptyForNonStartedStatesWithPredecessors_PredecessorsSucceedAndSucceedAndStarted(self):
+        workStates = \
+        {
+            'Work1': GraphRiteSession.STATE_SUCCEED,
+            'Work2': GraphRiteSession.STATE_SUCCEED,
+            'Work3': GraphRiteSession.STATE_STARTED,
+            'Work4': GraphRiteSession.STATE_NOT_STARTED,
+        }
+        self.assertEqual(self.mWorkFinder.findWorks(workStates), [])
+
+    def testFindWorksReturnsAnEmptyForStartedStatesWithPredecessors_PredecessorsSucceedAndSucceedAndSucceed(self):
+        workStates = \
+        {
+            'Work1': GraphRiteSession.STATE_SUCCEED,
+            'Work2': GraphRiteSession.STATE_SUCCEED,
+            'Work3': GraphRiteSession.STATE_SUCCEED,
+            'Work4': GraphRiteSession.STATE_STARTED,
+        }
+        self.assertEqual(self.mWorkFinder.findWorks(workStates), [])
 
 class Awaiter_KeepWaiting(unittest.TestCase):
 
