@@ -11,6 +11,9 @@ import threading
 
 logging.basicConfig(format='[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
 
+# TODO: Introduce a graph timeout.
+# TODO: Consider introduction of a work timeout.
+
 class GraphRiteSession(threading.Thread):
     """The message processor of the a rite.
 
