@@ -62,11 +62,13 @@ class GraphRiteSession(threading.Thread):
         # 2 - 'Succeed'.
         # 3 - 'Failed'.
 
+        spawnChecker = SpawnChecker()
+
         # Set all states of works to 'Not started'.
         for work in self.mWorks:
             self.mWorkStates[work] = 0
 
-        while self.continueSpawning():
+        while spawnChecker.continueSpawning(self.mWorkStates):
             # Browse all works.
             for work in self.mWorks:
                 # Work is in 'Not started' state.
@@ -95,24 +97,6 @@ class GraphRiteSession(threading.Thread):
         # Delete myself from sessions.
         del self.mRite.mSessions[self.mGraphName][self.mCycle]
 
-    # TODO: Consider making a separate class.
-    def continueSpawning(self):
-        """Determines whether the cycle is still active (whether there's something to do yet).
-
-        Returns:
-            True if something is to be done, False otherwise.
-
-        """
-        # FIXME: Remove magic numbers.
-        for workState in self.mWorkStates.values():
-            if workState == 0 or workState == 1:
-                return True
-
-            if workState == 3:
-                return False
-
-        return False
-
     def __commandWorkExecutionAnnouncement(self, aWorkName):
         """Commands the work execution.
 
@@ -135,3 +119,39 @@ class GraphRiteSession(threading.Thread):
              'cycle':     self.mCycle,
              'workName':  aWorkName})
         self.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
+class SpawnChecker(object):
+    """Checks whether there's a need to continue spawning works."""
+
+    def continueSpawning(self, aWorkStates):
+        """Checks whether or not to continue spawning works.
+
+        Arguments:
+            aWorkStates: The dictionary of work states.
+
+        Returns:
+            True if there's a need to continue spawning, False otherwise.
+
+        """
+        # There's the 'Failed' state.
+        if 3 in aWorkStates.values():
+            return False
+
+        # There are only 'Started' states.
+        onlyStarted = True
+        for workState in aWorkStates.values():
+            if workState != 1:
+                onlyStarted = False
+        if onlyStarted == True:
+            return False
+
+        # There are only 'Started' and 'Succeed' states.
+        onlyStartedAndSucceed = True
+        for workState in aWorkStates.values():
+            if workState not in [1, 2]:
+                onlyStartedAndSucceed = False
+        if onlyStartedAndSucceed == True:
+            return False
+
+        # There are only 'Not started' and 'Started' and 'Succeed' states.
+        return True
