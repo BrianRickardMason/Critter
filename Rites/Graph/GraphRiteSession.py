@@ -95,6 +95,7 @@ class GraphRiteSession(threading.Thread):
         # Delete myself from sessions.
         del self.mRite.mSessions[self.mGraphName][self.mCycle]
 
+    # TODO: Consider making a separate class.
     def isCycleActive(self):
         """Determines whether the cycle is still active (whether there's something to do yet).
 
