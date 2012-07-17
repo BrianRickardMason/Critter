@@ -62,11 +62,11 @@ class GraphRiteSession(threading.Thread):
         # 2 - 'Succeed'.
         # 3 - 'Failed'.
 
-        spawnChecker = SpawnChecker()
-
         # Set all states of works to 'Not started'.
         for work in self.mWorks:
             self.mWorkStates[work] = 0
+
+        spawnChecker = SpawnChecker()
 
         while spawnChecker.continueSpawning(self.mWorkStates):
             # Browse all works.
