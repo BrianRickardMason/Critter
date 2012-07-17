@@ -2,6 +2,7 @@
 
 import unittest
 
+from GraphRiteSession import Awaiter
 from GraphRiteSession import SpawnChecker
 
 class SpawnChecker_ContinueSpawning(unittest.TestCase):
@@ -179,6 +180,117 @@ class SpawnChecker_ContinueSpawning(unittest.TestCase):
             'Work3': 1
         }
         self.assertFalse(self.mSpawnChecker.continueSpawning(workStates))
+
+class Awaiter_KeepWaiting(unittest.TestCase):
+
+    def setUp(self):
+        self.mAwaiter = Awaiter()
+
+    def testKeepWaitingReturnsFalseIfThereIsOnlyOneNotStartedState(self):
+        workStates = \
+        {
+            'Work1': 0
+        }
+        self.assertFalse(self.mAwaiter.keepWaiting(workStates))
+
+    def testKeepWaitingReturnsTrueIfThereIsOnlyOneStartedState(self):
+        workStates = \
+        {
+            'Work1': 1
+        }
+        self.assertTrue(self.mAwaiter.keepWaiting(workStates))
+
+    def testKeepWaitingReturnsFalseIfThereIsOnlyOneSucceedState(self):
+        workStates = \
+        {
+            'Work1': 2
+        }
+        self.assertFalse(self.mAwaiter.keepWaiting(workStates))
+
+    def testKeepWaitingReturnsFalseIfThereIsOnlyOneFailedState(self):
+        workStates = \
+        {
+            'Work1': 3
+        }
+        self.assertFalse(self.mAwaiter.keepWaiting(workStates))
+
+    def testKeepWaitingReturnsFalseIfThereAreOnlyNotStartedStates(self):
+        workStates = \
+        {
+            'Work1': 0,
+            'Work2': 0,
+            'Work3': 0,
+            'Work4': 0
+        }
+        self.assertFalse(self.mAwaiter.keepWaiting(workStates))
+
+    def testKeepWaitingReturnsTrueIfThereAreOnlyStartedStates(self):
+        workStates = \
+        {
+            'Work1': 1,
+            'Work2': 1,
+            'Work3': 1,
+            'Work4': 1
+        }
+        self.assertTrue(self.mAwaiter.keepWaiting(workStates))
+
+    def testKeepWaitingReturnsFalseIfThereAreOnlySucceedStates(self):
+        workStates = \
+        {
+            'Work1': 3,
+            'Work2': 3,
+            'Work3': 3,
+            'Work4': 3
+        }
+        self.assertFalse(self.mAwaiter.keepWaiting(workStates))
+
+    def testKeepWaitingReturnsFalseIfThereAreOnlyFailedStates(self):
+        workStates = \
+        {
+            'Work1': 4,
+            'Work2': 4,
+            'Work3': 4,
+            'Work4': 4
+        }
+        self.assertFalse(self.mAwaiter.keepWaiting(workStates))
+
+    def testKeepAwaitingReturnsTrueIfThereAreStartedStates_OneStartedOneAnother(self):
+        workStates = \
+        {
+            'Work1': 0,
+            'Work2': 1
+        }
+        self.assertTrue(self.mAwaiter.keepWaiting(workStates))
+
+    def testKeepAwaitingReturnsTrueIfThereAreStartedStates_OneStartedManyAnother(self):
+        workStates = \
+        {
+            'Work1': 1,
+            'Work2': 2,
+            'Work3': 3,
+            'Work4': 0
+        }
+        self.assertTrue(self.mAwaiter.keepWaiting(workStates))
+
+    def testKeepAwaitingReturnsTrueIfThereAreStartedStates_ManyStartedOneAnother(self):
+        workStates = \
+        {
+            'Work1': 1,
+            'Work2': 1,
+            'Work3': 3,
+            'Work4': 1
+        }
+        self.assertTrue(self.mAwaiter.keepWaiting(workStates))
+
+    def testKeepAwaitingReturnsTrueIfThereAreStartedStates_ManyStartedManyAnother(self):
+        workStates = \
+        {
+            'Work1': 1,
+            'Work2': 2,
+            'Work3': 3,
+            'Work4': 1
+        }
+        self.assertTrue(self.mAwaiter.keepWaiting(workStates))
 
 if __name__ == '__main__':
     unittest.main()

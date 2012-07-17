@@ -66,6 +66,7 @@ class GraphRiteSession(threading.Thread):
         for work in self.mWorks:
             self.mWorkStates[work] = 0
 
+        # Spawn works to be executed.
         spawnChecker = SpawnChecker()
 
         while spawnChecker.continueSpawning(self.mWorkStates):
@@ -91,8 +92,12 @@ class GraphRiteSession(threading.Thread):
             # TODO: Remove hardcoded value.
             time.sleep(1)
 
-        # Wait for all started jobs.
-        # NOTE: The graph was finished with failure status. Collect the rest of the jobs.
+        # Wait for all started jobs to finish.
+        awaiter = Awaiter()
+
+        while awaiter.keepWaiting(self.mWorkStates):
+            # TODO: Remove hardcoded value.
+            time.sleep(1)
 
         # Delete myself from sessions.
         del self.mRite.mSessions[self.mGraphName][self.mCycle]
@@ -155,3 +160,22 @@ class SpawnChecker(object):
 
         # There are only 'Not started' and 'Started' and 'Succeed' states.
         return True
+
+class Awaiter(object):
+    """Check whether there's a need to keep waiting until all jobs are completed."""
+
+    def keepWaiting(self, aWorkStates):
+        """Checks whether or not to keep waiting until all jobs are completed.
+
+        Arguments:
+            aWorkStates: The dictionary of work states.
+
+        Returns:
+            True if there's a need to keep waiting, False otherwise.
+
+        """
+        # There's the 'Started' state.
+        if 1 in aWorkStates.values():
+            return True
+
+        return False
