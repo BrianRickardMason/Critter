@@ -153,10 +153,12 @@ class GraphCommandMarkFinishedWork(object):
             state = 2
         else:
             state = 3
+        state = 2
 
         graphName  = self.mMessage.graphName
         graphCycle = self.mMessage.graphCycle
         workName   = self.mMessage.workName
 
         # TODO: Please, do it nicer. Consider holding exceptional cases as well.
+        # REMARK: It is possible not to hit the [graphName][graphCycle] entry (e.g. due to a timeout).
         aCommandProcessor.mRite.mSessions[graphName][graphCycle].mWorkStates[workName] = state
