@@ -28,6 +28,11 @@ class GraphRiteSession(threading.Thread):
 
     """
 
+    STATE_NOT_STARTED = 0
+    STATE_STARTED     = 1
+    STATE_SUCCEED     = 2
+    STATE_FAILED      = 3
+
     def __init__(self, aRite, aGraphName, aCycle):
         """Initializes the message processor.
 
@@ -55,16 +60,9 @@ class GraphRiteSession(threading.Thread):
 
     def run(self):
         """Starts the main loop of the session."""
-        # TODO: Remove hardcoded values.
-        # States of works.
-        # 0 - 'Not started'.
-        # 1 - 'Started'.
-        # 2 - 'Succeed'.
-        # 3 - 'Failed'.
-
-        # Set all states of works to 'Not started'.
+        # Set all states of works to 'STATE_NOT_STARTED'.
         for work in self.mWorks:
-            self.mWorkStates[work] = 0
+            self.mWorkStates[work] = GraphRiteSession.STATE_NOT_STARTED
 
         # Spawn works to be executed.
         spawnChecker = SpawnChecker()
@@ -72,13 +70,15 @@ class GraphRiteSession(threading.Thread):
         while spawnChecker.continueSpawning(self.mWorkStates):
             # Browse all works.
             for work in self.mWorks:
-                # Work is in 'Not started' state.
-                if self.mWorkStates[work] == 0:
+                # Work is in 'STATE_NOT_STARTED' state.
+                if self.mWorkStates[work] == GraphRiteSession.STATE_NOT_STARTED:
                     if work in self.mWorkPredecessors:
                         execute = True
 
                         for workPredecessor in self.mWorkPredecessors[work]:
-                            if self.mWorkStates[workPredecessor] in [0, 1, 3]:
+                            if self.mWorkStates[workPredecessor] in [GraphRiteSession.STATE_NOT_STARTED,
+                                                                     GraphRiteSession.STATE_STARTED,
+                                                                     GraphRiteSession.STATE_FAILED]:
                                 execute = False
 
                         # Should be executed.
@@ -114,7 +114,7 @@ class GraphRiteSession(threading.Thread):
         assert aWorkName in self.mWorkStates, "Work %s has not its state attached." % aWorkName
 
         # Set the state.
-        self.mWorkStates[aWorkName] = 1
+        self.mWorkStates[aWorkName] = GraphRiteSession.STATE_STARTED
 
         # Send the message.
         envelope = self.mRite.mPostOffice.encode(
@@ -138,27 +138,27 @@ class SpawnChecker(object):
             True if there's a need to continue spawning, False otherwise.
 
         """
-        # There's the 'Failed' state.
-        if 3 in aWorkStates.values():
+        # There's the 'STATE_FAILED' state.
+        if GraphRiteSession.STATE_FAILED in aWorkStates.values():
             return False
 
-        # There are only 'Started' states.
-        onlyStarted = True
+        # There are only 'STATE_STARTED' states.
+        onlyStateStarted = True
         for workState in aWorkStates.values():
-            if workState != 1:
-                onlyStarted = False
-        if onlyStarted == True:
+            if workState != GraphRiteSession.STATE_STARTED:
+                onlyStateStarted = False
+        if onlyStateStarted == True:
             return False
 
-        # There are only 'Started' and 'Succeed' states.
-        onlyStartedAndSucceed = True
+        # There are only 'STATE_STARTED' and 'STATE_SUCCEED' states.
+        onlyStateStartedAndStateSucceed = True
         for workState in aWorkStates.values():
-            if workState not in [1, 2]:
-                onlyStartedAndSucceed = False
-        if onlyStartedAndSucceed == True:
+            if workState not in [GraphRiteSession.STATE_STARTED, GraphRiteSession.STATE_SUCCEED]:
+                onlyStateStartedAndStateSucceed = False
+        if onlyStateStartedAndStateSucceed == True:
             return False
 
-        # There are only 'Not started' and 'Started' and 'Succeed' states.
+        # There are only 'STATE_NOT_STARTED' and 'STATE_STARTED' and 'STATE_SUCCEED' states.
         return True
 
 class Awaiter(object):
@@ -174,8 +174,8 @@ class Awaiter(object):
             True if there's a need to keep waiting, False otherwise.
 
         """
-        # There's the 'Started' state.
-        if 1 in aWorkStates.values():
+        # There's the 'STATE_STARTED' state.
+        if GraphRiteSession.STATE_STARTED in aWorkStates.values():
             return True
 
         return False
