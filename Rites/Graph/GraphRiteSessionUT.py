@@ -248,10 +248,10 @@ class Awaiter_KeepWaiting(unittest.TestCase):
     def testKeepWaitingReturnsFalseIfThereAreOnlyFailedStates(self):
         workStates = \
         {
-            'Work1': 4,
-            'Work2': 4,
-            'Work3': 4,
-            'Work4': 4
+            'Work1': GraphRiteSession.STATE_FAILED,
+            'Work2': GraphRiteSession.STATE_FAILED,
+            'Work3': GraphRiteSession.STATE_FAILED,
+            'Work4': GraphRiteSession.STATE_FAILED
         }
         self.assertFalse(self.mAwaiter.keepWaiting(workStates))
 
