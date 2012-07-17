@@ -66,7 +66,7 @@ class GraphRiteSession(threading.Thread):
         for work in self.mWorks:
             self.mWorkStates[work] = 0
 
-        while self.isCycleActive():
+        while self.continueSpawning():
             # Browse all works.
             for work in self.mWorks:
                 # Work is in 'Not started' state.
@@ -96,7 +96,7 @@ class GraphRiteSession(threading.Thread):
         del self.mRite.mSessions[self.mGraphName][self.mCycle]
 
     # TODO: Consider making a separate class.
-    def isCycleActive(self):
+    def continueSpawning(self):
         """Determines whether the cycle is still active (whether there's something to do yet).
 
         Returns:
