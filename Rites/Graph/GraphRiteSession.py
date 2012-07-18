@@ -29,6 +29,9 @@ class GraphRiteSession(threading.Thread):
 
     """
 
+    SLEEP_BETWEEN_SPAWNING = 1 # [s].
+    SLEEP_WHILE_WAITING    = 1 # [s].
+
     STATE_NOT_STARTED = 0
     STATE_STARTED     = 1
     STATE_SUCCEED     = 2
@@ -77,15 +80,13 @@ class GraphRiteSession(threading.Thread):
             for work in worksToBeStarted:
                 self.__commandWorkExecutionAnnouncement(work)
 
-            # TODO: Remove hardcoded value.
-            time.sleep(1)
+            time.sleep(GraphRiteSession.SLEEP_BETWEEN_SPAWNING)
 
         awaiter = Awaiter()
 
         # Wait for all started jobs to finish.
         while awaiter.keepWaiting(self.mWorkStates):
-            # TODO: Remove hardcoded value.
-            time.sleep(1)
+            time.sleep(GraphRiteSession.SLEEP_WHILE_WAITING)
 
         # Delete myself from sessions.
         del self.mRite.mSessions[self.mGraphName][self.mCycle]
