@@ -32,7 +32,7 @@ class PokeRite(Rite):
         """Starts the main loop of the rite."""
         while True:
             self.mLogger.debug("Poking other critters.")
-            envelope = self.mPostOffice.encode("PokeAnnouncement", {'critterData': self.mCritterData})
+            envelope = self.mPostOffice.encode('PokeAnnouncement', {'sender': self.mCritterData})
             self.mPostOffice.putOutgoingAnnouncement(envelope)
 
             self.mLogger.debug("Sleeping for a heartbeat.")

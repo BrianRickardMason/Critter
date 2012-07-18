@@ -29,6 +29,6 @@ class SchedulerCommandCheckSchedule(object):
             graphNames = ['GraphName1', 'GraphName2', 'GraphName3', 'GraphName4']
             envelope = aCommandProcessor.mRite.mPostOffice.encode(
                 'ExecuteGraphAnnouncement',
-                {'critterData': aCommandProcessor.mRite.mCritterData,
-                 'graphName':   random.choice(graphNames)})
+                {'sender':    aCommandProcessor.mRite.mCritterData,
+                 'graphName': random.choice(graphNames)})
             aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)

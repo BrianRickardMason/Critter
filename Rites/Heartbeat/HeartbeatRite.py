@@ -38,8 +38,8 @@ class HeartbeatRite(Rite):
         """Starts the main loop of the rite."""
         while True:
             self.mLogger.debug("My heart beats.")
-            envelope = self.mPostOffice.encode("HeartbeatAnnouncement",
-                                               {'critterData': self.mCritterData,
+            envelope = self.mPostOffice.encode('HeartbeatAnnouncement',
+                                               {'sender':    self.mCritterData,
                                                 'timestamp': time.time()})
             self.mPostOffice.putOutgoingAnnouncement(envelope)
 

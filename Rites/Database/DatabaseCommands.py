@@ -198,9 +198,9 @@ class DatabaseCommandLoadGraphsAndWorks(object):
 
         envelope = aCommandProcessor.mRite.mPostOffice.encode(
             'LoadGraphAndWorkResponse',
-            {'critterDataSender': aCommandProcessor.mRite.mCritterData,
-             'critterDataReceiver': receiverCritterData,
-             'graphDictionaries': graphDictionaries,
-             'workDictionaries': workDictionaries,
-             'workPredecessorDictionaries': workPredecessorDictionaries})
+            {'sender':           aCommandProcessor.mRite.mCritterData,
+             'receiver':         receiverCritterData,
+             'graphs':           graphDictionaries,
+             'works':            workDictionaries,
+             'workPredecessors': workPredecessorDictionaries})
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)

@@ -48,7 +48,7 @@ class GraphRite(Rite):
         """Starts the main loop of the rite."""
 
         # Ask for the configuration of graphs and works.
-        envelope = self.mPostOffice.encode("LoadGraphAndWorkRequest", {'critterData': self.mCritterData})
+        envelope = self.mPostOffice.encode('LoadGraphAndWorkRequest', {'sender': self.mCritterData})
         self.mPostOffice.putOutgoingAnnouncement(envelope)
 
         while True:
