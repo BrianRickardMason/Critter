@@ -161,4 +161,7 @@ class GraphCommandMarkFinishedWork(object):
 
         # TODO: Please, do it nicer. Consider holding exceptional cases as well.
         # REMARK: It is possible not to hit the [graphName][graphCycle] entry (e.g. due to a timeout).
-        aCommandProcessor.mRite.mSessions[graphName][graphCycle].mWorkStates[workName] = state
+        try:
+            aCommandProcessor.mRite.mSessions[graphName][graphCycle].mWorkStates[workName] = state
+        except KeyError, e:
+            pass
