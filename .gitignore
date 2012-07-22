@@ -26,13 +26,10 @@ pip-log.txt
 # Mr Developer
 .mr.developer.cfg
 
-# Python specific entries.
-*.pyc
-
 # Eclipse specific entries.
 .project
 .pydevproject
+.settings
 
 # Google protobuf specific entries.
 *_pb2.py
-
