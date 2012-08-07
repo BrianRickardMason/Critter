@@ -1,0 +1,29 @@
+Installation instructions:
+1. setup the database
+
+    use the SQL scripts in Rites/Database/Persistence/ in the same order they are named (000_*, 100_*, and so on):
+
+        # su - postgres
+        $ psql < Rites/Database/Persistence/000*
+        ...
+
+    If you get "invalid locale" error, you need to enable en_US.UTF-8 locale first (debian: dpkg-reconfigure locales) and restart the system
+
+2. If you're running in broker mode (default): run the broadcast daemon, so the critters are able to communicate
+
+        $ python BroadcastDaemon.py BrDaemon
+
+3. run the essentials in the following order: Librarian, Graph, Balancer, Worker
+
+        $ python CribrarianMain.py L
+        $ python GraphYeetiMain.py G1
+        $ python BalancerMain.py B
+        $ python WorkerMain.py W1
+    
+4. executing Scheduler will occasionally schedule some work for execution
+
+        $ python Criduler.py S
+
+    should eventually show something like:
+    [2012-07-29 21:09:08,571][   SchedulerCommandProcessor][    INFO] - New graph execution needed.
+
