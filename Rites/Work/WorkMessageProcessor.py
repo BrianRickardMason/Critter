@@ -33,6 +33,7 @@ class WorkMessageProcessor(MessageProcessor):
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.WORK, command)
 
         elif aMessage.messageName == 'ExecuteWorkAnnouncement':
+            # FIXME: Should only be executed by receiver!
             command = WorkCommandInitializeWorkExecution(aMessage)
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.WORK, command)
 
