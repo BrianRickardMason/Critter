@@ -67,10 +67,13 @@ class DatabaseCommandDetermineGraphCycle(object):
 
         envelope = aCommandProcessor.mRite.mPostOffice.encode(
             'DetermineGraphCycleResponse',
-            {'sender':    aCommandProcessor.mRite.mCritterData,
-             'receiver':  receiverCritterData,
-             'graphName': self.mMessage.graphName,
-             'cycle':     cycle})
+            {'messageName': 'DetermineGraphCycleResponse',
+             'sender':      {'type': aCommandProcessor.mRite.mCritterData.mType,
+                             'nick': aCommandProcessor.mRite.mCritterData.mNick},
+             'receiver':    {'type': receiverCritterData.mType,
+                             'nick': receiverCritterData.mNick},
+             'graphName':   self.mMessage.graphName,
+             'cycle':       cycle})
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
 class DatabaseCommandDetermineWorkCycle(object):
@@ -135,12 +138,15 @@ class DatabaseCommandDetermineWorkCycle(object):
 
         envelope = aCommandProcessor.mRite.mPostOffice.encode(
             'DetermineWorkCycleResponse',
-            {'sender':    aCommandProcessor.mRite.mCritterData,
-             'receiver':  receiverCritterData,
-             'graphName': self.mMessage.graphName,
-             'cycle':     self.mMessage.cycle,
-             'workName':  self.mMessage.workName,
-             'workCycle': cycle})
+            {'messageName': 'DetermineWorkCycleResponse',
+             'sender':      {'type': aCommandProcessor.mRite.mCritterData.mType,
+                             'nick': aCommandProcessor.mRite.mCritterData.mNick},
+             'receiver':    {'type': receiverCritterData.mType,
+                             'nick': receiverCritterData.mNick},
+             'graphName':   self.mMessage.graphName,
+             'cycle':       self.mMessage.cycle,
+             'workName':    self.mMessage.workName,
+             'workCycle':   cycle})
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
 class DatabaseCommandLoadGraphsAndWorks(object):
@@ -198,8 +204,11 @@ class DatabaseCommandLoadGraphsAndWorks(object):
 
         envelope = aCommandProcessor.mRite.mPostOffice.encode(
             'LoadGraphAndWorkResponse',
-            {'sender':           aCommandProcessor.mRite.mCritterData,
-             'receiver':         receiverCritterData,
+            {'messageName':      'LoadGraphAndWorkResponse',
+             'sender':           {'type': aCommandProcessor.mRite.mCritterData.mType,
+                                  'nick': aCommandProcessor.mRite.mCritterData.mNick},
+             'receiver':         {'type': receiverCritterData.mType,
+                                  'nick': receiverCritterData.mNick},
              'graphs':           graphDictionaries,
              'works':            workDictionaries,
              'workPredecessors': workPredecessorDictionaries})

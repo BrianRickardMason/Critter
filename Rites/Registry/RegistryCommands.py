@@ -80,8 +80,11 @@ class RegistryCommandPresentYourself(object):
 
             envelope = aCommandProcessor.mRite.mPostOffice.encode(
                 'PresentYourselfResponse',
-                {'sender':   aCommandProcessor.mRite.mCritterData,
-                 'receiver': receiverCritterData})
+                {'messageName': 'PresentYourselfResponse',
+                 'sender':      {'type': aCommandProcessor.mRite.mCritterData.mType,
+                                 'nick': aCommandProcessor.mRite.mCritterData.mNick},
+                 'receiver':    {'type': receiverCritterData.mType,
+                                 'nick': receiverCritterData.mNick}})
             aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
         else:
             aCommandProcessor.mLogger.debug("The message is not addressed to me.")
@@ -161,8 +164,11 @@ class RegistryCommandStoreHeartbeat(object):
 
             envelope = aCommandProcessor.mRite.mPostOffice.encode(
                 'PresentYourselfRequest',
-                {'sender':   aCommandProcessor.mRite.mCritterData,
-                 'receiver': unknownCritterData})
+                {'messageName': 'PresentYourselfRequest',
+                 'sender':      {'type': aCommandProcessor.mRite.mCritterData.mType,
+                                 'nick': aCommandProcessor.mRite.mCritterData.mNick},
+                 'receiver':    {'type': unknownCritterData.mType,
+                                 'nick': unknownCritterData.mNick}})
             aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
         else:
             aCommandProcessor.mLogger.debug("Critter: %s. Storing the heartbeat's timestamp." % nick)

@@ -30,8 +30,10 @@ class GraphCommandInitializeGraphExecution(object):
         """
         envelope = aCommandProcessor.mRite.mPostOffice.encode(
             'DetermineGraphCycleRequest',
-            {'sender':    aCommandProcessor.mRite.mCritterData,
-             'graphName': self.mMessage.graphName})
+            {'messageName': 'DetermineGraphCycleRequest',
+             'sender':      {'type': aCommandProcessor.mRite.mCritterData.mType,
+                             'nick': aCommandProcessor.mRite.mCritterData.mNick},
+             'graphName':   self.mMessage.graphName})
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
 class GraphCommandSpawnGraphExecution(object):

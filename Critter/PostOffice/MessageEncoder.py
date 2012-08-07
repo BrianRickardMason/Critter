@@ -4,6 +4,7 @@ import sys
 
 import Messages_pb2
 
+from Messages_pb2  import *
 from MessageCommon import *
 
 class MessageEncoder(object):
@@ -26,46 +27,46 @@ class MessageEncoder(object):
         """
         try:
             if aMessageName == 'CommandWorkExecutionAnnouncement':
-                return self.__commandWorkExecutionAnnouncement(aData)
+                return self.__encode(COMMAND_WORK_EXECUTION_ANNOUNCEMENT, aData)
 
             elif aMessageName == 'DetermineGraphCycleRequest':
-                return self.__determineGraphCycleRequest(aData)
+                return self.__encode(DETERMINE_GRAPH_CYCLE_REQUEST, aData)
 
             elif aMessageName == 'DetermineGraphCycleResponse':
-                return self.__determineGraphCycleResponse(aData)
+                return self.__encode(DETERMINE_GRAPH_CYCLE_RESPONSE, aData)
 
             elif aMessageName == 'DetermineWorkCycleRequest':
-                return self.__determineWorkCycleRequest(aData)
+                return self.__encode(DETERMINE_WORK_CYCLE_REQUEST, aData)
 
             elif aMessageName == 'DetermineWorkCycleResponse':
-                return self.__determineWorkCycleResponse(aData)
+                return self.__encode(DETERMINE_WORK_CYCLE_RESPONSE, aData)
 
             elif aMessageName == 'ExecuteGraphAnnouncement':
-                return self.__executeGraphAnnouncement(aData)
+                return self.__encode(EXECUTE_GRAPH_ANNOUNCEMENT, aData)
 
             elif aMessageName == 'ExecuteWorkAnnouncement':
-                return self.__executeWorkAnnouncement(aData)
+                return self.__encode(EXECUTE_WORK_ANNOUNCEMENT, aData)
 
             elif aMessageName == 'HeartbeatAnnouncement':
-                return self.__heartbeatAnnouncement(aData)
+                return self.__encode(HEARTBEAT_ANNOUNCEMENT, aData)
 
             elif aMessageName == 'LoadGraphAndWorkRequest':
-                return self.__loadGraphAndWorkRequest(aData)
+                return self.__encode(LOAD_GRAPH_AND_WORK_REQUEST, aData)
 
             elif aMessageName == 'LoadGraphAndWorkResponse':
-                return self.__loadGraphAndWorkResponse(aData)
+                return self.__encode(LOAD_GRAPH_AND_WORK_RESPONSE, aData)
 
             elif aMessageName == 'PokeAnnouncement':
-                return self.__pokeAnnouncement(aData)
+                return self.__encode(POKE_ANNOUNCEMENT, aData)
 
             elif aMessageName == 'PresentYourselfRequest':
-                return self.__presentYourselfRequest(aData)
+                return self.__encode(PRESENT_YOURSELF_REQUEST, aData)
 
             elif aMessageName == 'PresentYourselfResponse':
-                return self.__presentYourselfResponse(aData)
+                return self.__encode(PRESENT_YOURSELF_RESPONSE, aData)
 
             elif aMessageName == 'ReportFinishedWorkAnnouncement':
-                return self.__reportFinishedWorkAnnouncement(aData)
+                return self.__encode(REPORT_FINISHED_WORK_ANNOUNCEMENT, aData)
 
             else:
                 # TODO: Handle this more gracefully
@@ -77,295 +78,42 @@ class MessageEncoder(object):
             print e
             sys.exit(1)
 
-    def __commandWorkExecutionAnnouncement(self, aData):
-        """Encodes CommandWorkExecutionAnnouncement.
+    def __encode(self, aHeaderId, aData):
+        """Encodes a message based upon the dictionary.
 
         Arguments:
             aData: The data.
 
         Returns:
-            CommandWorkExecutionAnnouncement envelope.
+            An envelope.
 
         """
-        payload = Messages_pb2.CommandWorkExecutionAnnouncement()
-        payload.messageName = 'CommandWorkExecutionAnnouncement'
-        payload.sender.type = aData['sender'].mType
-        payload.sender.nick = aData['sender'].mNick
-        payload.graphName   = aData['graphName']
-        payload.cycle       = aData['cycle']
-        payload.workName    = aData['workName']
+        classToBeInstantiated = getattr(Messages_pb2, aData['messageName'])
+        payload = classToBeInstantiated()
+        self.__setMessageField(payload, aData)
+        return self.__putIntoAnEnvelope(aHeaderId, payload)
 
-        return self.__putIntoAnEnvelope(COMMAND_WORK_EXECUTION_ANNOUNCEMENT, payload)
-
-    def __determineGraphCycleRequest(self, aData):
-        """Encodes DetermineGraphCycleRequest.
+    def __setMessageField(self, aPayload, aDictionary):
+        """Recursively sets a message field.
 
         Arguments:
-            aData: The data.
-
-        Returns:
-            DetermineGraphCycleRequest envelope.
+            aPayload:    The payload holding the message.
+            aDictionary: The dictionary describing the message.
 
         """
-        payload = Messages_pb2.DetermineGraphCycleRequest()
-        payload.messageName = 'DetermineGraphCycleRequest'
-        payload.sender.type = aData['sender'].mType
-        payload.sender.nick = aData['sender'].mNick
-        payload.graphName   = aData['graphName']
-
-        return self.__putIntoAnEnvelope(DETERMINE_GRAPH_CYCLE_REQUEST, payload)
-
-    def __determineGraphCycleResponse(self, aData):
-        """Encodes DetermineGraphCycleResponse.
-
-        Arguments:
-            aData: The data.
-
-        Returns:
-            DetermineGraphCycleResponse envelope.
-
-        """
-        payload = Messages_pb2.DetermineGraphCycleResponse()
-        payload.messageName   = 'DetermineGraphCycleResponse'
-        payload.sender.type   = aData['sender'].mType
-        payload.sender.nick   = aData['sender'].mNick
-        payload.receiver.type = aData['receiver'].mType
-        payload.receiver.nick = aData['receiver'].mNick
-        payload.graphName     = aData['graphName']
-        payload.cycle         = aData['cycle']
-
-        return self.__putIntoAnEnvelope(DETERMINE_GRAPH_CYCLE_RESPONSE, payload)
-
-    def __determineWorkCycleRequest(self, aData):
-        """Encodes DetermineWorkCycleRequest.
-
-        Arguments:
-            aData: The data.
-
-        Returns:
-            DetermineWorkCycleRequest envelope.
-
-        """
-        payload = Messages_pb2.DetermineWorkCycleRequest()
-        payload.messageName = 'DetermineWorkCycleRequest'
-        payload.sender.type = aData['sender'].mType
-        payload.sender.nick = aData['sender'].mNick
-        payload.graphName   = aData['graphName']
-        payload.cycle       = aData['cycle']
-        payload.workName    = aData['workName']
-
-        return self.__putIntoAnEnvelope(DETERMINE_WORK_CYCLE_REQUEST, payload)
-
-    def __determineWorkCycleResponse(self, aData):
-        """Encodes DetermineWorkCycleResponse.
-
-        Arguments:
-            aData: The data.
-
-        Returns:
-            DetermineWorkCycleResponse envelope.
-
-        """
-        payload = Messages_pb2.DetermineWorkCycleResponse()
-        payload.messageName   = 'DetermineWorkCycleResponse'
-        payload.sender.type   = aData['sender'].mType
-        payload.sender.nick   = aData['sender'].mNick
-        payload.receiver.type = aData['receiver'].mType
-        payload.receiver.nick = aData['receiver'].mNick
-        payload.graphName     = aData['graphName']
-        payload.cycle         = aData['cycle']
-        payload.workName      = aData['workName']
-        payload.workCycle     = aData['workCycle']
-
-        return self.__putIntoAnEnvelope(DETERMINE_WORK_CYCLE_RESPONSE, payload)
-
-    def __executeGraphAnnouncement(self, aData):
-        """Encodes ExecuteGraphAnnouncement.
-
-        Arguments:
-            aData: The data.
-
-        Returns:
-            ExecuteGraphAnnouncement envelope.
-
-        """
-        payload = Messages_pb2.ExecuteGraphAnnouncement()
-        payload.messageName = 'ExecuteGraphAnnouncement'
-        payload.sender.type = aData['sender'].mType
-        payload.sender.nick = aData['sender'].mNick
-        payload.graphName   = aData['graphName']
-
-        return self.__putIntoAnEnvelope(EXECUTE_GRAPH_ANNOUNCEMENT, payload)
-
-    def __executeWorkAnnouncement(self, aData):
-        """Encodes ExecuteWorkAnnouncement.
-
-        Arguments:
-            aData: The data.
-
-        Returns:
-            ExecuteWorkAnnouncement envelope.
-
-        """
-        payload = Messages_pb2.ExecuteWorkAnnouncement()
-        payload.messageName   = 'ExecuteWorkAnnouncement'
-        payload.sender.type   = aData['sender'].mType
-        payload.sender.nick   = aData['sender'].mNick
-        payload.receiver.type = aData['receiver'].mType
-        payload.receiver.nick = aData['receiver'].mNick
-        payload.graphName     = aData['graphName']
-        payload.cycle         = aData['cycle']
-        payload.workName      = aData['workName']
-
-        return self.__putIntoAnEnvelope(EXECUTE_WORK_ANNOUNCEMENT, payload)
-
-    def __heartbeatAnnouncement(self, aData):
-        """Encodes HeartbeatAnnouncement.
-
-        Arguments:
-            aData: The data.
-
-        Returns:
-            HeartbeatAnnouncement envelope.
-
-        """
-        payload = Messages_pb2.HeartbeatAnnouncement()
-        payload.messageName = 'HeartbeatAnnouncement'
-        payload.sender.type = aData['sender'].mType
-        payload.sender.nick = aData['sender'].mNick
-        payload.timestamp   = aData['timestamp']
-
-        return self.__putIntoAnEnvelope(HEARTBEAT_ANNOUNCEMENT, payload)
-
-    def __loadGraphAndWorkRequest(self, aData):
-        """Encodes LoadGraphAndWorkRequest.
-
-        Arguments:
-            aData: The data.
-
-        Returns:
-            LoadGraphAndWorkRequest envelope.
-
-        """
-        payload = Messages_pb2.LoadGraphAndWorkRequest()
-        payload.messageName = 'LoadGraphAndWorkRequest'
-        payload.sender.type = aData['sender'].mType
-        payload.sender.nick = aData['sender'].mNick
-
-        return self.__putIntoAnEnvelope(LOAD_GRAPH_AND_WORK_REQUEST, payload)
-
-    def __loadGraphAndWorkResponse(self, aData):
-        """Encodes LoadGraphAndWorkResponse.
-
-        Arguments:
-            aData: The data.
-
-        Returns:
-            LoadGraphAndWorkResponse envelope.
-
-        """
-        payload = Messages_pb2.LoadGraphAndWorkResponse()
-        payload.messageName   = 'LoadGraphAndWorkResponse'
-        payload.sender.type   = aData['sender'].mType
-        payload.sender.nick   = aData['sender'].mNick
-        payload.receiver.type = aData['receiver'].mType
-        payload.receiver.nick = aData['receiver'].mNick
-
-        for graphDictionary in aData['graphs']:
-            graphData = Messages_pb2.GraphData()
-            graphData.graphName = graphDictionary['graphName']
-            payload.graphs.extend([graphData])
-
-        for workDictionary in aData['works']:
-            workData = Messages_pb2.WorkData()
-            workData.graphName = workDictionary['graphName']
-            workData.workName = workDictionary['workName']
-            payload.works.extend([workData])
-
-        for workPredecessorDictionary in aData['workPredecessors']:
-            workPredecessorData = Messages_pb2.WorkPredecessorData()
-            workPredecessorData.workName = workPredecessorDictionary['workName']
-            workPredecessorData.predecessorWorkName = workPredecessorDictionary['predecessorWorkName']
-            payload.workPredecessors.extend([workPredecessorData])
-
-        return self.__putIntoAnEnvelope(LOAD_GRAPH_AND_WORK_RESPONSE, payload)
-
-    def __pokeAnnouncement(self, aData):
-        """Encodes PokeAnnouncement.
-
-        Arguments:
-            aData: The data.
-
-        Returns:
-            PokeAnnouncement envelope.
-
-        """
-        payload = Messages_pb2.PokeAnnouncement()
-        payload.messageName = 'PokeAnnouncement'
-        payload.sender.type = aData['sender'].mType
-        payload.sender.nick = aData['sender'].mNick
-
-        return self.__putIntoAnEnvelope(POKE_ANNOUNCEMENT, payload)
-
-    def __presentYourselfRequest(self, aData):
-        """Encodes PresentYourselfRequest.
-
-        Arguments:
-            aData: The data.
-
-        Returns:
-            PresentYourselfRequest envelope.
-
-        """
-        payload = Messages_pb2.PresentYourselfRequest()
-        payload.messageName   = 'PresentYourselfRequest'
-        payload.sender.type   = aData['sender'].mType
-        payload.sender.nick   = aData['sender'].mNick
-        payload.receiver.type = aData['receiver'].mType
-        payload.receiver.nick = aData['receiver'].mNick
-
-        return self.__putIntoAnEnvelope(PRESENT_YOURSELF_REQUEST, payload)
-
-    def __presentYourselfResponse(self, aData):
-        """Encodes PresentYourselfResponse.
-
-        Arguments:
-            aData: The data.
-
-        Returns:
-            PresentYourselfResponse envelope.
-
-        """
-        payload = Messages_pb2.PresentYourselfResponse()
-        payload.messageName   = 'PresentYourselfResponse'
-        payload.sender.type   = aData['sender'].mType
-        payload.sender.nick   = aData['sender'].mNick
-        payload.receiver.type = aData['receiver'].mType
-        payload.receiver.nick = aData['receiver'].mNick
-
-        return self.__putIntoAnEnvelope(PRESENT_YOURSELF_RESPONSE, payload)
-
-    def __reportFinishedWorkAnnouncement(self, aData):
-        """Encodes ReportFinishedWorkAnnouncement
-
-        Arguments:
-            aData: The data.
-
-        Returns:
-            ReportFinishedWorkAnnouncement envelope.
-
-        """
-        payload = Messages_pb2.ReportFinishedWorkAnnouncement()
-        payload.messageName = 'ReportFinishedWorkAnnouncement'
-        payload.sender.type = aData['sender'].mType
-        payload.sender.nick = aData['sender'].mNick
-        payload.graphName   = aData['graphName']
-        payload.graphCycle  = aData['graphCycle']
-        payload.workName    = aData['workName']
-        payload.workCycle   = aData['workCycle']
-        payload.result      = aData['result']
-
-        return self.__putIntoAnEnvelope(REPORT_FINISHED_WORK_ANNOUNCEMENT, payload)
+        for key in aDictionary.iterkeys():
+            if type(aDictionary[key]) is dict:
+                payload    = getattr(aPayload, key)
+                dictionary = aDictionary[key]
+                self.__setMessageField(payload, dictionary)
+            elif type(aDictionary[key]) is list:
+                payload    = getattr(aPayload, key)
+                dictionary = aDictionary[key]
+                for item in dictionary:
+                    tmpPayload = payload.add()
+                    self.__setMessageField(tmpPayload, item)
+            else:
+                setattr(aPayload, key, aDictionary[key])
 
     def __putIntoAnEnvelope(self, aId, aPayload):
         """Puts the payload into an envelope.
@@ -381,5 +129,4 @@ class MessageEncoder(object):
         envelope = Messages_pb2.Envelope()
         envelope.header.id       = aId
         envelope.payload.payload = aPayload.SerializeToString()
-
         return envelope

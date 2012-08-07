@@ -51,9 +51,12 @@ class BalanceCommandCommandWorkExecution(object):
 
         envelope = aCommandProcessor.mRite.mPostOffice.encode(
             'ExecuteWorkAnnouncement',
-            {'sender':    aCommandProcessor.mRite.mCritterData,
-             'receiver':  foundWorkerData,
-             'graphName': self.mMessage.graphName,
-             'cycle':     self.mMessage.cycle,
-             'workName':  self.mMessage.workName})
+            {'messageName': 'ExecuteWorkAnnouncement',
+             'sender':      {'type': aCommandProcessor.mRite.mCritterData.mType,
+                             'nick': aCommandProcessor.mRite.mCritterData.mNick},
+             'receiver':    {'type': foundWorkerData.mType,
+                             'nick': foundWorkerData.mNick},
+             'graphName':   self.mMessage.graphName,
+             'cycle':       self.mMessage.cycle,
+             'workName':    self.mMessage.workName})
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)

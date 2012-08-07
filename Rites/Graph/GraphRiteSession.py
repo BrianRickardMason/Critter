@@ -108,10 +108,12 @@ class GraphRiteSession(threading.Thread):
         # Send the message.
         envelope = self.mRite.mPostOffice.encode(
             'CommandWorkExecutionAnnouncement',
-            {'sender':    self.mRite.mCritterData,
-             'graphName': self.mGraphName,
-             'cycle':     self.mCycle,
-             'workName':  aWorkName})
+            {'messageName': 'CommandWorkExecutionAnnouncement',
+             'sender':      {'type': self.mRite.mCritterData.mType,
+                             'nick': self.mRite.mCritterData.mNick},
+             'graphName':   self.mGraphName,
+             'cycle':       self.mCycle,
+             'workName':    aWorkName})
         self.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
 class SpawnChecker(object):

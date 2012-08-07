@@ -66,12 +66,14 @@ class WorkRiteSession(threading.Thread):
         # Report finished work.
         envelope = self.mRite.mPostOffice.encode(
             'ReportFinishedWorkAnnouncement',
-            {'sender':     self.mRite.mCritterData,
-             'graphName':  self.mGraphName,
-             'graphCycle': self.mGraphCycle,
-             'workName':   self.mWorkName,
-             'workCycle':  self.mWorkCycle,
-             'result':     result})
+            {'messageName': 'ReportFinishedWorkAnnouncement',
+             'sender':      {'type': self.mRite.mCritterData.mType,
+                             'nick': self.mRite.mCritterData.mNick},
+             'graphName':   self.mGraphName,
+             'graphCycle':  self.mGraphCycle,
+             'workName':    self.mWorkName,
+             'workCycle':   self.mWorkCycle,
+             'result':      result})
         self.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
         self.mLogger.info("Work ended: %s@%s: %s@%s." % (self.mGraphName,

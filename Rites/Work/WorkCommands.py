@@ -30,10 +30,12 @@ class WorkCommandInitializeWorkExecution(object):
         """
         envelope = aCommandProcessor.mRite.mPostOffice.encode(
             'DetermineWorkCycleRequest',
-            {'sender':    aCommandProcessor.mRite.mCritterData,
-             'graphName': self.mMessage.graphName,
-             'cycle':     self.mMessage.cycle,
-             'workName':  self.mMessage.workName})
+            {'messageName': 'DetermineWorkCycleRequest',
+             'sender':      {'type': aCommandProcessor.mRite.mCritterData.mType,
+                             'nick': aCommandProcessor.mRite.mCritterData.mNick},
+             'graphName':   self.mMessage.graphName,
+             'cycle':       self.mMessage.cycle,
+             'workName':    self.mMessage.workName})
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
 class WorkCommandSpawnWorkExecution(object):
