@@ -1,0 +1,3 @@
+[submodule "Piewik"]
+	path = Piewik
+	url = git@github.com:BrianRickardMason/Piewik.git
