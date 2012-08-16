@@ -10,6 +10,8 @@ BROADCAST_DAEMON_PID=$!
 python $SUT &
 SUT_PID=$!
 
+sleep 1
+
 python $TEST
 echo $?
 
