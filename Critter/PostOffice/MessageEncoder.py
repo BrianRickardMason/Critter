@@ -56,6 +56,12 @@ class MessageEncoder(object):
             elif aMessageName == 'LoadGraphAndWorkResponse':
                 return self.__encode(LOAD_GRAPH_AND_WORK_RESPONSE, aData)
 
+            elif aMessageName == 'LoadWorkDetailsRequest':
+                return self.__encode(LOAD_WORK_DETAILS_REQUEST, aData)
+
+            elif aMessageName == 'LoadWorkDetailsResponse':
+                return self.__encode(LOAD_WORK_DETAILS_RESPONSE, aData)
+
             elif aMessageName == 'PokeAnnouncement':
                 return self.__encode(POKE_ANNOUNCEMENT, aData)
 

@@ -52,6 +52,12 @@ class MessageDecoder(object):
         elif envelope.header.id == LOAD_GRAPH_AND_WORK_RESPONSE:
             message = Messages_pb2.LoadGraphAndWorkResponse()
 
+        elif envelope.header.id == LOAD_WORK_DETAILS_REQUEST:
+            message = Messages_pb2.LoadWorkDetailsRequest()
+
+        elif envelope.header.id == LOAD_WORK_DETAILS_RESPONSE:
+            message = Messages_pb2.LoadWorkDetailsResponse()
+
         elif envelope.header.id == POKE_ANNOUNCEMENT:
             message = Messages_pb2.PokeAnnouncement()
 
