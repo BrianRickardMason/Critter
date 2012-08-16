@@ -41,6 +41,14 @@ from Piewik.Runtime.Extensions.Critter.Interface.Translation import *
 from Piewik.Runtime.Extensions.Critter.Port                  import PiewikPort
 from Piewik.Runtime.Testcase                                 import Testcase
 
+#
+# TODO: Stopping heartbeat component on demand and not after hardcoded number of times.
+# TODO: Implement guard timers.
+# TODO: Set and announce Verdict.
+# TODO: Wrap around in a script starting BroadcastDaemon and HelloCritty1 as well.
+# TODO: Parametrinze the name of SUT.
+#
+
 class Function(object):
     def __init__(self):
         self.mRunsOn = None
