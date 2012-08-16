@@ -166,3 +166,25 @@ message ReportFinishedWorkAnnouncement
     optional uint32      workCycle   = 6;
     optional bool        result      = 7;
 }
+
+// LoadWorkDetailsRequest/Response: Worker -> Cribrarian -> Worker.
+
+message WorkDetailsData
+{
+    optional string workName = 1;
+    optional uint32 dummy    = 2;
+}
+
+message LoadWorkDetailsRequest
+{
+    optional string      messageName = 1;
+    optional CritterData sender      = 2;
+}
+
+message LoadWorkDetailsResponse
+{
+    optional string          messageName = 1;
+    optional CritterData     sender      = 2;
+    optional CritterData     receiver    = 3;
+    repeated WorkDetailsData details     = 4;
+}
