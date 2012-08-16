@@ -29,6 +29,13 @@ CREATE TABLE workCycles
     UNIQUE(workName, cycle)
 );
 
+DROP TABLE IF EXISTS workDetails CASCADE;
+CREATE TABLE workDetails
+(
+    workName VARCHAR(88) REFERENCES works(workName) ON DELETE CASCADE,
+    dummy    INTEGER NOT NULL CHECK(dummy > 0)
+);
+
 DROP TABLE IF EXISTS workPredecessors CASCADE;
 CREATE TABLE workPredecessors
 (
@@ -42,4 +49,4 @@ CREATE TABLE workPredecessors
     -- TODO: Check if both works have the same graphName.
 );
 
-GRANT ALL ON graphs, graphCycles, works, workCycles, workPredecessors TO brian;
+GRANT ALL ON graphs, graphCycles, works, workCycles, workDetails, workPredecessors TO brian;
