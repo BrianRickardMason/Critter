@@ -39,6 +39,15 @@ class WorkRite(Rite):
 
     def run(self):
         """Starts the main loop of the rite."""
+
+        # Request the load of the work details.
+        envelope = self.mPostOffice.encode(
+            'LoadWorkDetailsRequest',
+            {'messageName': 'LoadWorkDetailsRequest',
+             'sender':      {'type': self.mCritterData.mType,
+                             'nick': self.mCritterData.mNick}})
+        self.mPostOffice.putOutgoingAnnouncement(envelope)
+
         while True:
             self.mLogger.debug("Sleeping for a heartbeat.")
             time.sleep(self.mSettings.get('heartbeat', 'period'))
