@@ -83,10 +83,9 @@ class Function_RegisterRequest(Function):
                                  'nick': Charstring().assign("HelloCritty2")})
 
             heartbeatAnnouncement = PiewikHeartbeatAnnouncement()
-            # TODO: Should be "AnySingleElement".
             heartbeatAnnouncement.assign({'messageName': Charstring().assign("HeartbeatAnnouncement"),
                                           'sender':      helloCritty2,
-                                          'timestamp':   AnyOrNone()})
+                                          'timestamp':   AnySingleElement()})
 
             presentYourselfRequest = PiewikPresentYourselfRequest()
             presentYourselfRequest.assign({'messageName': Charstring().assign("PresentYourselfRequest"),
@@ -98,8 +97,9 @@ class Function_RegisterRequest(Function):
                                             'sender':      helloCritty1,
                                             'receiver':    helloCritty2})
 
-            # TODO: Implement waiting for heartbeat announcement, once AnySingleElement is available.
-            time.sleep(1)
+            aComponent.executeBlockingAction(
+                Blocking(PortReceiveExpectation(aComponent.mPort, heartbeatAnnouncement)),
+            )
 
             aComponent.mPort.send(presentYourselfRequest)
 
