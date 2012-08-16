@@ -165,7 +165,6 @@ class Component_HelloCritty_HelloCritty2_Heartbeat(Component):
         Component.__init__(self, aName)
         self.mPort = PiewikPort(self.mEventQueue)
 
-
 class Component_HelloCritty_HelloCritty2_RegisterRequest(Component):
     def __init__(self, aName):
         Component.__init__(self, aName)
