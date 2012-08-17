@@ -22,7 +22,10 @@ class MessageDecoder(object):
 
         # TODO: Clean me up fast!
 
-        if envelope.header.id == COMMAND_WORK_EXECUTION_ANNOUNCEMENT:
+        if envelope.header.id == CANT_EXECUTE_WORK_NOW_ANNOUNCEMENT:
+            message = Messages_pb2.CantExecuteWorkNowAnnouncement()
+
+        elif envelope.header.id == COMMAND_WORK_EXECUTION_ANNOUNCEMENT:
             message = Messages_pb2.CommandWorkExecutionAnnouncement()
 
         elif envelope.header.id == DETERMINE_GRAPH_CYCLE_REQUEST:

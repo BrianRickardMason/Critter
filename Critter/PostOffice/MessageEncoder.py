@@ -26,7 +26,10 @@ class MessageEncoder(object):
 
         """
         try:
-            if aMessageName == 'CommandWorkExecutionAnnouncement':
+            if aMessageName == 'CantExecuteWorkNowAnnouncement':
+                return self.__encode(CANT_EXECUTE_WORK_NOW_ANNOUNCEMENT, aData)
+
+            elif aMessageName == 'CommandWorkExecutionAnnouncement':
                 return self.__encode(COMMAND_WORK_EXECUTION_ANNOUNCEMENT, aData)
 
             elif aMessageName == 'DetermineGraphCycleRequest':
