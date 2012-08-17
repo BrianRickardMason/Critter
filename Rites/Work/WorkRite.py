@@ -35,7 +35,9 @@ class WorkRite(Rite):
                       Rites.RiteCommon.BALANCE,
                       WorkMessageProcessor)
 
-        self.mSessions = {}
+        self.mWorkDetails = {}
+
+        self.mSessions    = {}
 
     def run(self):
         """Starts the main loop of the rite."""

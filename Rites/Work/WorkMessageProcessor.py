@@ -4,6 +4,7 @@ import Rites.RiteCommon
 
 from Rites.MessageProcessor  import MessageProcessor
 from Rites.Work.WorkCommands import WorkCommandInitializeWorkExecution
+from Rites.Work.WorkCommands import WorkCommandLoadWorkDetails
 from Rites.Work.WorkCommands import WorkCommandSpawnWorkExecution
 
 class WorkMessageProcessor(MessageProcessor):
@@ -36,6 +37,10 @@ class WorkMessageProcessor(MessageProcessor):
             # FIXME: Should only be executed by receiver!
             # TODO:  If cannot be executed for whatever reason - inform the sender.
             command = WorkCommandInitializeWorkExecution(aMessage)
+            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.WORK, command)
+
+        elif aMessage.messageName == 'LoadWorkDetailsResponse':
+            command = WorkCommandLoadWorkDetails(aMessage)
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.WORK, command)
 
         else:

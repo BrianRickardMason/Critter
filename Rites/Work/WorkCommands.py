@@ -38,6 +38,17 @@ class WorkCommandInitializeWorkExecution(object):
              'workName':    self.mMessage.workName})
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
+class WorkCommandLoadWorkDetails(object):
+    def __init__(self, aMessage):
+        self.mName    = 'WorkCommandLoadWorkDetails'
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        # Store work details.
+        for workDetail in self.mMessage.details:
+            aCommandProcessor.mRite.mWorkDetails[workDetail.workName] = {'workName': workDetail.workName,
+                                                                         'dummy':    workDetail.dummy}
+
 class WorkCommandSpawnWorkExecution(object):
     """SpawnWorkExecution command.
 
