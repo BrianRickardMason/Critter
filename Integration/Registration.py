@@ -29,17 +29,17 @@
 
 import time
 
-from Piewik.Runtime.Action                                   import Alternative
-from Piewik.Runtime.Action                                   import Blocking
-from Piewik.Runtime.Action                                   import Interleave
-from Piewik.Runtime.Component                                import Component
-from Piewik.Runtime.Control                                  import Control
-from Piewik.Runtime.Event                                    import PortReceivedEvent
-from Piewik.Runtime.EventExpectation                         import ComponentDoneExpectation
-from Piewik.Runtime.EventExpectation                         import PortReceiveExpectation
-from Piewik.Runtime.Extensions.Critter.Interface.Translation import *
-from Piewik.Runtime.Extensions.Critter.Port                  import PiewikPort
-from Piewik.Runtime.Testcase                                 import Testcase
+from Runtime.Action                                   import Alternative
+from Runtime.Action                                   import Blocking
+from Runtime.Action                                   import Interleave
+from Runtime.Component                                import Component
+from Runtime.Control                                  import Control
+from Runtime.Event                                    import PortReceivedEvent
+from Runtime.EventExpectation                         import ComponentDoneExpectation
+from Runtime.EventExpectation                         import PortReceiveExpectation
+from Runtime.Extensions.Critter.Interface.Translation import *
+from Runtime.Extensions.Critter.Port                  import PiewikPort
+from Runtime.Testcase                                 import Testcase
 
 #
 # TODO: Stopping heartbeat component on demand and not after hardcoded number of times.
@@ -48,6 +48,11 @@ from Piewik.Runtime.Testcase                                 import Testcase
 # TODO: Wrap around in a script starting BroadcastDaemon and HelloCritty1 as well.
 # TODO: Parametrinze the name of SUT.
 #
+
+class TemplateFloat(Float):
+    def __init__(self):
+        Float.__init__(self)
+        self.mAcceptDecorator = TemplateAcceptDecorator(self.mAcceptDecorator, {})
 
 class Function(object):
     def __init__(self):
@@ -59,16 +64,15 @@ class Function_SendHeartbeat(Function):
 
     def __call__(self, aComponent):
         if isinstance(aComponent, self.mRunsOn):
-            helloCritty2 = PiewikCritterData()
-            helloCritty2.assign({'type': Charstring().assign("HelloCritty"),
-                                 'nick': Charstring().assign("HelloCritty2")})
+            helloCritty2 = {'type': Charstring().assignValueType(CharstringValue("HelloCritty")),
+                            'nick': Charstring().assignValueType(CharstringValue("HelloCritty2"))}
 
             # TODO: Remove hardcoded value.
             for i in range(2):
                 heartbeatAnnouncement = PiewikHeartbeatAnnouncement()
-                heartbeatAnnouncement.assign({'messageName': Charstring().assign("HeartbeatAnnouncement"),
-                                              'sender':      helloCritty2,
-                                              'timestamp':   Float().assign(time.time())})
+                heartbeatAnnouncement.assignValueType({'messageName': Charstring().assignValueType(CharstringValue("HeartbeatAnnouncement")),
+                                                       'sender':      helloCritty2,
+                                                       'timestamp':   Float().assignValueType(FloatValue(time.time()))})
                 aComponent.mPort.send(heartbeatAnnouncement)
                 # TODO: Remove hardcoded value.
                 time.sleep(1)
@@ -82,28 +86,27 @@ class Function_RegisterRequest(Function):
 
     def __call__(self, aComponent):
         if isinstance(aComponent, self.mRunsOn):
-            helloCritty1 = PiewikCritterData()
-            helloCritty1.assign({'type': Charstring().assign("HelloCritty"),
-                                 'nick': Charstring().assign("HelloCritty1")})
+            helloCritty1 = {'type': Charstring().assignValueType(CharstringValue("HelloCritty")),
+                            'nick': Charstring().assignValueType(CharstringValue("HelloCritty1"))}
 
-            helloCritty2 = PiewikCritterData()
-            helloCritty2.assign({'type': Charstring().assign("HelloCritty"),
-                                 'nick': Charstring().assign("HelloCritty2")})
+            helloCritty2 = {'type': Charstring().assignValueType(CharstringValue("HelloCritty")),
+                            'nick': Charstring().assignValueType(CharstringValue("HelloCritty2"))}
 
             heartbeatAnnouncement = PiewikHeartbeatAnnouncement()
-            heartbeatAnnouncement.assign({'messageName': Charstring().assign("HeartbeatAnnouncement"),
-                                          'sender':      helloCritty2,
-                                          'timestamp':   AnySingleElement()})
+            heartbeatAnnouncement.addAcceptDecorator(TemplateAcceptDecorator, {})
+            heartbeatAnnouncement.assignValueType({'messageName': Charstring().assignValueType(CharstringValue("HeartbeatAnnouncement")),
+                                                   'sender':      helloCritty1,
+                                                   'timestamp':   TemplateFloat().assignValueType(AnyValue())})
 
             presentYourselfRequest = PiewikPresentYourselfRequest()
-            presentYourselfRequest.assign({'messageName': Charstring().assign("PresentYourselfRequest"),
-                                           'sender':      helloCritty2,
-                                           'receiver':    helloCritty1})
+            presentYourselfRequest.assignValueType({'messageName': Charstring().assignValueType(CharstringValue("PresentYourselfRequest")),
+                                                    'sender':      helloCritty2,
+                                                    'receiver':    helloCritty1})
 
             presentYourselfResponse = PiewikPresentYourselfResponse()
-            presentYourselfResponse.assign({'messageName': Charstring().assign("PresentYourselfResponse"),
-                                            'sender':      helloCritty1,
-                                            'receiver':    helloCritty2})
+            presentYourselfResponse.assignValueType({'messageName': Charstring().assignValueType(CharstringValue("PresentYourselfResponse")),
+                                                     'sender':      helloCritty1,
+                                                     'receiver':    helloCritty2})
 
             aComponent.executeBlockingAction(
                 Blocking(PortReceiveExpectation(aComponent.mPort, heartbeatAnnouncement)),
@@ -125,23 +128,21 @@ class Function_RegisterResponse(Function):
 
     def __call__(self, aComponent):
         if isinstance(aComponent, self.mRunsOn):
-            helloCritty1 = PiewikCritterData()
-            helloCritty1.assign({'type': Charstring().assign("HelloCritty"),
-                                 'nick': Charstring().assign("HelloCritty1")})
+            helloCritty1 = {'type': Charstring().assignValueType(CharstringValue("HelloCritty")),
+                            'nick': Charstring().assignValueType(CharstringValue("HelloCritty1"))}
 
-            helloCritty2 = PiewikCritterData()
-            helloCritty2.assign({'type': Charstring().assign("HelloCritty"),
-                                 'nick': Charstring().assign("HelloCritty2")})
+            helloCritty2 = {'type': Charstring().assignValueType(CharstringValue("HelloCritty")),
+                            'nick': Charstring().assignValueType(CharstringValue("HelloCritty2"))}
 
             presentYourselfRequest = PiewikPresentYourselfRequest()
-            presentYourselfRequest.assign({'messageName': Charstring().assign("PresentYourselfRequest"),
-                                           'sender':      helloCritty1,
-                                           'receiver':    helloCritty2})
+            presentYourselfRequest.assignValueType({'messageName': Charstring().assignValueType(CharstringValue("PresentYourselfRequest")),
+                                                    'sender':      helloCritty1,
+                                                    'receiver':    helloCritty2})
 
             presentYourselfResponse = PiewikPresentYourselfResponse()
-            presentYourselfResponse.assign({'messageName': Charstring().assign("PresentYourselfResponse"),
-                                            'sender':      helloCritty2,
-                                            'receiver':    helloCritty1})
+            presentYourselfResponse.assignValueType({'messageName': Charstring().assignValueType(CharstringValue("PresentYourselfResponse")),
+                                                     'sender':      helloCritty2,
+                                                     'receiver':    helloCritty1})
 
             aComponent.executeBlockingAction(
                 Blocking(PortReceiveExpectation(aComponent.mPort, presentYourselfRequest)),
@@ -188,7 +189,7 @@ class SimpleTestcase(Testcase):
     def executePTC(self):
         componentHeartbeat = Component_HelloCritty_HelloCritty2_Heartbeat("ComponentA1")
         componentRegisterRequest = Component_HelloCritty_HelloCritty2_RegisterRequest("ComponentA2")
-        componentRegisterResponse = Component_HelloCritty_HelloCritty2_RegisterResponse("ComponentA2")
+        componentRegisterResponse = Component_HelloCritty_HelloCritty2_RegisterResponse("ComponentA3")
 
         componentHeartbeat.setContext(self.mMtc, self)
         componentRegisterRequest.setContext(self.mMtc, self)

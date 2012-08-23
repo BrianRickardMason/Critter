@@ -29,17 +29,17 @@
 
 import time
 
-from Piewik.Runtime.Action                                   import Alternative
-from Piewik.Runtime.Action                                   import Blocking
-from Piewik.Runtime.Action                                   import Interleave
-from Piewik.Runtime.Component                                import Component
-from Piewik.Runtime.Control                                  import Control
-from Piewik.Runtime.Event                                    import PortReceivedEvent
-from Piewik.Runtime.EventExpectation                         import ComponentDoneExpectation
-from Piewik.Runtime.EventExpectation                         import PortReceiveExpectation
-from Piewik.Runtime.Extensions.Critter.Interface.Translation import *
-from Piewik.Runtime.Extensions.Critter.Port                  import PiewikPort
-from Piewik.Runtime.Testcase                                 import Testcase
+from Runtime.Action                                   import Alternative
+from Runtime.Action                                   import Blocking
+from Runtime.Action                                   import Interleave
+from Runtime.Component                                import Component
+from Runtime.Control                                  import Control
+from Runtime.Event                                    import PortReceivedEvent
+from Runtime.EventExpectation                         import ComponentDoneExpectation
+from Runtime.EventExpectation                         import PortReceiveExpectation
+from Runtime.Extensions.Critter.Interface.Translation import *
+from Runtime.Extensions.Critter.Port                  import PiewikPort
+from Runtime.Testcase                                 import Testcase
 
 class Function(object):
     def __init__(self):
@@ -51,18 +51,19 @@ class Function_SendHeartbeat(Function):
 
     def __call__(self, aComponent):
         if isinstance(aComponent, self.mRunsOn):
-            worker1 = PiewikCritterData()
-            worker1.assign({
-                'type': Charstring().assign("Worker"),
-                'nick': Charstring().assign("Worker1")
-            })
+            worker1 = {
+                'type': Charstring().assignValueType(CharstringValue("Worker")),
+                'nick': Charstring().assignValueType(CharstringValue("Worker1"))
+            }
 
             # TODO: Remove hardcoded value.
             for i in range(5):
                 heartbeatAnnouncement = PiewikHeartbeatAnnouncement()
-                heartbeatAnnouncement.assign({'messageName': Charstring().assign("HeartbeatAnnouncement"),
-                                              'sender':      worker1,
-                                              'timestamp':   Float().assign(time.time())})
+                heartbeatAnnouncement.assignValueType({
+                    'messageName': Charstring().assignValueType(CharstringValue("HeartbeatAnnouncement")),
+                    'sender':      worker1,
+                    'timestamp':   Float().assignValueType(FloatValue(time.time()))
+                })
                 aComponent.mPort.send(heartbeatAnnouncement)
                 # TODO: Remove hardcoded value.
                 time.sleep(1)
@@ -76,30 +77,29 @@ class Function_RegisterResponse(Function):
 
     def __call__(self, aComponent):
         if isinstance(aComponent, self.mRunsOn):
-            balancer1 = PiewikCritterData()
-            balancer1.assign({
-                'type': Charstring().assign("Balancer"),
-                'nick': Charstring().assign("Balancer1")
-            })
+            balancer1 = {
+                'type': Charstring().assignValueType(CharstringValue("Balancer")),
+                'nick': Charstring().assignValueType(CharstringValue("Balancer1"))
+            }
 
-            worker1 = PiewikCritterData()
-            worker1.assign({
-                'type': Charstring().assign("Worker"),
-                'nick': Charstring().assign("Worker1")
-            })
+            worker1 = {
+                'type': Charstring().assignValueType(CharstringValue("Worker")),
+                'nick': Charstring().assignValueType(CharstringValue("Worker1"))
+            }
 
             presentYourselfRequest = PiewikPresentYourselfRequest()
-            presentYourselfRequest.assign({
-                'messageName': Charstring().assign("PresentYourselfRequest"),
+            presentYourselfRequest.assignValueType({
+                'messageName': Charstring().assignValueType(CharstringValue("PresentYourselfRequest")),
                 'sender':      balancer1,
                 'receiver':    worker1
             })
 
             presentYourselfResponse = PiewikPresentYourselfResponse()
-            presentYourselfResponse.assign({
-                'messageName': Charstring().assign("PresentYourselfResponse"),
+            presentYourselfResponse.assignValueType({
+                'messageName': Charstring().assignValueType(CharstringValue("PresentYourselfResponse")),
                 'sender':      worker1,
-                'receiver':    balancer1})
+                'receiver':    balancer1
+            })
 
             aComponent.executeBlockingAction(
                 Blocking(PortReceiveExpectation(aComponent.mPort, presentYourselfRequest)),
@@ -119,17 +119,18 @@ class Function_CommandWorkExecutionAnnouncement(Function):
             # TODO: Should wait until the components know each other. Remove this hardcoded value.
             time.sleep(1)
 
-            graphYeeti1 = PiewikCritterData()
-            graphYeeti1.assign({'type': Charstring().assign("GraphYeeti"),
-                                'nick': Charstring().assign("GraphYeeti1")})
+            graphYeeti1 = {
+                'type': Charstring().assignValueType(CharstringValue("GraphYeeti")),
+                'nick': Charstring().assignValueType(CharstringValue("GraphYeeti1"))
+            }
 
             commandWorkExecutionAnnouncement = PiewikCommandWorkExecutionAnnouncement()
-            commandWorkExecutionAnnouncement.assign({
-                'messageName': Charstring().assign("CommandWorkExecutionAnnouncement"),
+            commandWorkExecutionAnnouncement.assignValueType({
+                'messageName': Charstring().assignValueType(CharstringValue("CommandWorkExecutionAnnouncement")),
                 'sender':      graphYeeti1,
-                'graphName':   Charstring().assign("GraphName"),
-                'cycle':       Integer().assign(1),
-                'workName':    Charstring().assign("WorkName")
+                'graphName':   Charstring().assignValueType(CharstringValue("GraphName")),
+                'cycle':       Integer().assignValueType(IntegerValue(1)),
+                'workName':    Charstring().assignValueType(CharstringValue("WorkName"))
             })
 
             aComponent.mPort.send(commandWorkExecutionAnnouncement)
@@ -146,32 +147,34 @@ class Function_CantExecuteWorkNow(Function):
             # TODO: Should wait until the components know each other. Remove this hardcoded value.
             time.sleep(1)
 
-            worker1 = PiewikCritterData()
-            worker1.assign({'type': Charstring().assign("Worker"),
-                            'nick': Charstring().assign("Worker1")})
+            worker1 = {
+                'type': Charstring().assignValueType(CharstringValue("Worker")),
+                'nick': Charstring().assignValueType(CharstringValue("Worker1"))
+            }
 
-            balancer1 = PiewikCritterData()
-            balancer1.assign({'type': Charstring().assign("Balancer"),
-                              'nick': Charstring().assign("Balancer1")})
+            balancer1 = {
+                'type': Charstring().assignValueType(CharstringValue("Balancer")),
+                'nick': Charstring().assignValueType(CharstringValue("Balancer1"))
+            }
 
             executeWorkAnnouncement = PiewikExecuteWorkAnnouncement()
-            executeWorkAnnouncement.assign({
-                'messageName': Charstring().assign("ExecuteWorkAnnouncement"),
+            executeWorkAnnouncement.assignValueType({
+                'messageName': Charstring().assignValueType(CharstringValue("ExecuteWorkAnnouncement")),
                 'sender':      balancer1,
                 'receiver':    worker1,
-                'graphName':   Charstring().assign("GraphName"),
-                'cycle':       Integer().assign(1),
-                'workName':    Charstring().assign("WorkName")
+                'graphName':   Charstring().assignValueType(CharstringValue("GraphName")),
+                'cycle':       Integer().assignValueType(IntegerValue(1)),
+                'workName':    Charstring().assignValueType(CharstringValue("WorkName"))
             })
 
             cantExecuteWorkNowAnnouncement = PiewikCantExecuteWorkNowAnnouncement()
-            cantExecuteWorkNowAnnouncement.assign({
-                'messageName': Charstring().assign("CantExecuteWorkNowAnnouncement"),
+            cantExecuteWorkNowAnnouncement.assignValueType({
+                'messageName': Charstring().assignValueType(CharstringValue("CantExecuteWorkNowAnnouncement")),
                 'sender':      worker1,
                 'receiver':    balancer1,
-                'graphName':   Charstring().assign("GraphName"),
-                'cycle':       Integer().assign(1),
-                'workName':    Charstring().assign("WorkName")
+                'graphName':   Charstring().assignValueType(CharstringValue("GraphName")),
+                'cycle':       Integer().assignValueType(IntegerValue(1)),
+                'workName':    Charstring().assignValueType(CharstringValue("WorkName"))
             })
 
             aComponent.executeBlockingAction(
