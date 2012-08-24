@@ -71,13 +71,13 @@ class Function_LoadWorkDetails(Function):
             })
 
             # TODO: Should be verified in a more detailed way.
-            # TODO: Add AnySingleElement.
             loadWorkDetailsResponse = PiewikLoadWorkDetailsResponse()
+            loadWorkDetailsResponse.addAcceptDecorator(TemplateAcceptDecorator, {})
             loadWorkDetailsResponse.assignValueType({
                 'messageName': Charstring().assignValueType(CharstringValue("LoadWorkDetailsResponse")),
                 'sender':      cribrarian1,
                 'receiver':    worker1,
-                'details':     AnySingleElement()
+                'details':     AnyValueType()
             })
 
             aComponent.mPort.send(loadWorkDetailsRequest)
@@ -119,14 +119,13 @@ class SimpleTestcase(Testcase):
 
         componentWorker.addFunction(Function_LoadWorkDetails())
 
-        # TODO: Enable after AnySingleElement() is introduced.
-#        componentWorker.start()
-#
-#        self.mMtc.executeBlockingAction(
-#            Interleave([
-#                Blocking(ComponentDoneExpectation(componentWorker))
-#            ])
-#        )
+        componentWorker.start()
+
+        self.mMtc.executeBlockingAction(
+            Interleave([
+                Blocking(ComponentDoneExpectation(componentWorker))
+            ])
+        )
 
 testcase = SimpleTestcase()
 control = Control()
