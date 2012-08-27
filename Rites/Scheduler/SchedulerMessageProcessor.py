@@ -2,7 +2,8 @@
 
 import Rites.RiteCommon
 
-from Rites.MessageProcessor import MessageProcessor
+from Rites.MessageProcessor            import MessageProcessor
+from Rites.Scheduler.SchedulerCommands import SchedulerCommand_Handle_ExecuteGraphSeekVolunteers
 
 class SchedulerMessageProcessor(MessageProcessor):
     """The message processor of the scheduler rite."""
@@ -23,4 +24,9 @@ class SchedulerMessageProcessor(MessageProcessor):
             aMessage: The message.
 
         """
-        self.mLogger.debug("Dropping unknown message: %s" % aMessage.messageName)
+        if aMessage.messageName == 'ExecuteGraphSeekVolunteers':
+            command = SchedulerCommand_Handle_ExecuteGraphSeekVolunteers(aMessage)
+            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.SCHEDULER, command)
+
+        else:
+            self.mLogger.debug("Dropping unknown message: %s" % aMessage.messageName)

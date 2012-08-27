@@ -38,7 +38,8 @@ class SchedulerCommandCheckSchedule(object):
 
             # Voluntees.
             hash = os.urandom(32).encode('hex')
-            aCommandProcessor.mLogger.debug("Hash value: %s." % hash)
+            aCommandProcessor.mLogger.debug("Storing graph execution data under hash: %s." % hash)
+            aCommandProcessor.mRite.mGraphExecutionData[hash] = {}
             aCommandProcessor.mLogger.debug("Sending the ExecuteGraphSeekVolunteers.")
             envelope = aCommandProcessor.mRite.mPostOffice.encode(
                 'ExecuteGraphSeekVolunteers',
@@ -47,3 +48,15 @@ class SchedulerCommandCheckSchedule(object):
                                  'nick': aCommandProcessor.mRite.mCritterData.mNick},
                  'hash':        hash})
             aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
+class SchedulerCommand_Handle_ExecuteGraphSeekVolunteers(object):
+    def __init__(self, aMessage):
+        self.mName = "SchedulerCommand_Handle_ExecuteGraphSeekVolunteers"
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        hash = self.mMessage.hash
+        if hash in aCommandProcessor.mRite.mGraphExecutionData:
+            aCommandProcessor.mRite.mGraphExecutionData[hash]['leadingCriduler'] = self.mMessage.sender.nick
+        else:
+            aCommandProcessor.mLogger.warn("Hash is unavailable.")
