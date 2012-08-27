@@ -28,6 +28,7 @@ class GraphMessageProcessor(MessageProcessor):
             aMessage: The message.
 
         """
+        # TODO: This should not be done here.
         if aMessage.sender.nick == self.mRite.mCritterData.mNick:
             self.mLogger.debug("Dropping critter's own message: %s." % aMessage.messageName)
 
