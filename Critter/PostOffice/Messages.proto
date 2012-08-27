@@ -202,7 +202,7 @@ message LoadWorkDetailsResponse
 }
 
 //
-// Graph Execution.
+// Graph execution.
 //
 
 //
@@ -213,7 +213,6 @@ message ExecuteGraphSeekVolunteers
     optional string      messageName = 1;
     optional CritterData sender      = 2;
     optional string      hash        = 3;
-    optional string      graphName   = 4;
 }
 
 //
@@ -236,4 +235,5 @@ message ExecuteGraphSelectVolunteer
     optional CritterData sender      = 2;
     optional CritterData receiver    = 3;
     optional string      hash        = 4;
+    optional string      graphName   = 5;
 }
