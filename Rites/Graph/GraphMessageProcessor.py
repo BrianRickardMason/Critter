@@ -2,11 +2,11 @@
 
 import Rites.RiteCommon
 
-from Rites.Graph.GraphCommands import GraphCommandInitializeGraphExecution
 from Rites.Graph.GraphCommands import GraphCommandLoadGraphAndWork
 from Rites.Graph.GraphCommands import GraphCommandMarkFinishedWork
 from Rites.Graph.GraphCommands import GraphCommandSpawnGraphExecution
 from Rites.Graph.GraphCommands import GraphCommand_Handle_ExecuteGraphSeekVolunteers
+from Rites.Graph.GraphCommands import GraphCommand_Handle_ExecuteGraphSelectVolunteer
 from Rites.MessageProcessor    import MessageProcessor
 
 class GraphMessageProcessor(MessageProcessor):
@@ -41,7 +41,7 @@ class GraphMessageProcessor(MessageProcessor):
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
 
         elif aMessage.messageName == 'ExecuteGraphSelectVolunteer':
-            command = GraphCommandInitializeGraphExecution(aMessage)
+            command = GraphCommand_Handle_ExecuteGraphSelectVolunteer(aMessage)
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
 
         elif aMessage.messageName == 'LoadGraphAndWorkResponse':

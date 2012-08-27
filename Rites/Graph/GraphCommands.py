@@ -2,40 +2,6 @@
 
 from GraphRiteSession import GraphRiteSession
 
-class GraphCommandInitializeGraphExecution(object):
-    """InitializeGraphExecution command.
-
-    Attributes:
-        mName:    The name of the command.
-        mMessage: The ExecuteGraphSelectVolunteer.
-
-    """
-
-    def __init__(self, aMessage):
-        """Initializes the command.
-
-        Arguments:
-            aMessage: The ExecuteGraphSelectVolunteer.
-
-        """
-        self.mName    = 'GraphCommandInitializeGraphExecution'
-        self.mMessage = aMessage
-
-    def execute(self, aCommandProcessor):
-        """Executes the command.
-
-        Arguments:
-            aCommandProcessor: The command processor to be visited.
-
-        """
-        envelope = aCommandProcessor.mRite.mPostOffice.encode(
-            'DetermineGraphCycleRequest',
-            {'messageName': 'DetermineGraphCycleRequest',
-             'sender':      {'type': aCommandProcessor.mRite.mCritterData.mType,
-                             'nick': aCommandProcessor.mRite.mCritterData.mNick},
-             'graphName':   self.mMessage.graphName})
-        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
-
 class GraphCommandSpawnGraphExecution(object):
     """SpawnGraphExecution command.
 
@@ -193,3 +159,17 @@ class GraphCommand_Handle_ExecuteGraphSeekVolunteers(object):
         else:
             # TODO: Handle it!
             aCommandProcessor.mLogger.error("Hash is available - conflict.")
+
+class GraphCommand_Handle_ExecuteGraphSelectVolunteer(object):
+    def __init__(self, aMessage):
+        self.mName = 'GraphCommand_Handle_ExecuteGraphSelectVolunteer'
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        envelope = aCommandProcessor.mRite.mPostOffice.encode(
+            'DetermineGraphCycleRequest',
+            {'messageName': 'DetermineGraphCycleRequest',
+             'sender':      {'type': aCommandProcessor.mRite.mCritterData.mType,
+                             'nick': aCommandProcessor.mRite.mCritterData.mNick},
+             'graphName':   self.mMessage.graphName})
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
