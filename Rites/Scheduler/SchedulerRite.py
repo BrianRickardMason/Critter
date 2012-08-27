@@ -35,6 +35,13 @@ class SchedulerRite(Rite):
                       Rites.RiteCommon.SCHEDULER,
                       SchedulerMessageProcessor)
 
+        # A dictionary of graph execution data.
+        #
+        # It has a structure as follows:
+        # {'hash': CritterHash,
+        #  'data': GraphExecutionData}
+        self.mGraphExecutionData = {}
+
     def run(self):
         """Starts the main loop of the rite."""
         while True:
