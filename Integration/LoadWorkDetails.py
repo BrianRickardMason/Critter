@@ -77,7 +77,7 @@ class Function_LoadWorkDetails(Function):
                 'messageName': Charstring().assignValueType(CharstringValue("LoadWorkDetailsResponse")),
                 'sender':      cribrarian1,
                 'receiver':    worker1,
-                'details':     AnyValueType()
+                'details':     AnyValue()
             })
 
             aComponent.mPort.send(loadWorkDetailsRequest)
