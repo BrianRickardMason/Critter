@@ -174,10 +174,10 @@ class GraphCommand_Handle_ExecuteGraphSeekVolunteers(object):
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
-        hash = self.mMessage.hash
-        if not hash in aCommandProcessor.mRite.mGraphExecutionData:
-            aCommandProcessor.mRite.mGraphExecutionData[hash] = {}
-            aCommandProcessor.mRite.mGraphExecutionData[hash]['leadingCriduler'] = self.mMessage.sender.nick
+        hashValue = self.mMessage.hash
+        if not hashValue in aCommandProcessor.mRite.mGraphExecutionData:
+            aCommandProcessor.mRite.mGraphExecutionData[hashValue] = {}
+            aCommandProcessor.mRite.mGraphExecutionData[hashValue]['leadingCriduler'] = self.mMessage.sender.nick
 
             aCommandProcessor.mLogger.debug("Sending the ExecuteGraphVoluntee.")
             envelope = aCommandProcessor.mRite.mPostOffice.encode(
@@ -187,7 +187,7 @@ class GraphCommand_Handle_ExecuteGraphSeekVolunteers(object):
                                  'nick': aCommandProcessor.mRite.mCritterData.mNick},
                  'receiver':    {'type': self.mMessage.sender.type,
                                  'nick': self.mMessage.sender.nick},
-                 'hash':        hash})
+                 'hash':        hashValue})
             aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
         else:
