@@ -36,18 +36,13 @@ class GraphMessageProcessor(MessageProcessor):
             command = GraphCommandSpawnGraphExecution(aMessage)
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
 
-        elif aMessage.messageName == 'ExecuteGraphAnnouncement':
-            # TODO: This message should not be processed before all graphs are loaded in Rite.
-            command = GraphCommandInitializeGraphExecution(aMessage)
-            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
-
         elif aMessage.messageName == 'ExecuteGraphSeekVolunteers':
             command = GraphCommand_Handle_ExecuteGraphSeekVolunteers(aMessage)
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
 
         elif aMessage.messageName == 'ExecuteGraphSelectVolunteer':
-            # TODO: Here you should start to process the graph.
-            pass
+            command = GraphCommandInitializeGraphExecution(aMessage)
+            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
 
         elif aMessage.messageName == 'LoadGraphAndWorkResponse':
             command = GraphCommandLoadGraphAndWork(aMessage)

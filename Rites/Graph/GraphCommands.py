@@ -7,7 +7,7 @@ class GraphCommandInitializeGraphExecution(object):
 
     Attributes:
         mName:    The name of the command.
-        mMessage: The ExecuteGraphAnnouncement.
+        mMessage: The ExecuteGraphSelectVolunteer.
 
     """
 
@@ -15,7 +15,7 @@ class GraphCommandInitializeGraphExecution(object):
         """Initializes the command.
 
         Arguments:
-            aMessage: The ExecuteGraphAnnouncement.
+            aMessage: The ExecuteGraphSelectVolunteer.
 
         """
         self.mName    = 'GraphCommandInitializeGraphExecution'
