@@ -40,7 +40,7 @@ class SchedulerCommandCheckSchedule(object):
             hash = os.urandom(32).encode('hex')
             aCommandProcessor.mLogger.debug("Storing graph execution data under hash: %s." % hash)
             aCommandProcessor.mRite.mGraphExecutionData[hash] = {}
-            aCommandProcessor.mLogger.debug("Sending the ExecuteGraphSeekVolunteers.")
+            aCommandProcessor.mLogger.debug("Sending the ExecuteGraphSeekVolunteers message.")
             envelope = aCommandProcessor.mRite.mPostOffice.encode(
                 'ExecuteGraphSeekVolunteers',
                 {'messageName': 'ExecuteGraphSeekVolunteers',
