@@ -200,3 +200,40 @@ message LoadWorkDetailsResponse
     optional CritterData     receiver    = 3;
     repeated WorkDetailsData details     = 4;
 }
+
+//
+// Graph Execution.
+//
+
+//
+// Criduler -> Criduler + GraphYeeti.
+//
+message ExecuteGraphSeekVolunteers
+{
+    optional string      messageName = 1;
+    optional CritterData sender      = 2;
+    optional string      hash        = 3;
+    optional string      graphName   = 4;
+}
+
+//
+// GraphYeeti -> Criduler.
+//
+message ExecuteGraphVoluntee
+{
+    optional string      messageName = 1;
+    optional CritterData sender      = 2;
+    optional CritterData receiver    = 3;
+    optional string      hash        = 4;
+}
+
+//
+// Criduler -> Criduler + GraphYeeti.
+//
+message ExecuteGraphSelectVolunteer
+{
+    optional string      messageName = 1;
+    optional CritterData sender      = 2;
+    optional CritterData receiver    = 3;
+    optional string      hash        = 4;
+}

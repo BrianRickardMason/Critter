@@ -40,6 +40,11 @@ class SchedulerRite(Rite):
         # It has a structure as follows:
         # {'hash': CritterHash,
         #  'data': GraphExecutionData}
+        #
+        # GraphExecutionData:
+        # {'leadingCriduler':   string,
+        #  'leadingGraphYeeti': string}
+        #
         self.mGraphExecutionData = {}
 
     def run(self):

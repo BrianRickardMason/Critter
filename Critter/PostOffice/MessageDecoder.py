@@ -73,6 +73,15 @@ class MessageDecoder(object):
         elif envelope.header.id == REPORT_FINISHED_WORK_ANNOUNCEMENT:
             message = Messages_pb2.ReportFinishedWorkAnnouncement()
 
+        elif envelope.header.id == EXECUTE_GRAPH_SEEK_VOLUNTEERS:
+            message = Messages_pb2.ExecuteGraphSeekVolunteers()
+
+        elif envelope.header.id == EXECUTE_GRAPH_VOLUNTEE:
+            message = Messages_pb2.ExecuteGraphVoluntee()
+
+        elif envelope.header.id == EXECUTE_GRAPH_SELECT_VOLUNTEER:
+            message = Messages_pb2.ExecuteGraphSelectVolunteer()
+
         else:
             return None
 

@@ -77,6 +77,15 @@ class MessageEncoder(object):
             elif aMessageName == 'ReportFinishedWorkAnnouncement':
                 return self.__encode(REPORT_FINISHED_WORK_ANNOUNCEMENT, aData)
 
+            elif aMessageName == 'ExecuteGraphSeekVolunteers':
+                return self.__encode(EXECUTE_GRAPH_SEEK_VOLUNTEERS, aData)
+
+            elif aMessageName == 'ExecuteGraphVoluntee':
+                return self.__encode(EXECUTE_GRAPH_VOLUNTEE, aData)
+
+            elif aMessageName == 'ExecuteGraphSelectVolunteer':
+                return self.__encode(EXECUTE_GRAPH_SELECT_VOLUNTEER, aData)
+
             else:
                 # TODO: Handle this more gracefully
                 print "Invalid message."
