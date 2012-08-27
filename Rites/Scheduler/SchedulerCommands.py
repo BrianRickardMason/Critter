@@ -96,3 +96,16 @@ class SchedulerCommand_Handle_ExecuteGraphVoluntee(object):
              'hash':        hash,
              'graphName':   aCommandProcessor.mRite.mGraphExecutionData[hash]['graphName']})
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
+class SchedulerCommand_Handle_ExecuteGraphSelectVolunteer(object):
+    def __init__(self, aMessage):
+        self.mName = "SchedulerCommand_Handle_ExecuteGraphSelectVolunteer"
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        if aCommandProcessor.mRite.mCritter.mCritterData.mNick == self.mMessage.sender.type and \
+           aCommandProcessor.mRite.mCritter.mCritterData.mNick == self.mMessage.sender.type     :
+            aCommandProcessor.mLogger.debug("The message is sent by me.")
+            return
+
+        aCommandProcessor.mRite.mGraphExecutionData[hash]['leadingGraphYeeti'] = self.mMessage.receiver.nick

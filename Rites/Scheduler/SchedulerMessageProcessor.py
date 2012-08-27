@@ -4,6 +4,7 @@ import Rites.RiteCommon
 
 from Rites.MessageProcessor            import MessageProcessor
 from Rites.Scheduler.SchedulerCommands import SchedulerCommand_Handle_ExecuteGraphSeekVolunteers
+from Rites.Scheduler.SchedulerCommands import SchedulerCommand_Handle_ExecuteGraphSelectVolunteer
 from Rites.Scheduler.SchedulerCommands import SchedulerCommand_Handle_ExecuteGraphVoluntee
 
 class SchedulerMessageProcessor(MessageProcessor):
@@ -27,6 +28,10 @@ class SchedulerMessageProcessor(MessageProcessor):
         """
         if aMessage.messageName == 'ExecuteGraphSeekVolunteers':
             command = SchedulerCommand_Handle_ExecuteGraphSeekVolunteers(aMessage)
+            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.SCHEDULER, command)
+
+        elif aMessage.messageName == 'ExecuteGraphSelectVolunteer':
+            command = SchedulerCommand_Handle_ExecuteGraphSelectVolunteer(aMessage)
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.SCHEDULER, command)
 
         elif aMessage.messageName == 'ExecuteGraphVoluntee':
