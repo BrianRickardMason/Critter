@@ -44,6 +44,10 @@ class GraphMessageProcessor(MessageProcessor):
             command = GraphCommand_Handle_ExecuteGraphSeekVolunteers(aMessage)
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
 
+        elif aMessage.messageName == 'ExecuteGraphSelectVolunteer':
+            # TODO: Here you should start to process the graph.
+            pass
+
         elif aMessage.messageName == 'LoadGraphAndWorkResponse':
             command = GraphCommandLoadGraphAndWork(aMessage)
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
