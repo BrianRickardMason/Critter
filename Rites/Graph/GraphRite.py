@@ -51,7 +51,8 @@ class GraphRite(Rite):
         #  'data': GraphExecutionData}
         #
         # GraphExecutionData:
-        # {'leadingCriduler':   string,
+        # {'graphName':         string,
+        #  'leadingCriduler':   string,
         #  'leadingGraphYeeti': string}
         #
         self.mGraphExecutionData = {}

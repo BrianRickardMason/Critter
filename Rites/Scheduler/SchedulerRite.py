@@ -42,7 +42,8 @@ class SchedulerRite(Rite):
         #  'data': GraphExecutionData}
         #
         # GraphExecutionData:
-        # {'leadingCriduler':   string,
+        # {'graphName':         string,
+        #  'leadingCriduler':   string,
         #  'leadingGraphYeeti': string}
         #
         self.mGraphExecutionData = {}

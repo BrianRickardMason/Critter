@@ -28,18 +28,20 @@ class SchedulerCommandCheckSchedule(object):
             aCommandProcessor.mLogger.debug("Sending the ExecuteGraphAnnouncement.")
             # FIXME: A jealous class.
             graphNames = ['GraphName1', 'GraphName2', 'GraphName3', 'GraphName4']
+            graphName = random.choice(graphNames)
             envelope = aCommandProcessor.mRite.mPostOffice.encode(
                 'ExecuteGraphAnnouncement',
                 {'messageName': 'ExecuteGraphAnnouncement',
                  'sender':      {'type': aCommandProcessor.mRite.mCritterData.mType,
                                  'nick': aCommandProcessor.mRite.mCritterData.mNick},
-                 'graphName':   random.choice(graphNames)})
+                 'graphName':   graphName})
             aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
             # Voluntees.
             hash = os.urandom(32).encode('hex')
             aCommandProcessor.mLogger.debug("Storing graph execution data under hash: %s." % hash)
             aCommandProcessor.mRite.mGraphExecutionData[hash] = {}
+            aCommandProcessor.mRite.mGraphExecutionData[hash]['graphName'] = graphName
             aCommandProcessor.mLogger.debug("Sending the ExecuteGraphSeekVolunteers message.")
             envelope = aCommandProcessor.mRite.mPostOffice.encode(
                 'ExecuteGraphSeekVolunteers',
@@ -60,3 +62,37 @@ class SchedulerCommand_Handle_ExecuteGraphSeekVolunteers(object):
             aCommandProcessor.mRite.mGraphExecutionData[hash]['leadingCriduler'] = self.mMessage.sender.nick
         else:
             aCommandProcessor.mLogger.warn("Hash is unavailable.")
+
+class SchedulerCommand_Handle_ExecuteGraphVoluntee(object):
+    def __init__(self, aMessage):
+        self.mName = "SchedulerCommand_Handle_ExecuteGraphVoluntee"
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        if aCommandProcessor.mRite.mCritter.mCritterData.mType != self.mMessage.receiver.type or \
+           aCommandProcessor.mRite.mCritter.mCritterData.mNick != self.mMessage.receiver.nick    :
+            aCommandProcessor.mLogger.debug("The message is not addressed to me.")
+            return
+
+        hash = self.mMessage.hash
+
+        if not hash in aCommandProcessor.mRite.mGraphExecutionData:
+            aCommandProcessor.mLogger.warn("Hash is unavailable.")
+            return
+
+        if 'leadingGraphYeeti' in aCommandProcessor.mRite.mGraphExecutionData[hash]:
+            return
+
+        aCommandProcessor.mRite.mGraphExecutionData[hash]['leadingGraphYeeti'] = self.mMessage.sender.nick
+
+        aCommandProcessor.mLogger.debug("Sending the ExecuteGraphSelectVolunteer.")
+        envelope = aCommandProcessor.mRite.mPostOffice.encode(
+            'ExecuteGraphSelectVolunteer',
+            {'messageName': 'ExecuteGraphSelectVolunteer',
+             'sender':      {'type': aCommandProcessor.mRite.mCritterData.mType,
+                             'nick': aCommandProcessor.mRite.mCritterData.mNick},
+             'receiver':    {'type': self.mMessage.sender.type,
+                             'nick': self.mMessage.sender.nick},
+             'hash':        hash,
+             'graphName':   aCommandProcessor.mRite.mGraphExecutionData[hash]['graphName']})
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
