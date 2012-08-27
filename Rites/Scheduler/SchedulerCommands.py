@@ -109,4 +109,6 @@ class SchedulerCommand_Handle_ExecuteGraphSelectVolunteer(object):
             aCommandProcessor.mLogger.debug("The message is sent by me.")
             return
 
+        hash = self.mMessage.hash
+
         aCommandProcessor.mRite.mGraphExecutionData[hash]['leadingGraphYeeti'] = self.mMessage.receiver.nick
