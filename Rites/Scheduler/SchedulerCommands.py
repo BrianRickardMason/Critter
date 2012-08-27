@@ -81,6 +81,7 @@ class SchedulerCommand_Handle_ExecuteGraphVoluntee(object):
             return
 
         if 'leadingGraphYeeti' in aCommandProcessor.mRite.mGraphExecutionData[hash]:
+            aCommandProcessor.mLogger.debug("Leading GraphYeeti has already been selected.")
             return
 
         aCommandProcessor.mRite.mGraphExecutionData[hash]['leadingGraphYeeti'] = self.mMessage.sender.nick
