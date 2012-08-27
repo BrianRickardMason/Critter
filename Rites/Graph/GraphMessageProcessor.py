@@ -6,6 +6,7 @@ from Rites.Graph.GraphCommands import GraphCommandInitializeGraphExecution
 from Rites.Graph.GraphCommands import GraphCommandLoadGraphAndWork
 from Rites.Graph.GraphCommands import GraphCommandMarkFinishedWork
 from Rites.Graph.GraphCommands import GraphCommandSpawnGraphExecution
+from Rites.Graph.GraphCommands import GraphCommand_Handle_ExecuteGraphSeekVolunteers
 from Rites.MessageProcessor    import MessageProcessor
 
 class GraphMessageProcessor(MessageProcessor):
@@ -37,6 +38,10 @@ class GraphMessageProcessor(MessageProcessor):
         elif aMessage.messageName == 'ExecuteGraphAnnouncement':
             # TODO: This message should not be processed before all graphs are loaded in Rite.
             command = GraphCommandInitializeGraphExecution(aMessage)
+            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
+
+        elif aMessage.messageName == 'ExecuteGraphSeekVolunteers':
+            command = GraphCommand_Handle_ExecuteGraphSeekVolunteers(aMessage)
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
 
         elif aMessage.messageName == 'LoadGraphAndWorkResponse':

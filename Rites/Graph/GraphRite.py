@@ -44,6 +44,18 @@ class GraphRite(Rite):
 
         self.mSessions = {}
 
+        # A dictionary of graph execution data.
+        #
+        # It has a structure as follows:
+        # {'hash': CritterHash,
+        #  'data': GraphExecutionData}
+        #
+        # GraphExecutionData:
+        # {'leadingCriduler':   string,
+        #  'leadingGraphYeeti': string}
+        #
+        self.mGraphExecutionData = {}
+
     def run(self):
         """Starts the main loop of the rite."""
 

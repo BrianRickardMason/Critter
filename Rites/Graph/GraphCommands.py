@@ -167,3 +167,29 @@ class GraphCommandMarkFinishedWork(object):
             aCommandProcessor.mRite.mSessions[graphName][graphCycle].mWorkStates[workName] = state
         except KeyError, e:
             pass
+
+class GraphCommand_Handle_ExecuteGraphSeekVolunteers(object):
+    def __init__(self, aMessage):
+        self.mName = "GraphCommand_Handle_ExecuteGraphSeekVolunteers"
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        hash = self.mMessage.hash
+        if not hash in aCommandProcessor.mRite.mGraphExecutionData:
+            aCommandProcessor.mRite.mGraphExecutionData[hash] = {}
+            aCommandProcessor.mRite.mGraphExecutionData[hash]['leadingCriduler'] = self.mMessage.sender.nick
+
+            aCommandProcessor.mLogger.debug("Sending the ExecuteGraphVoluntee.")
+            envelope = aCommandProcessor.mRite.mPostOffice.encode(
+                'ExecuteGraphVoluntee',
+                {'messageName': 'ExecuteGraphVoluntee',
+                 'sender':      {'type': aCommandProcessor.mRite.mCritterData.mType,
+                                 'nick': aCommandProcessor.mRite.mCritterData.mNick},
+                 'receiver':    {'type': self.mMessage.sender.type,
+                                 'nick': self.mMessage.sender.nick},
+                 'hash':        hash})
+            aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
+        else:
+            # TODO: Handle it!
+            aCommandProcessor.mLogger.error("Hash is available - conflict.")
