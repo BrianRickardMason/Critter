@@ -61,3 +61,30 @@ class BalanceCommandCommandWorkExecution(object):
              'cycle':       self.mMessage.cycle,
              'workName':    self.mMessage.workName})
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
+class BalanceCommand_Handle_CommandWorkExecutionSeekVolunteers(object):
+    def __init__(self, aMessage):
+        self.mName = "BalanceCommand_Handle_CommandWorkExecutionSeekVolunteers"
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        hashValue = self.mMessage.hash
+        if hashValue in aCommandProcessor.mRite.mCommandWorkExecutionVolunteering:
+            # TODO: Handle it!
+            aCommandProcessor.mLogger.error("Hash is available - conflict.")
+            return
+
+        aCommandProcessor.mLogger.debug("Storing CommandWorkExecution volunteering data under a hash: %s." % hashValue)
+        aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue] = {}
+        aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['boss'] = self.mMessage.sender.nick
+
+        aCommandProcessor.mLogger.debug("Sending the CommandWorkExecutionVoluntee message.")
+        envelope = aCommandProcessor.mRite.mPostOffice.encode(
+            'CommandWorkExecutionVoluntee',
+            {'messageName': 'CommandWorkExecutionVoluntee',
+             'sender':      {'type': aCommandProcessor.mRite.mCritterData.mType,
+                             'nick': aCommandProcessor.mRite.mCritterData.mNick},
+             'receiver':    {'type': self.mMessage.sender.type,
+                             'nick': self.mMessage.sender.nick},
+             'hash':        hashValue})
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)

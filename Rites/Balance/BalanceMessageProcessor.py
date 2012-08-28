@@ -3,6 +3,7 @@
 import Rites.RiteCommon
 
 from Rites.Balance.BalanceCommands import BalanceCommandCommandWorkExecution
+from Rites.Balance.BalanceCommands import BalanceCommand_Handle_CommandWorkExecutionSeekVolunteers
 from Rites.MessageProcessor        import MessageProcessor
 
 class BalanceMessageProcessor(MessageProcessor):
@@ -29,6 +30,10 @@ class BalanceMessageProcessor(MessageProcessor):
 
         elif aMessage.messageName == 'CommandWorkExecutionAnnouncement':
             command = BalanceCommandCommandWorkExecution(aMessage)
+            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.BALANCE, command)
+
+        elif aMessage.messageName == 'CommandWorkExecutionSeekVolunteers':
+            command = BalanceCommand_Handle_CommandWorkExecutionSeekVolunteers(aMessage)
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.BALANCE, command)
 
         else:
