@@ -26,11 +26,13 @@ class SchedulerMessageProcessor(MessageProcessor):
             aMessage: The message.
 
         """
-        if   aMessage.messageName == 'ExecuteGraphSeekVolunteers':  command = SchedulerCommand_Handle_ExecuteGraphSeekVolunteers(aMessage)
-        elif aMessage.messageName == 'ExecuteGraphSelectVolunteer': command = SchedulerCommand_Handle_ExecuteGraphSelectVolunteer(aMessage)
-        elif aMessage.messageName == 'ExecuteGraphVoluntee':        command = SchedulerCommand_Handle_ExecuteGraphVoluntee(aMessage)
+        command = None
+
+        if aMessage.messageName == 'ExecuteGraphSeekVolunteers':  command = SchedulerCommand_Handle_ExecuteGraphSeekVolunteers(aMessage)
+        if aMessage.messageName == 'ExecuteGraphSelectVolunteer': command = SchedulerCommand_Handle_ExecuteGraphSelectVolunteer(aMessage)
+        if aMessage.messageName == 'ExecuteGraphVoluntee':        command = SchedulerCommand_Handle_ExecuteGraphVoluntee(aMessage)
+
+        if command:
+            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.SCHEDULER, command)
         else:
             self.mLogger.debug("Dropping unknown message: %s" % aMessage.messageName)
-            return
-
-        self.mRite.mPostOffice.putCommand(Rites.RiteCommon.SCHEDULER, command)

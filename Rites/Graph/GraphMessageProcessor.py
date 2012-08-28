@@ -30,6 +30,8 @@ class GraphMessageProcessor(MessageProcessor):
             aMessage: The message.
 
         """
+        command = None
+
         if aMessage.messageName == 'CommandWorkExecutionSeekVolunteers': command = GraphCommand_Handle_CommandWorkExecutionSeekVolunteers(aMessage)
         if aMessage.messageName == 'CommandWorkExecutionVoluntee':       command = GraphCommand_Handle_CommandWorkExecutionVoluntee(aMessage)
         if aMessage.messageName == 'DetermineGraphCycleResponse':        command = GraphCommandSpawnGraphExecution(aMessage)
