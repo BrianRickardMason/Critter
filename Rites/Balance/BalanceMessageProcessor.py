@@ -25,13 +25,12 @@ class BalanceMessageProcessor(MessageProcessor):
             aMessage: The message.
 
         """
-        if aMessage.messageName == 'CommandWorkExecutionAnnouncement':
-            command = BalanceCommandCommandWorkExecution(aMessage)
-            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.BALANCE, command)
+        command = None
 
-        elif aMessage.messageName == 'CommandWorkExecutionSeekVolunteers':
-            command = BalanceCommand_Handle_CommandWorkExecutionSeekVolunteers(aMessage)
-            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.BALANCE, command)
+        if aMessage.messageName == 'CommandWorkExecutionAnnouncement':   command = BalanceCommandCommandWorkExecution(aMessage)
+        if aMessage.messageName == 'CommandWorkExecutionSeekVolunteers': command = BalanceCommand_Handle_CommandWorkExecutionSeekVolunteers(aMessage)
 
+        if command:
+            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.BALANCE, command)
         else:
             self.mLogger.debug("Dropping unknown message: %s" % aMessage.messageName)
