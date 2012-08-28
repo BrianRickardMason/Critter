@@ -116,6 +116,21 @@ class GraphRiteSession(threading.Thread):
              'workName':    aWorkName})
         self.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
+        hashValue = os.urandom(32).encode('hex')
+        aCommandProcessor.mLogger.debug("Storing CommandWorkExecution volunteering data under a hash: %s." % hashValue)
+        aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue] = {}
+        aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['graphName']  = self.mGraphName
+        aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['graphCycle'] = self.mGraphCycle
+        aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['workName']   = aWorkName
+        aCommandProcessor.mLogger.debug("Sending the CommandWorkExecutionSeekVolunteers message.")
+        envelope = aCommandProcessor.mRite.mPostOffice.encode(
+            'CommandWorkExecutionSeekVolunteers',
+            {'messageName': 'CommandWorkExecutionSeekVolunteers',
+             'sender':      {'type': aCommandProcessor.mRite.mCritterData.mType,
+                             'nick': aCommandProcessor.mRite.mCritterData.mNick},
+             'hash':        hashValue})
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
 class SpawnChecker(object):
     """Checks whether there's a need to continue spawning works."""
 

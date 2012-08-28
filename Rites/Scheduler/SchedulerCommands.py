@@ -28,7 +28,7 @@ class SchedulerCommandCheckSchedule(object):
             # FIXME: A jealous class.
             graphNames = ['GraphName1', 'GraphName2', 'GraphName3', 'GraphName4']
             hashValue = os.urandom(32).encode('hex')
-            aCommandProcessor.mLogger.debug("Storing graph execution data under hash: %s." % hashValue)
+            aCommandProcessor.mLogger.debug("Storing graph execution data under a hash: %s." % hashValue)
             aCommandProcessor.mRite.mGraphExecutionData[hashValue] = {}
             aCommandProcessor.mRite.mGraphExecutionData[hashValue]['graphName'] = random.choice(graphNames)
             aCommandProcessor.mLogger.debug("Sending the ExecuteGraphSeekVolunteers message.")

@@ -57,6 +57,21 @@ class GraphRite(Rite):
         #
         self.mGraphExecutionData = {}
 
+        # CommandWorkExecution volunteering.
+        #
+        # It has a structure as follows:
+        # {'hash': CritterHash,
+        #  'data': data}
+        #
+        # data:
+        # {'graphName':  string,
+        #  'graphCycle': integer,
+        #  'workName':   string,
+        #  'boss':       string,
+        #  'worker':     string}
+        #
+        self.mCommandWorkExecutionVolunteering = {}
+
     def run(self):
         """Starts the main loop of the rite."""
 
