@@ -1,5 +1,3 @@
-"""The scheduler rite."""
-
 import time
 
 import Rites.RiteCommon
@@ -9,24 +7,7 @@ from Rites.Scheduler.SchedulerCommands         import SchedulerCommandCheckSched
 from Rites.Scheduler.SchedulerMessageProcessor import SchedulerMessageProcessor
 
 class SchedulerRite(Rite):
-    """The scheduler rite.
-
-    Attributes:
-        mCommandProcessor: The command processor of the rite
-        mMessageProcessor: The message processor of the rite
-
-    """
-
     def __init__(self, aCritter, aCritterData, aSettings, aPostOffice):
-        """Initializes the rite.
-
-        Arguments:
-            aCritter:     The critter.
-            aCritterData: The critter data.
-            aSettings:    The settings.
-            aPostOffice:  The post office.
-
-        """
         Rite.__init__(self,
                       aCritter,
                       aCritterData,
@@ -49,7 +30,6 @@ class SchedulerRite(Rite):
         self.mGraphExecutionData = {}
 
     def run(self):
-        """Starts the main loop of the rite."""
         while True:
             self.mLogger.debug("Checking the schedule.")
             command = SchedulerCommandCheckSchedule()
