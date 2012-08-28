@@ -25,10 +25,7 @@ class BalanceMessageProcessor(MessageProcessor):
             aMessage: The message.
 
         """
-        if aMessage.sender.nick == self.mRite.mCritterData.mNick:
-            self.mLogger.debug("Dropping critter's own message: %s." % aMessage.messageName)
-
-        elif aMessage.messageName == 'CommandWorkExecutionAnnouncement':
+        if aMessage.messageName == 'CommandWorkExecutionAnnouncement':
             command = BalanceCommandCommandWorkExecution(aMessage)
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.BALANCE, command)
 
