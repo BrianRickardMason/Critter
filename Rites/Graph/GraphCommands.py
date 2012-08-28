@@ -182,6 +182,7 @@ class GraphCommand_Handle_CommandWorkExecutionSeekVolunteers(object):
     def execute(self, aCommandProcessor):
         hashValue = self.mMessage.hash
         if hashValue in aCommandProcessor.mRite.mCommandWorkExecutionVolunteering:
+            aCommandProcessor.mLogger.debug("Storing CommandWorkExecution volunteering data under a hash: %s." % hashValue)
             aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['boss'] = self.mMessage.sender.nick
         else:
             aCommandProcessor.mLogger.warn("Hash is unavailable.")
