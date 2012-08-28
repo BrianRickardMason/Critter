@@ -4,17 +4,6 @@ import os
 import random
 
 class SchedulerCommandCheckSchedule(object):
-    """CheckSchedule command.
-
-    Attributes:
-        mName: The name of the command.
-
-    """
-
-    def __init__(self):
-        """Initializes the command."""
-        self.mName = "SchedulerCommandCheckSchedule"
-
     def execute(self, aCommandProcessor):
         """Executes the command.
 
@@ -42,7 +31,6 @@ class SchedulerCommandCheckSchedule(object):
 
 class SchedulerCommand_Handle_ExecuteGraphSeekVolunteers(object):
     def __init__(self, aMessage):
-        self.mName = "SchedulerCommand_Handle_ExecuteGraphSeekVolunteers"
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
@@ -54,7 +42,6 @@ class SchedulerCommand_Handle_ExecuteGraphSeekVolunteers(object):
 
 class SchedulerCommand_Handle_ExecuteGraphVoluntee(object):
     def __init__(self, aMessage):
-        self.mName = "SchedulerCommand_Handle_ExecuteGraphVoluntee"
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
@@ -89,7 +76,6 @@ class SchedulerCommand_Handle_ExecuteGraphVoluntee(object):
 
 class SchedulerCommand_Handle_ExecuteGraphSelectVolunteer(object):
     def __init__(self, aMessage):
-        self.mName = "SchedulerCommand_Handle_ExecuteGraphSelectVolunteer"
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):

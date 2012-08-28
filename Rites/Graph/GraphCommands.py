@@ -6,7 +6,6 @@ class GraphCommandSpawnGraphExecution(object):
     """SpawnGraphExecution command.
 
     Attributes:
-        mName:    The name of the command.
         mMessage: The DetermineGraphCycleResponse.
 
     """
@@ -18,7 +17,6 @@ class GraphCommandSpawnGraphExecution(object):
             aMessage: The DetermineGraphCycleResponse.
 
         """
-        self.mName    = 'GraphCommandSpawnGraphExecution'
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
@@ -50,7 +48,6 @@ class GraphCommandLoadGraphAndWork(object):
     """CheckSchedule command.
 
     Attributes:
-        mName:    The name of the command.
         mMessage: The LoadGraphAndWorkResponse.
 
     """
@@ -62,7 +59,6 @@ class GraphCommandLoadGraphAndWork(object):
             aMessage: The LoadGraphAndWorkResponse.
 
         """
-        self.mName    = "GraphCommandLoadGraphAndWork"
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
@@ -94,7 +90,6 @@ class GraphCommandMarkFinishedWork(object):
     """MarkFinishedWork command.
 
     Attributes:
-        mName:    The name of the command.
         mMessage: The ReportFinishedWorkAnnouncement.
 
     """
@@ -106,7 +101,6 @@ class GraphCommandMarkFinishedWork(object):
             aMessage: The ReportFinishedWorkAnnouncement.
 
         """
-        self.mName    = 'GraphCommandMarkFinishedWork'
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
@@ -136,7 +130,6 @@ class GraphCommandMarkFinishedWork(object):
 
 class GraphCommand_Handle_ExecuteGraphSeekVolunteers(object):
     def __init__(self, aMessage):
-        self.mName = "GraphCommand_Handle_ExecuteGraphSeekVolunteers"
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
@@ -162,7 +155,6 @@ class GraphCommand_Handle_ExecuteGraphSeekVolunteers(object):
 
 class GraphCommand_Handle_ExecuteGraphSelectVolunteer(object):
     def __init__(self, aMessage):
-        self.mName = 'GraphCommand_Handle_ExecuteGraphSelectVolunteer'
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
@@ -176,7 +168,6 @@ class GraphCommand_Handle_ExecuteGraphSelectVolunteer(object):
 
 class GraphCommand_Handle_CommandWorkExecutionSeekVolunteers(object):
     def __init__(self, aMessage):
-        self.mName = "GraphCommand_Handle_CommandWorkExecutionSeekVolunteers"
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
@@ -189,7 +180,6 @@ class GraphCommand_Handle_CommandWorkExecutionSeekVolunteers(object):
 
 class GraphCommand_Handle_CommandWorkExecutionVoluntee(object):
     def __init__(self, aMessage):
-        self.mName = "GraphCommand_Handle_CommandWorkExecutionVoluntee"
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
@@ -227,7 +217,6 @@ class GraphCommand_Handle_CommandWorkExecutionVoluntee(object):
 
 class GraphCommand_Handle_CommandWorkExecutionSelectVolunteer(object):
     def __init__(self, aMessage):
-        self.mName = "GraphCommand_Handle_CommandWorkExecutionSelectVolunteer"
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):

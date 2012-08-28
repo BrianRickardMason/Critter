@@ -29,7 +29,7 @@ class CommandProcessor(threading.Thread):
 
         """
         self.mLogger = logging.getLogger(aRite.mRiteName + 'CommandProcessor')
-        self.mLogger.setLevel(logging.INFO)
+        self.mLogger.setLevel(logging.DEBUG)
 
         self.mRite = aRite
 
@@ -46,7 +46,7 @@ class CommandProcessor(threading.Thread):
         while True:
             self.mLogger.debug("Waiting for a command.")
             command = self.mQueue.get()
-            self.mLogger.debug("Executing a command: %s." % command.mName)
+            self.mLogger.debug("Executing a command: %s." % command.__class__.__name__)
             command.execute(self)
 
     def put(self, aCommand):

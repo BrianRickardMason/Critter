@@ -9,7 +9,6 @@ class DatabaseCommandDetermineGraphCycle(object):
     """DetermineGraphCycle command.
 
     Attributes:
-        mName:    The name of the command.
         mMessage: The DetermineGraphCycleRequest.
 
     """
@@ -21,7 +20,6 @@ class DatabaseCommandDetermineGraphCycle(object):
             aMessage: The DetermineGraphCycleRequest.
 
         """
-        self.mName    = 'DatabaseCommandDetermineGraphCycle'
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
@@ -80,7 +78,6 @@ class DatabaseCommandDetermineWorkCycle(object):
     """DetermineWorkCycle command.
 
     Attributes:
-        mName:    The name of the command.
         mMessage: The DetermineWorkCycleRequest.
 
     """
@@ -92,7 +89,6 @@ class DatabaseCommandDetermineWorkCycle(object):
             aMessage: The DetermineWorkCycleRequest.
 
         """
-        self.mName    = 'DatabaseCommandDetermineWorkCycle'
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
@@ -153,7 +149,6 @@ class DatabaseCommandLoadGraphsAndWorks(object):
     """LoadGraphsAndWorks command.
 
     Attributes:
-        mName:    The name of the command.
         mMessage: The LoadGraphAndWorkRequest.
 
     """
@@ -165,7 +160,6 @@ class DatabaseCommandLoadGraphsAndWorks(object):
             aMessage: The LoadGraphAndWorkRequest.
 
         """
-        self.mName    = "DatabaseCommandLoadGraphsAndWorks"
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
@@ -218,7 +212,6 @@ class DatabaseCommandLoadWorkDetails(object):
     """LoadWorkDetails command.
 
     Attributes:
-        mName:    The name of the command.
         mMessage: The LoadWorkDetailsRequest.
 
     """
@@ -230,7 +223,6 @@ class DatabaseCommandLoadWorkDetails(object):
             aMessage: LoadWorkDetailsRequest.
 
         """
-        self.mName    = "DatabaseCommandLoadWorkDetails"
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):

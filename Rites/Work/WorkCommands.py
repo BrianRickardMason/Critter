@@ -6,7 +6,6 @@ class WorkCommandInitializeWorkExecution(object):
     """InitializeWorkExecution command.
 
     Attributes:
-        mName:    The name of the command.
         mMessage: The ExecuteWorkAnnouncement.
 
     """
@@ -18,7 +17,6 @@ class WorkCommandInitializeWorkExecution(object):
             aMessage: The ExecuteWorkAnnouncement.
 
         """
-        self.mName    = 'WorkCommandInitializeWorkExecution'
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
@@ -40,7 +38,6 @@ class WorkCommandInitializeWorkExecution(object):
 
 class WorkCommandLoadWorkDetails(object):
     def __init__(self, aMessage):
-        self.mName    = 'WorkCommandLoadWorkDetails'
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
@@ -53,7 +50,6 @@ class WorkCommandSpawnWorkExecution(object):
     """SpawnWorkExecution command.
 
     Attributes:
-        mName:    The name of the command.
         mMessage: The DetermineWorkCycleResponse.
 
     """
@@ -65,7 +61,6 @@ class WorkCommandSpawnWorkExecution(object):
             aMessage: The DetermineWorkCycleResponse.
 
         """
-        self.mName    = 'WorkCommandSpawnWorkExecution'
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):

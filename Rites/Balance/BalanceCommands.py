@@ -8,7 +8,6 @@ from Critter.CritterData import CritterData
 
 class BalanceCommand_Handle_CommandWorkExecutionSeekVolunteers(object):
     def __init__(self, aMessage):
-        self.mName = "BalanceCommand_Handle_CommandWorkExecutionSeekVolunteers"
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
@@ -35,7 +34,6 @@ class BalanceCommand_Handle_CommandWorkExecutionSeekVolunteers(object):
 
 class BalanceCommand_Handle_CommandWorkExecutionSelectVolunteer(object):
     def __init__(self, aMessage):
-        self.mName = 'BalanceCommand_Handle_CommandWorkExecutionSelectVolunteer'
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):

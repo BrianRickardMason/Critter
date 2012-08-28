@@ -5,19 +5,7 @@ import time
 from Critter.CritterData import CritterData
 
 class RegistryCommandCheckHeartbeats(object):
-    """RegisterCritter command.
-
-    Attributes:
-        mName The name of the command.
-
-    """
-
     # TODO: If "there is not any heartbeat" twice and a critter is running, obviously something fishy is going on.
-
-    def __init__(self):
-        """Initializes the command."""
-        self.mName = "RegistryCommandCheckHeartbeats"
-
     def execute(self, aCommandProcessor):
         """Executes the command.
 
@@ -53,7 +41,6 @@ class RegistryCommandPresentYourself(object):
     """PresentYourself command.
 
     Attributes:
-        mName:    The name of the command.
         mMessage: The PresentYourselfRequest.
 
     """
@@ -65,7 +52,6 @@ class RegistryCommandPresentYourself(object):
             aMessage: The PresentYourselfRequest.
 
         """
-        self.mName    = "RegistryCommandPresentYourself"
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
@@ -93,7 +79,6 @@ class RegistryCommandRegisterCritter(object):
     """RegisterCritter command.
 
     Attributes:
-        mName:    The name of the command.
         mMessage: The PresentYourselfResponse.
 
     """
@@ -105,7 +90,6 @@ class RegistryCommandRegisterCritter(object):
             aMessage: The PresentYourselfResponse.
 
         """
-        self.mName    = "RegistryCommandRegisterCritter"
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
@@ -133,7 +117,6 @@ class RegistryCommandStoreHeartbeat(object):
     """RegisterCritter command.
 
     Attributes:
-        mName    The name of the command.
         mMessage The HeartbeatAnnouncement message.
 
     """
@@ -145,7 +128,6 @@ class RegistryCommandStoreHeartbeat(object):
             aMessage The HeartbeatAnnouncement message
 
         """
-        self.mName    = "RegistryCommandStoreHeartbeat"
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
@@ -178,7 +160,6 @@ class RegistryCommandUnregisterCritter(object):
     """UnregisterCritter command.
 
     Attributes:
-        mName:        The name of the command.
         mCritterData: The critter's data.
 
     """
@@ -190,7 +171,6 @@ class RegistryCommandUnregisterCritter(object):
             aCritterData The critter's data
 
         """
-        self.mName        = "RegistryCommandUnregisterCritter"
         self.mCritterData = aCritterData
 
     def execute(self, aCommandProcessor):
