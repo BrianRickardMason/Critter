@@ -224,3 +224,18 @@ class GraphCommand_Handle_CommandWorkExecutionVoluntee(object):
              'graphCycle':  aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['graphCycle'],
              'workName':    aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['workName']})
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
+class GraphCommand_Handle_CommandWorkExecutionSelectVolunteer(object):
+    def __init__(self, aMessage):
+        self.mName = "GraphCommand_Handle_CommandWorkExecutionSelectVolunteer"
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        if aCommandProcessor.mRite.mCritter.mCritterData.mNick == self.mMessage.sender.type and \
+           aCommandProcessor.mRite.mCritter.mCritterData.mNick == self.mMessage.sender.type     :
+            aCommandProcessor.mLogger.debug("The message is sent by me.")
+            return
+
+        hashValue = self.mMessage.hash
+
+        aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['worker'] = self.mMessage.receiver.nick
