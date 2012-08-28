@@ -31,10 +31,6 @@ class GraphMessageProcessor(MessageProcessor):
 
         """
         if aMessage.messageName == 'DetermineGraphCycleResponse':
-            # TODO: This should not be done here.
-            if aMessage.sender.nick == self.mRite.mCritterData.mNick:
-                self.mLogger.debug("Dropping critter's own message: %s." % aMessage.messageName)
-                return
             command = GraphCommandSpawnGraphExecution(aMessage)
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
 
@@ -55,18 +51,10 @@ class GraphMessageProcessor(MessageProcessor):
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
 
         elif aMessage.messageName == 'LoadGraphAndWorkResponse':
-            # TODO: This should not be done here.
-            if aMessage.sender.nick == self.mRite.mCritterData.mNick:
-                self.mLogger.debug("Dropping critter's own message: %s." % aMessage.messageName)
-                return
             command = GraphCommandLoadGraphAndWork(aMessage)
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
 
         elif aMessage.messageName == 'ReportFinishedWorkAnnouncement':
-            # TODO: This should not be done here.
-            if aMessage.sender.nick == self.mRite.mCritterData.mNick:
-                self.mLogger.debug("Dropping critter's own message: %s." % aMessage.messageName)
-                return
             command = GraphCommandMarkFinishedWork(aMessage)
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
 
