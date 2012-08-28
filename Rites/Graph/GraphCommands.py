@@ -118,10 +118,10 @@ class GraphCommandMarkFinishedWork(object):
         """
         # TODO: Remove hardcoded value.
         if self.mMessage.result == True:
-            state = 2
+            state = GraphRiteSession.STATE_SUCCEED
         else:
-            state = 3
-        state = 2
+            state = GraphRiteSession.STATE_FAILED
+        state = GraphRiteSession.STATE_SUCCEED
 
         graphName  = self.mMessage.graphName
         graphCycle = self.mMessage.graphCycle
@@ -231,11 +231,16 @@ class GraphCommand_Handle_CommandWorkExecutionSelectVolunteer(object):
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
-        if aCommandProcessor.mRite.mCritter.mCritterData.mNick == self.mMessage.sender.type and \
-           aCommandProcessor.mRite.mCritter.mCritterData.mNick == self.mMessage.sender.type     :
-            aCommandProcessor.mLogger.debug("The message is sent by me.")
-            return
+        # Set the state.
+        try:
+            aCommandProcessor.mRite.mSessions[self.mMessage.graphName] \
+                                             [self.mMessage.graphCycle].mWorkStates[self.mMessage.workName] = \
+                                             GraphRiteSession.STATE_STARTED
+        except KeyError, e:
+            pass
 
-        hashValue = self.mMessage.hash
-
-        aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['worker'] = self.mMessage.receiver.nick
+        if aCommandProcessor.mRite.mCritter.mCritterData.mType != self.mMessage.sender.type or \
+           aCommandProcessor.mRite.mCritter.mCritterData.mNick != self.mMessage.sender.nick    :
+            hashValue = self.mMessage.hash
+            aCommandProcessor.mLogger.debug("Storing CommandWorkExecution volunteering data under a hash: %s." % hashValue)
+            aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['worker'] = self.mMessage.receiver.nick

@@ -34,9 +34,10 @@ class GraphRiteSession(threading.Thread):
     SLEEP_WHILE_WAITING    = 1 # [s].
 
     STATE_NOT_STARTED = 0
-    STATE_STARTED     = 1
-    STATE_SUCCEED     = 2
-    STATE_FAILED      = 3
+    STATE_COMMANDED   = 1
+    STATE_STARTED     = 2
+    STATE_SUCCEED     = 3
+    STATE_FAILED      = 4
 
     def __init__(self, aRite, aGraphName, aCycle):
         """Initializes the message processor.
@@ -104,19 +105,7 @@ class GraphRiteSession(threading.Thread):
 
         assert aWorkName in self.mWorkStates, "Work %s has not its state attached." % aWorkName
 
-        # Set the state.
-        self.mWorkStates[aWorkName] = GraphRiteSession.STATE_STARTED
-
-        # Send the message.
-        envelope = self.mRite.mPostOffice.encode(
-            'CommandWorkExecutionAnnouncement',
-            {'messageName': 'CommandWorkExecutionAnnouncement',
-             'sender':      {'type': self.mRite.mCritterData.mType,
-                             'nick': self.mRite.mCritterData.mNick},
-             'graphName':   self.mGraphName,
-             'cycle':       self.mCycle,
-             'workName':    aWorkName})
-        self.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+        self.mWorkStates[aWorkName] = GraphRiteSession.STATE_COMMANDED
 
         hashValue = os.urandom(32).encode('hex')
         self.mLogger.debug("Storing CommandWorkExecution volunteering data under a hash: %s." % hashValue)
@@ -150,23 +139,26 @@ class SpawnChecker(object):
         if GraphRiteSession.STATE_FAILED in aWorkStates.values():
             return False
 
-        # There are only 'STATE_STARTED' states.
-        onlyStateStarted = True
+        # There are only 'STATE_COMMANDED' or 'STATE_STARTED' states.
+        onlyStateCommandedOrStarted = True
         for workState in aWorkStates.values():
-            if workState != GraphRiteSession.STATE_STARTED:
-                onlyStateStarted = False
-        if onlyStateStarted == True:
+            if workState not in [GraphRiteSession.STATE_COMMANDED,
+                                 GraphRiteSession.STATE_STARTED]:
+                onlyStateCommandedOrStarted = False
+        if onlyStateCommandedOrStarted == True:
             return False
 
         # There are only 'STATE_STARTED' and 'STATE_SUCCEED' states.
-        onlyStateStartedAndStateSucceed = True
+        onlyStateCommandedOrStartedAndStateSucceed = True
         for workState in aWorkStates.values():
-            if workState not in [GraphRiteSession.STATE_STARTED, GraphRiteSession.STATE_SUCCEED]:
-                onlyStateStartedAndStateSucceed = False
-        if onlyStateStartedAndStateSucceed == True:
+            if workState not in [GraphRiteSession.STATE_COMMANDED,
+                                 GraphRiteSession.STATE_STARTED,
+                                 GraphRiteSession.STATE_SUCCEED]:
+                onlyStateCommandedOrStartedAndStateSucceed = False
+        if onlyStateCommandedOrStartedAndStateSucceed == True:
             return False
 
-        # There are only 'STATE_NOT_STARTED' and 'STATE_STARTED' and 'STATE_SUCCEED' states.
+        # There are only 'STATE_NOT_STARTED' and 'STATE_COMMANDED' and STATE_STARTED' and 'STATE_SUCCEED' states.
         return True
 
 class WorkFinder(object):
@@ -238,8 +230,9 @@ class Awaiter(object):
             True if there's a need to keep waiting, False otherwise.
 
         """
-        # There's the 'STATE_STARTED' state.
-        if GraphRiteSession.STATE_STARTED in aWorkStates.values():
+        # There's the 'STATE_COMMANDED' or 'STATE_STARTED' state.
+        if GraphRiteSession.STATE_COMMANDED in aWorkStates.values() or \
+           GraphRiteSession.STATE_STARTED   in aWorkStates.values()    :
             return True
 
         return False

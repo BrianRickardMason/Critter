@@ -6,32 +6,53 @@ import Rites.RiteCommon
 
 from Critter.CritterData import CritterData
 
-class BalanceCommandCommandWorkExecution(object):
-    """CommandWorkExecution command.
-
-    Attributes:
-        mName:    The name of the command.
-        mMessage: The CommandWorkExecutionAnnouncement.
-
-    """
-
+class BalanceCommand_Handle_CommandWorkExecutionSeekVolunteers(object):
     def __init__(self, aMessage):
-        """Initializes the command.
-
-        Arguments:
-            aMessage: The CommandWorkExecutionAnnouncement.
-
-        """
-        self.mName    = 'CommandWorkExecution'
+        self.mName = "BalanceCommand_Handle_CommandWorkExecutionSeekVolunteers"
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
-        """Executes the command.
+        hashValue = self.mMessage.hash
+        if hashValue in aCommandProcessor.mRite.mCommandWorkExecutionVolunteering:
+            # TODO: Handle it!
+            aCommandProcessor.mLogger.error("Hash is available - conflict.")
+            return
 
-        Arguments:
-            aCommandProcessor: The command processor to be visited.
+        aCommandProcessor.mLogger.debug("Storing CommandWorkExecution volunteering data under a hash: %s." % hashValue)
+        aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue] = {}
+        aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['boss'] = self.mMessage.sender.nick
 
-        """
+        aCommandProcessor.mLogger.debug("Sending the CommandWorkExecutionVoluntee message.")
+        envelope = aCommandProcessor.mRite.mPostOffice.encode(
+            'CommandWorkExecutionVoluntee',
+            {'messageName': 'CommandWorkExecutionVoluntee',
+             'sender':      {'type': aCommandProcessor.mRite.mCritterData.mType,
+                             'nick': aCommandProcessor.mRite.mCritterData.mNick},
+             'receiver':    {'type': self.mMessage.sender.type,
+                             'nick': self.mMessage.sender.nick},
+             'hash':        hashValue})
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
+class BalanceCommand_Handle_CommandWorkExecutionSelectVolunteer(object):
+    def __init__(self, aMessage):
+        self.mName = 'BalanceCommand_Handle_CommandWorkExecutionSelectVolunteer'
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        if aCommandProcessor.mRite.mCritter.mCritterData.mType != self.mMessage.receiver.type or \
+           aCommandProcessor.mRite.mCritter.mCritterData.mNick != self.mMessage.receiver.nick    :
+            aCommandProcessor.mLogger.debug("The message is not addressed to me.")
+            return
+
+        hashValue = self.mMessage.hash
+
+        aCommandProcessor.mLogger.debug("Storing CommandWorkExecution volunteering data under a hash: %s." % hashValue)
+        aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue] = {}
+        aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['graphName']  = self.mMessage.graphName
+        aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['graphCycle'] = self.mMessage.graphCycle
+        aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['workName']   = self.mMessage.workName
+        aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['worker']     = self.mMessage.receiver.nick
+
         # Get the list of known critters.
         # FIXME: Jealous class.
         knownCritters = aCommandProcessor.mRite.mCritter.mRites[Rites.RiteCommon.REGISTRY].getKnownCritters()
@@ -58,33 +79,6 @@ class BalanceCommandCommandWorkExecution(object):
              'receiver':    {'type': foundWorkerData.mType,
                              'nick': foundWorkerData.mNick},
              'graphName':   self.mMessage.graphName,
-             'cycle':       self.mMessage.cycle,
+             'cycle':       self.mMessage.graphCycle,
              'workName':    self.mMessage.workName})
-        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
-
-class BalanceCommand_Handle_CommandWorkExecutionSeekVolunteers(object):
-    def __init__(self, aMessage):
-        self.mName = "BalanceCommand_Handle_CommandWorkExecutionSeekVolunteers"
-        self.mMessage = aMessage
-
-    def execute(self, aCommandProcessor):
-        hashValue = self.mMessage.hash
-        if hashValue in aCommandProcessor.mRite.mCommandWorkExecutionVolunteering:
-            # TODO: Handle it!
-            aCommandProcessor.mLogger.error("Hash is available - conflict.")
-            return
-
-        aCommandProcessor.mLogger.debug("Storing CommandWorkExecution volunteering data under a hash: %s." % hashValue)
-        aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue] = {}
-        aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['boss'] = self.mMessage.sender.nick
-
-        aCommandProcessor.mLogger.debug("Sending the CommandWorkExecutionVoluntee message.")
-        envelope = aCommandProcessor.mRite.mPostOffice.encode(
-            'CommandWorkExecutionVoluntee',
-            {'messageName': 'CommandWorkExecutionVoluntee',
-             'sender':      {'type': aCommandProcessor.mRite.mCritterData.mType,
-                             'nick': aCommandProcessor.mRite.mCritterData.mNick},
-             'receiver':    {'type': self.mMessage.sender.type,
-                             'nick': self.mMessage.sender.nick},
-             'hash':        hashValue})
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)

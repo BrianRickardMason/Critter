@@ -2,8 +2,8 @@
 
 import Rites.RiteCommon
 
-from Rites.Balance.BalanceCommands import BalanceCommandCommandWorkExecution
 from Rites.Balance.BalanceCommands import BalanceCommand_Handle_CommandWorkExecutionSeekVolunteers
+from Rites.Balance.BalanceCommands import BalanceCommand_Handle_CommandWorkExecutionSelectVolunteer
 from Rites.MessageProcessor        import MessageProcessor
 
 class BalanceMessageProcessor(MessageProcessor):
@@ -27,8 +27,8 @@ class BalanceMessageProcessor(MessageProcessor):
         """
         command = None
 
-        if aMessage.messageName == 'CommandWorkExecutionAnnouncement':   command = BalanceCommandCommandWorkExecution(aMessage)
-        if aMessage.messageName == 'CommandWorkExecutionSeekVolunteers': command = BalanceCommand_Handle_CommandWorkExecutionSeekVolunteers(aMessage)
+        if aMessage.messageName == 'CommandWorkExecutionSeekVolunteers':  command = BalanceCommand_Handle_CommandWorkExecutionSeekVolunteers(aMessage)
+        if aMessage.messageName == 'CommandWorkExecutionSelectVolunteer': command = BalanceCommand_Handle_CommandWorkExecutionSelectVolunteer(aMessage)
 
         if command:
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.BALANCE, command)
