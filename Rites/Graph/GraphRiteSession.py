@@ -52,6 +52,7 @@ class GraphRiteSession(threading.Thread):
 
         self.mRite      = aRite
         self.mGraphName = aGraphName
+        # TODO: Rename me to mGraphCycle.
         self.mCycle     = aCycle
 
         assert aGraphName in self.mRite.mWorks, "The graph name has not any works associated."
@@ -118,19 +119,19 @@ class GraphRiteSession(threading.Thread):
         self.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
         hashValue = os.urandom(32).encode('hex')
-        aCommandProcessor.mLogger.debug("Storing CommandWorkExecution volunteering data under a hash: %s." % hashValue)
-        aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue] = {}
-        aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['graphName']  = self.mGraphName
-        aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['graphCycle'] = self.mGraphCycle
-        aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['workName']   = aWorkName
-        aCommandProcessor.mLogger.debug("Sending the CommandWorkExecutionSeekVolunteers message.")
-        envelope = aCommandProcessor.mRite.mPostOffice.encode(
+        self.mLogger.debug("Storing CommandWorkExecution volunteering data under a hash: %s." % hashValue)
+        self.mRite.mCommandWorkExecutionVolunteering[hashValue] = {}
+        self.mRite.mCommandWorkExecutionVolunteering[hashValue]['graphName']  = self.mGraphName
+        self.mRite.mCommandWorkExecutionVolunteering[hashValue]['graphCycle'] = self.mCycle
+        self.mRite.mCommandWorkExecutionVolunteering[hashValue]['workName']   = aWorkName
+        self.mLogger.debug("Sending the CommandWorkExecutionSeekVolunteers message.")
+        envelope = self.mRite.mPostOffice.encode(
             'CommandWorkExecutionSeekVolunteers',
             {'messageName': 'CommandWorkExecutionSeekVolunteers',
-             'sender':      {'type': aCommandProcessor.mRite.mCritterData.mType,
-                             'nick': aCommandProcessor.mRite.mCritterData.mNick},
+             'sender':      {'type': self.mRite.mCritterData.mType,
+                             'nick': self.mRite.mCritterData.mNick},
              'hash':        hashValue})
-        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+        self.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
 class SpawnChecker(object):
     """Checks whether there's a need to continue spawning works."""
