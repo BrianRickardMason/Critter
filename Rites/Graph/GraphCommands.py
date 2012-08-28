@@ -186,3 +186,41 @@ class GraphCommand_Handle_CommandWorkExecutionSeekVolunteers(object):
             aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['boss'] = self.mMessage.sender.nick
         else:
             aCommandProcessor.mLogger.warn("Hash is unavailable.")
+
+class GraphCommand_Handle_CommandWorkExecutionVoluntee(object):
+    def __init__(self, aMessage):
+        self.mName = "GraphCommand_Handle_CommandWorkExecutionVoluntee"
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        if aCommandProcessor.mRite.mCritter.mCritterData.mType != self.mMessage.receiver.type or \
+           aCommandProcessor.mRite.mCritter.mCritterData.mNick != self.mMessage.receiver.nick    :
+            aCommandProcessor.mLogger.debug("The message is not addressed to me.")
+            return
+
+        hashValue = self.mMessage.hash
+
+        if not hashValue in aCommandProcessor.mRite.mCommandWorkExecutionVolunteering:
+            aCommandProcessor.mLogger.warn("The hash is unavailable.")
+            return
+
+        if 'worker' in aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]:
+            aCommandProcessor.mLogger.debug("Leading worker has already been selected.")
+            return
+
+        aCommandProcessor.mLogger.debug("Storing CommandWorkExecution volunteering data under a hash: %s." % hashValue)
+        aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['worker'] = self.mMessage.sender.nick
+
+        aCommandProcessor.mLogger.debug("Sending the CommandWorkExecutionSelectVolunteer message.")
+        envelope = aCommandProcessor.mRite.mPostOffice.encode(
+            'CommandWorkExecutionSelectVolunteer',
+            {'messageName': 'CommandWorkExecutionSelectVolunteer',
+             'sender':      {'type': aCommandProcessor.mRite.mCritterData.mType,
+                             'nick': aCommandProcessor.mRite.mCritterData.mNick},
+             'receiver':    {'type': self.mMessage.sender.type,
+                             'nick': self.mMessage.sender.nick},
+             'hash':        hashValue,
+             'graphName':   aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['graphName'],
+             'graphCycle':  aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['graphCycle'],
+             'workName':    aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['workName']})
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
