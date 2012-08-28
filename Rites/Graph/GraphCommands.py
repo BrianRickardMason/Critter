@@ -173,3 +173,15 @@ class GraphCommand_Handle_ExecuteGraphSelectVolunteer(object):
                              'nick': aCommandProcessor.mRite.mCritterData.mNick},
              'graphName':   self.mMessage.graphName})
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
+class GraphCommand_Handle_CommandWorkExecutionSeekVolunteers(object):
+    def __init__(self, aMessage):
+        self.mName = "GraphCommand_Handle_CommandWorkExecutionSeekVolunteers"
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        hashValue = self.mMessage.hash
+        if hashValue in aCommandProcessor.mRite.mCommandWorkExecutionVolunteering:
+            aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['boss'] = self.mMessage.sender.nick
+        else:
+            aCommandProcessor.mLogger.warn("Hash is unavailable.")
