@@ -45,7 +45,7 @@ class GraphMessageProcessor(MessageProcessor):
             command = GraphCommand_Handle_ExecuteGraphSelectVolunteer(aMessage)
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
 
-        elif aMessage.messageName == 'ExecuteGraphSeekVolunteers':
+        elif aMessage.messageName == 'CommandWorkExecutionSeekVolunteers':
             command = GraphCommand_Handle_CommandWorkExecutionSeekVolunteers(aMessage)
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
 
