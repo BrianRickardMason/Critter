@@ -30,33 +30,15 @@ class GraphMessageProcessor(MessageProcessor):
             aMessage: The message.
 
         """
-        if aMessage.messageName == 'DetermineGraphCycleResponse':
-            command = GraphCommandSpawnGraphExecution(aMessage)
-            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
+        if aMessage.messageName == 'CommandWorkExecutionSeekVolunteers': command = GraphCommand_Handle_CommandWorkExecutionSeekVolunteers(aMessage)
+        if aMessage.messageName == 'CommandWorkExecutionVoluntee':       command = GraphCommand_Handle_CommandWorkExecutionVoluntee(aMessage)
+        if aMessage.messageName == 'DetermineGraphCycleResponse':        command = GraphCommandSpawnGraphExecution(aMessage)
+        if aMessage.messageName == 'ExecuteGraphSeekVolunteers':         command = GraphCommand_Handle_ExecuteGraphSeekVolunteers(aMessage)
+        if aMessage.messageName == 'ExecuteGraphSelectVolunteer':        command = GraphCommand_Handle_ExecuteGraphSelectVolunteer(aMessage)
+        if aMessage.messageName == 'LoadGraphAndWorkResponse':           command = GraphCommandLoadGraphAndWork(aMessage)
+        if aMessage.messageName == 'ReportFinishedWorkAnnouncement':     command = GraphCommandMarkFinishedWork(aMessage)
 
-        elif aMessage.messageName == 'ExecuteGraphSeekVolunteers':
-            command = GraphCommand_Handle_ExecuteGraphSeekVolunteers(aMessage)
+        if command:
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
-
-        elif aMessage.messageName == 'ExecuteGraphSelectVolunteer':
-            command = GraphCommand_Handle_ExecuteGraphSelectVolunteer(aMessage)
-            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
-
-        elif aMessage.messageName == 'CommandWorkExecutionSeekVolunteers':
-            command = GraphCommand_Handle_CommandWorkExecutionSeekVolunteers(aMessage)
-            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
-
-        elif aMessage.messageName == 'CommandWorkExecutionVoluntee':
-            command = GraphCommand_Handle_CommandWorkExecutionVoluntee(aMessage)
-            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
-
-        elif aMessage.messageName == 'LoadGraphAndWorkResponse':
-            command = GraphCommandLoadGraphAndWork(aMessage)
-            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
-
-        elif aMessage.messageName == 'ReportFinishedWorkAnnouncement':
-            command = GraphCommandMarkFinishedWork(aMessage)
-            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
-
         else:
             self.mLogger.debug("Dropping unknown message: %s" % aMessage.messageName)
