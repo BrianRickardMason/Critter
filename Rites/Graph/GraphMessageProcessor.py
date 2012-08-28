@@ -1,5 +1,3 @@
-"""The message processor of graph rite."""
-
 import Rites.RiteCommon
 
 from Rites.Graph.GraphCommands import GraphCommandLoadGraphAndWork
@@ -13,24 +11,10 @@ from Rites.Graph.GraphCommands import GraphCommand_Handle_ExecuteGraphSelectVolu
 from Rites.MessageProcessor    import MessageProcessor
 
 class GraphMessageProcessor(MessageProcessor):
-    """The message processor of the graph rite."""
-
     def __init__(self, aRite):
-        """Initializes the message processor.
-
-        Arguments:
-            aRite: The rite.
-
-        """
         MessageProcessor.__init__(self, aRite)
 
     def processMessage(self, aMessage):
-        """Processes the message.
-
-        Arguments:
-            aMessage: The message.
-
-        """
         command = None
 
         if aMessage.messageName == 'CommandWorkExecutionSeekVolunteers':  command = GraphCommand_Handle_CommandWorkExecutionSeekVolunteers(aMessage)
@@ -45,4 +29,4 @@ class GraphMessageProcessor(MessageProcessor):
         if command:
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
         else:
-            self.mLogger.debug("Dropping unknown message: %s" % aMessage.messageName)
+            self.mLogger.debug("Dropping unknown message: %s." % aMessage.messageName)
