@@ -43,6 +43,7 @@ class BalanceCommandCommandWorkExecution(object):
                 availableWorkers.append(critterData.mNick)
 
         # Balance the load.
+        # FIXME: What happens when there are not any workers?
         foundWorker = choice(availableWorkers)
 
         # Command work execution.
