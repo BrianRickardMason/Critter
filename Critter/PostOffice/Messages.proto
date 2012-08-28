@@ -237,3 +237,42 @@ message ExecuteGraphSelectVolunteer
     optional string      hash        = 4;
     optional string      graphName   = 5;
 }
+
+//
+// Work execution.
+//
+
+//
+// GraphYeeti -> GraphYeeti + Balancer.
+//
+message CommandWorkExecutionSeekVolunteers
+{
+    optional string      messageName = 1;
+    optional CritterData sender      = 2;
+    optional string      hash        = 3;
+}
+
+//
+// Balancer -> GraphYeeti.
+//
+message CommandWorkExecutionVoluntee
+{
+    optional string      messageName = 1;
+    optional CritterData sender      = 2;
+    optional CritterData receiver    = 3;
+    optional string      hash        = 4;
+}
+
+//
+// GraphYeeti -> GraphYeeti + Balancer.
+//
+message CommandWorkExecutionSelectVolunteer
+{
+    optional string      messageName = 1;
+    optional CritterData sender      = 2;
+    optional CritterData receiver    = 3;
+    optional string      hash        = 4;
+    optional string      graphName   = 5;
+    optional uint32      graphCycle  = 6;
+    optional string      workName    = 7;
+}
