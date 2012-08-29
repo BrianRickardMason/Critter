@@ -29,7 +29,7 @@ class CommandProcessor(threading.Thread):
 
         """
         self.mLogger = logging.getLogger(aRite.mRiteName + 'CommandProcessor')
-        self.mLogger.setLevel(logging.DEBUG)
+        self.mLogger.setLevel(logging.INFO)
 
         self.mRite = aRite
 
