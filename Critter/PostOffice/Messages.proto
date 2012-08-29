@@ -287,7 +287,7 @@ message CommandWorkExecutionSelectVolunteer
 message Command_Req_ExecuteGraph
 {
     optional string messageName = 1;
-    optional string hash        = 2;
+    optional string critthash   = 2;
     optional string graphName   = 3;
 }
 
@@ -297,5 +297,5 @@ message Command_Req_ExecuteGraph
 message Command_Res_ExecuteGraph
 {
     optional string messageName = 1;
-    optional string hash        = 2;
+    optional string critthash   = 2;
 }
