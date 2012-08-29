@@ -11,21 +11,14 @@ class DatabaseMessageProcessor(MessageProcessor):
         MessageProcessor.__init__(self, aRite)
 
     def processMessage(self, aMessage):
-        if aMessage.messageName == 'DetermineGraphCycleRequest':
-            command = DatabaseCommandDetermineGraphCycle(aMessage)
-            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.DATABASE, command)
+        command = None
 
-        elif aMessage.messageName == 'DetermineWorkCycleRequest':
-            command = DatabaseCommandDetermineWorkCycle(aMessage)
-            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.DATABASE, command)
+        if   aMessage.messageName == 'DetermineGraphCycleRequest': command = DatabaseCommandDetermineGraphCycle(aMessage)
+        elif aMessage.messageName == 'DetermineWorkCycleRequest':  command = DatabaseCommandDetermineWorkCycle(aMessage)
+        elif aMessage.messageName == 'LoadGraphAndWorkRequest':    command = DatabaseCommandLoadGraphsAndWorks(aMessage)
+        elif aMessage.messageName == 'LoadWorkDetailsRequest':     command = DatabaseCommandLoadWorkDetails(aMessage)
 
-        elif aMessage.messageName == 'LoadGraphAndWorkRequest':
-            command = DatabaseCommandLoadGraphsAndWorks(aMessage)
+        if command:
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.DATABASE, command)
-
-        elif aMessage.messageName == 'LoadWorkDetailsRequest':
-            command = DatabaseCommandLoadWorkDetails(aMessage)
-            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.DATABASE, command)
-
         else:
             self.mLogger.debug("Dropping unknown message: %s" % aMessage.messageName)
