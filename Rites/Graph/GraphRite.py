@@ -72,6 +72,10 @@ class GraphRite(Rite):
         #
         self.mCommandWorkExecutionVolunteering = {}
 
+        # A dictionary of sent commands.
+        self.mSentCommands = {}
+        self.mSentCommands['Command_Req_Election'] = {}
+
     def run(self):
         """Starts the main loop of the rite."""
 
