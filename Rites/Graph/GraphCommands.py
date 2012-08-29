@@ -233,3 +233,10 @@ class GraphCommand_Handle_CommandWorkExecutionSelectVolunteer(object):
             hashValue = self.mMessage.hash
             aCommandProcessor.mLogger.debug("Storing CommandWorkExecution volunteering data under a hash: %s." % hashValue)
             aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['worker'] = self.mMessage.receiver.nick
+
+class GraphCommand_Handle_Command_Req_ExecuteGraph(object):
+    def __init__(self, aMessage):
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        pass

@@ -6,6 +6,7 @@ from Rites.Graph.GraphCommands import GraphCommandSpawnGraphExecution
 from Rites.Graph.GraphCommands import GraphCommand_Handle_CommandWorkExecutionSeekVolunteers
 from Rites.Graph.GraphCommands import GraphCommand_Handle_CommandWorkExecutionSelectVolunteer
 from Rites.Graph.GraphCommands import GraphCommand_Handle_CommandWorkExecutionVoluntee
+from Rites.Graph.GraphCommands import GraphCommand_Handle_Command_Req_ExecuteGraph
 from Rites.Graph.GraphCommands import GraphCommand_Handle_ExecuteGraphSeekVolunteers
 from Rites.Graph.GraphCommands import GraphCommand_Handle_ExecuteGraphSelectVolunteer
 from Rites.MessageProcessor    import MessageProcessor
@@ -20,6 +21,7 @@ class GraphMessageProcessor(MessageProcessor):
         if   aMessage.messageName == 'CommandWorkExecutionSeekVolunteers':  command = GraphCommand_Handle_CommandWorkExecutionSeekVolunteers(aMessage)
         elif aMessage.messageName == 'CommandWorkExecutionSelectVolunteer': command = GraphCommand_Handle_CommandWorkExecutionSelectVolunteer(aMessage)
         elif aMessage.messageName == 'CommandWorkExecutionVoluntee':        command = GraphCommand_Handle_CommandWorkExecutionVoluntee(aMessage)
+        elif aMessage.messageName == 'Command_Req_ExecuteGraph':            command = GraphCommand_Handle_Command_Req_ExecuteGraph(aMessage)
         elif aMessage.messageName == 'DetermineGraphCycleResponse':         command = GraphCommandSpawnGraphExecution(aMessage)
         elif aMessage.messageName == 'ExecuteGraphSeekVolunteers':          command = GraphCommand_Handle_ExecuteGraphSeekVolunteers(aMessage)
         elif aMessage.messageName == 'ExecuteGraphSelectVolunteer':         command = GraphCommand_Handle_ExecuteGraphSelectVolunteer(aMessage)
