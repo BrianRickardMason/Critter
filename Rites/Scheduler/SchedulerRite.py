@@ -29,6 +29,10 @@ class SchedulerRite(Rite):
         #
         self.mGraphExecutionData = {}
 
+        # A dictionary of sent commands.
+        self.mSentCommands = {}
+        self.mSentCommands['Command_Req_ExecuteGraph'] = {}
+
     def run(self):
         while True:
             self.mLogger.debug("Checking the schedule.")

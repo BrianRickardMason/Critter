@@ -16,17 +16,30 @@ class SchedulerCommandCheckSchedule(object):
             aCommandProcessor.mLogger.info("New graph execution needed.")
             # FIXME: A jealous class.
             graphNames = ['GraphName1', 'GraphName2', 'GraphName3', 'GraphName4']
-            hashValue = os.urandom(32).encode('hex')
-            aCommandProcessor.mLogger.debug("Storing graph execution data under a hash: %s." % hashValue)
-            aCommandProcessor.mRite.mGraphExecutionData[hashValue] = {}
-            aCommandProcessor.mRite.mGraphExecutionData[hashValue]['graphName'] = random.choice(graphNames)
+            graphName = random.choice(graphNames)
+            critthash = os.urandom(32).encode('hex')
+            aCommandProcessor.mLogger.debug("Storing graph execution data under a hash: %s." % critthash)
+            aCommandProcessor.mRite.mGraphExecutionData[critthash] = {}
+            aCommandProcessor.mRite.mGraphExecutionData[critthash]['graphName'] = graphName
             aCommandProcessor.mLogger.debug("Sending the ExecuteGraphSeekVolunteers message.")
             envelope = aCommandProcessor.mRite.mPostOffice.encode(
                 'ExecuteGraphSeekVolunteers',
                 {'messageName': 'ExecuteGraphSeekVolunteers',
                  'sender':      {'type': aCommandProcessor.mRite.mCritterData.mType,
                                  'nick': aCommandProcessor.mRite.mCritterData.mNick},
-                 'hash':        hashValue})
+                 'hash':        critthash})
+            aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
+            if critthash in aCommandProcessor.mRite.mSentCommands['Command_Req_ExecuteGraph']:
+                assert False, "Not handled yet. Duplicated critthash."
+            else:
+                aCommandProcessor.mRite.mSentCommands['Command_Req_ExecuteGraph'][critthash] = {'critthash': critthash}
+            envelope = aCommandProcessor.mRite.mPostOffice.encode(
+                'Command_Req_ExecuteGraph',
+                {'messageName': 'Command_Req_ExecuteGraph',
+                 'critthash':   critthash,
+                 'graphName':   graphName}
+            )
             aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
 class SchedulerCommand_Handle_ExecuteGraphSeekVolunteers(object):
