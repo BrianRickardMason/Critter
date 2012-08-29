@@ -1,3 +1,10 @@
+DROP TABLE IF EXISTS elections CASCADE;
+CREATE TABLE elections
+(
+    critthash CHAR(64) PRIMARY KEY NOT NULL CHECK(critthash <> ''),
+    crittnick VARCHAR(88) NOT NULL CHECK (crittnick <> '')
+);
+
 DROP TABLE IF EXISTS graphs CASCADE;
 CREATE TABLE graphs
 (
