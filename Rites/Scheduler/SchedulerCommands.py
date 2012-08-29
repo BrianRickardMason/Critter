@@ -30,10 +30,13 @@ class SchedulerCommandCheckSchedule(object):
                  'hash':        critthash})
             aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
+            assert 'Command_Req_ExecuteGraph' in aCommandProcessor.mRite.mSentCommands, "Missing key in the dictionary of sent commands."
+
             if critthash in aCommandProcessor.mRite.mSentCommands['Command_Req_ExecuteGraph']:
                 assert False, "Not handled yet. Duplicated critthash."
             else:
                 aCommandProcessor.mRite.mSentCommands['Command_Req_ExecuteGraph'][critthash] = {'critthash': critthash}
+
             envelope = aCommandProcessor.mRite.mPostOffice.encode(
                 'Command_Req_ExecuteGraph',
                 {'messageName': 'Command_Req_ExecuteGraph',
