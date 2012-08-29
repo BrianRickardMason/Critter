@@ -251,6 +251,7 @@ class GraphCommand_Handle_Command_Req_ExecuteGraph(object):
         envelope = aCommandProcessor.mRite.mPostOffice.encode(
             'Command_Req_Election',
             {'messageName': 'Command_Req_Election',
-             'critthash':   critthash}
+             'critthash':   critthash,
+             'crittnick':   aCommandProcessor.mRite.mCritter.mCritterData.mNick}
         )
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
