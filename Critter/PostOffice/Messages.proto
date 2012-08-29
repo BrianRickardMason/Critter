@@ -276,3 +276,26 @@ message CommandWorkExecutionSelectVolunteer
     optional uint32      graphCycle  = 6;
     optional string      workName    = 7;
 }
+
+//
+// Graph execution.
+//
+
+//
+// Criduler -> Criduler + GraphYeeti.
+//
+message Command_Req_ExecuteGraph
+{
+    optional string messageName = 1;
+    optional string hash        = 2;
+    optional string graphName   = 3;
+}
+
+//
+// GraphYeeti -> Criduler.
+//
+message Command_Res_ExecuteGraph
+{
+    optional string messageName = 1;
+    optional string hash        = 2;
+}
