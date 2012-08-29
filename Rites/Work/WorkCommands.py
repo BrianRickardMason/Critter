@@ -26,6 +26,10 @@ class WorkCommandInitializeWorkExecution(object):
             aCommandProcessor: The command processor to be visited.
 
         """
+        if aCommandProcessor.mRite.mCritter.mCritterData.mType == self.mMessage.sender.type and \
+           aCommandProcessor.mRite.mCritter.mCritterData.mNick == self.mMessage.sender.nick     :
+            return
+
         envelope = aCommandProcessor.mRite.mPostOffice.encode(
             'DetermineWorkCycleRequest',
             {'messageName': 'DetermineWorkCycleRequest',
@@ -41,6 +45,10 @@ class WorkCommandLoadWorkDetails(object):
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
+        if aCommandProcessor.mRite.mCritter.mCritterData.mType == self.mMessage.sender.type and \
+           aCommandProcessor.mRite.mCritter.mCritterData.mNick == self.mMessage.sender.nick     :
+            return
+
         # Store work details.
         for workDetail in self.mMessage.details:
             aCommandProcessor.mRite.mWorkDetails[workDetail.workName] = {'workName': workDetail.workName,
@@ -70,6 +78,10 @@ class WorkCommandSpawnWorkExecution(object):
             aCommandProcessor: The command processor to be visited.
 
         """
+        if aCommandProcessor.mRite.mCritter.mCritterData.mType == self.mMessage.sender.type and \
+           aCommandProcessor.mRite.mCritter.mCritterData.mNick == self.mMessage.sender.nick     :
+            return
+
         if self.mMessage.receiver.nick == aCommandProcessor.mRite.mCritterData.mNick:
             graphName  = self.mMessage.graphName
             # FIXME: Should be self.mMessage.workCycle.

@@ -26,10 +26,7 @@ class RegistryMessageProcessor(MessageProcessor):
             aMessage: The message.
 
         """
-        if aMessage.sender.nick == self.mRite.mCritterData.mNick:
-            self.mLogger.debug("Dropping critter's own message: %s." % aMessage.messageName)
-
-        elif aMessage.messageName == 'HeartbeatAnnouncement':
+        if aMessage.messageName == 'HeartbeatAnnouncement':
             command = RegistryCommandStoreHeartbeat(aMessage)
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.REGISTRY, command)
 

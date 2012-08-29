@@ -27,10 +27,7 @@ class DatabaseMessageProcessor(MessageProcessor):
             aMessage: The message.
 
         """
-        if aMessage.sender.nick == self.mRite.mCritterData.mNick:
-            self.mLogger.debug("Dropping critter's own message: %s." % aMessage.messageName)
-
-        elif aMessage.messageName == 'DetermineGraphCycleRequest':
+        if aMessage.messageName == 'DetermineGraphCycleRequest':
             command = DatabaseCommandDetermineGraphCycle(aMessage)
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.DATABASE, command)
 

@@ -61,6 +61,10 @@ class RegistryCommandPresentYourself(object):
             aCommandProcessor: The command processor to be visited.
 
         """
+        if aCommandProcessor.mRite.mCritter.mCritterData.mType == self.mMessage.sender.type and \
+           aCommandProcessor.mRite.mCritter.mCritterData.mNick == self.mMessage.sender.nick     :
+            return
+
         if self.mMessage.receiver.nick == aCommandProcessor.mRite.mCritterData.mNick:
             receiverCritterData = CritterData(self.mMessage.sender.type, self.mMessage.sender.nick)
 
@@ -99,6 +103,10 @@ class RegistryCommandRegisterCritter(object):
             aCommandProcessor: The command processor to be visited.
 
         """
+        if aCommandProcessor.mRite.mCritter.mCritterData.mType == self.mMessage.sender.type and \
+           aCommandProcessor.mRite.mCritter.mCritterData.mNick == self.mMessage.sender.nick     :
+            return
+
         if self.mMessage.receiver.nick == aCommandProcessor.mRite.mCritterData.mNick:
             critterData = CritterData(self.mMessage.sender.type, self.mMessage.sender.nick)
             nick = critterData.mNick
@@ -137,6 +145,10 @@ class RegistryCommandStoreHeartbeat(object):
             aCommandProcessor The command processor to be visited.
 
         """
+        if aCommandProcessor.mRite.mCritter.mCritterData.mType == self.mMessage.sender.type and \
+           aCommandProcessor.mRite.mCritter.mCritterData.mNick == self.mMessage.sender.nick     :
+            return
+
         nick = self.mMessage.sender.nick
 
         if not nick in aCommandProcessor.mRite.mKnownCritters:

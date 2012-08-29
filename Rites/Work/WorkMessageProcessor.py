@@ -26,10 +26,7 @@ class WorkMessageProcessor(MessageProcessor):
             aMessage: The message.
 
         """
-        if aMessage.sender.nick == self.mRite.mCritterData.mNick:
-            self.mLogger.debug("Dropping critter's own message: %s." % aMessage.messageName)
-
-        elif aMessage.messageName == 'DetermineWorkCycleResponse':
+        if aMessage.messageName == 'DetermineWorkCycleResponse':
             command = WorkCommandSpawnWorkExecution(aMessage)
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.WORK, command)
 

@@ -29,6 +29,10 @@ class DatabaseCommandDetermineGraphCycle(object):
             aCommandProcessor: The command processor to be visited.
 
         """
+        if aCommandProcessor.mRite.mCritter.mCritterData.mType == self.mMessage.sender.type and \
+           aCommandProcessor.mRite.mCritter.mCritterData.mNick == self.mMessage.sender.nick     :
+            return
+
         try:
             connection = psycopg2.connect("host='localhost' dbname='critter' user='brian' password='brianpassword'")
             cursor = connection.cursor()
@@ -98,6 +102,10 @@ class DatabaseCommandDetermineWorkCycle(object):
             aCommandProcessor: The command processor to be visited.
 
         """
+        if aCommandProcessor.mRite.mCritter.mCritterData.mType == self.mMessage.sender.type and \
+           aCommandProcessor.mRite.mCritter.mCritterData.mNick == self.mMessage.sender.nick     :
+            return
+
         try:
             connection = psycopg2.connect("host='localhost' dbname='critter' user='brian' password='brianpassword'")
             cursor = connection.cursor()
@@ -169,6 +177,10 @@ class DatabaseCommandLoadGraphsAndWorks(object):
             aCommandProcessor: The command processor to be visited.
 
         """
+        if aCommandProcessor.mRite.mCritter.mCritterData.mType == self.mMessage.sender.type and \
+           aCommandProcessor.mRite.mCritter.mCritterData.mNick == self.mMessage.sender.nick     :
+            return
+
         graphDictionaries           = []
         workDictionaries            = []
         workPredecessorDictionaries = []
@@ -232,6 +244,10 @@ class DatabaseCommandLoadWorkDetails(object):
             aCommandProcessor: The command processor to be visited.
 
         """
+        if aCommandProcessor.mRite.mCritter.mCritterData.mType == self.mMessage.sender.type and \
+           aCommandProcessor.mRite.mCritter.mCritterData.mNick == self.mMessage.sender.nick     :
+            return
+
         workDetailsDictionaries = []
 
         try:
