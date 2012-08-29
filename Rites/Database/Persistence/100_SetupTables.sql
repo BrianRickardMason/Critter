@@ -56,4 +56,4 @@ CREATE TABLE workPredecessors
     -- TODO: Check if both works have the same graphName.
 );
 
-GRANT ALL ON graphs, graphCycles, works, workCycles, workDetails, workPredecessors TO brian;
+GRANT ALL ON elections, graphs, graphCycles, works, workCycles, workDetails, workPredecessors TO brian;
