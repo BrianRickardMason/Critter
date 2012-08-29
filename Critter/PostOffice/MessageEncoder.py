@@ -51,6 +51,8 @@ class MessageEncoder(object):
             elif aMessageName == 'CommandWorkExecutionSelectVolunteer': return self.__encode(COMMAND_WORK_EXECUTION_SELECT_VOLUNTEER, aData)
             elif aMessageName == 'Command_Req_ExecuteGraph':            return self.__encode(COMMAND_REQ_EXECUTE_GRAPH, aData)
             elif aMessageName == 'Command_Res_ExecuteGraph':            return self.__encode(COMMAND_RES_EXECUTE_GRAPH, aData)
+            elif aMessageName == 'Command_Req_Election':                return self.__encode(COMMAND_REQ_ELECTION, aData)
+            elif aMessageName == 'Command_Res_Election':                return self.__encode(COMMAND_RES_ELECTION, aData)
             else:
                 # TODO: Handle this more gracefully
                 print "Invalid message."
