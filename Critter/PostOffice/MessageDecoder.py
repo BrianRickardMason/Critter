@@ -49,6 +49,8 @@ class MessageDecoder(object):
         elif envelope.header.id == COMMAND_RES_EXECUTE_GRAPH:               message = Messages_pb2.Command_Res_ExecuteGraph()
         elif envelope.header.id == COMMAND_REQ_ELECTION:                    message = Messages_pb2.Command_Req_Election()
         elif envelope.header.id == COMMAND_RES_ELECTION:                    message = Messages_pb2.Command_Res_Election()
+        elif envelope.header.id == COMMAND_REQ_DETERMINE_GRAPH_CYCLE:       message = Messages_pb2.Command_Req_DetermineGraphCycle()
+        elif envelope.header.id == COMMAND_RES_DETERMINE_GRAPH_CYCLE:       message = Messages_pb2.Command_Res_DetermineGraphCycle()
         else:                                                               return None
 
         message.ParseFromString(envelope.payload.payload)
