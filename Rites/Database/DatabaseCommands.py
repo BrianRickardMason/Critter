@@ -306,6 +306,7 @@ class DatabaseCommand_Handle_Command_Req_DetermineGraphCycle(object):
             del aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName][critthash]
 
         aCommandProcessor.mLogger.debug("Sending the Command_Res_DetermineGraphCycle message.")
+        # FIXME: Rename to graphCycle.
         envelope = aCommandProcessor.mRite.mPostOffice.encode(
             'Command_Res_DetermineGraphCycle',
             {'messageName': 'Command_Res_DetermineGraphCycle',
