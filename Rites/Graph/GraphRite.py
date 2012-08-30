@@ -1,5 +1,3 @@
-"""The graph rite."""
-
 import time
 
 import Rites.RiteCommon
@@ -8,28 +6,7 @@ from Rites.Graph.GraphMessageProcessor import GraphMessageProcessor
 from Rites.Rite                        import Rite
 
 class GraphRite(Rite):
-    """The graph rite.
-
-    Attributes:
-        mCommandProcessor: The command processor of the rite
-        mMessageProcessor: The message processor of the rite
-        mGraphs:           The graphs that are handled (a list).
-        mWorks:            The works that are handled (a dictionary).
-        mWorkPredecessors: The work predecessors that are handled (a dictionary).
-        mSessions:         Running graph sessions (threads).
-
-    """
-
     def __init__(self, aCritter, aCritterData, aSettings, aPostOffice):
-        """Initializes the rite.
-
-        Arguments:
-            aCritter:     The critter.
-            aCritterData: The critter data.
-            aSettings:    The settings.
-            aPostOffice:  The post office.
-
-        """
         Rite.__init__(self,
                       aCritter,
                       aCritterData,
@@ -44,44 +21,14 @@ class GraphRite(Rite):
 
         self.mSessions = {}
 
-        # A dictionary of graph execution data.
-        #
-        # It has a structure as follows:
-        # {'hash': CritterHash,
-        #  'data': GraphExecutionData}
-        #
-        # GraphExecutionData:
-        # {'graphName':         string,
-        #  'leadingCriduler':   string,
-        #  'leadingGraphYeeti': string}
-        #
-        self.mGraphExecutionData = {}
-
-        # CommandWorkExecution volunteering.
-        #
-        # It has a structure as follows:
-        # {'hash': CritterHash,
-        #  'data': data}
-        #
-        # data:
-        # {'graphName':  string,
-        #  'graphCycle': integer,
-        #  'workName':   string,
-        #  'boss':       string,
-        #  'worker':     string}
-        #
-        self.mCommandWorkExecutionVolunteering = {}
+        # A dictionary of elections.
+        self.mElections = {}
 
         # A dictionary of sent commands.
         self.mSentCommands = {}
         self.mSentCommands['Command_Req_Election'] = {}
 
-        # A dictionary of elections.
-        self.mElections = {}
-
     def run(self):
-        """Starts the main loop of the rite."""
-
         # Ask for the configuration of graphs and works.
         envelope = self.mPostOffice.encode(
             'LoadGraphAndWorkRequest',
