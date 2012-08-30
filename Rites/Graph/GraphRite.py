@@ -76,6 +76,9 @@ class GraphRite(Rite):
         self.mSentCommands = {}
         self.mSentCommands['Command_Req_Election'] = {}
 
+        # A dictionary of elections.
+        self.mElections = {}
+
     def run(self):
         """Starts the main loop of the rite."""
 

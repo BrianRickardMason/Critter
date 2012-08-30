@@ -241,13 +241,14 @@ class GraphCommand_Handle_Command_Req_ExecuteGraph(object):
     def execute(self, aCommandProcessor):
         critthash = self.mMessage.critthash
 
+        assert critthash not in aCommandProcessor.mRite.mElections, "Not handled yet. Duplicated critthash."
+        aCommandProcessor.mRite.mElections[critthash] = {'critthash': critthash,
+                                                         'command':   'Command_Req_ExecuteGraph',
+                                                         'graphName': self.mMessage.graphName}
+
         assert 'Command_Req_Election' in aCommandProcessor.mRite.mSentCommands, "Missing key in the dictionary of sent commands."
-
-        if critthash in aCommandProcessor.mRite.mSentCommands['Command_Req_Election']:
-            assert False, "Not handled yet. Duplicated critthash."
-        else:
-            aCommandProcessor.mRite.mSentCommands['Command_Req_Election'][critthash] = {'critthash': critthash}
-
+        assert critthash not in aCommandProcessor.mRite.mSentCommands['Command_Req_Election'], "Not handled yet. Duplicated critthash."
+        aCommandProcessor.mRite.mSentCommands['Command_Req_Election'][critthash] = {'critthash': critthash}
         envelope = aCommandProcessor.mRite.mPostOffice.encode(
             'Command_Req_Election',
             {'messageName': 'Command_Req_Election',
