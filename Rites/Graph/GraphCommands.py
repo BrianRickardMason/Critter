@@ -14,20 +14,15 @@ class GraphCommand_Handle_Command_Res_Election(object):
             # Delete the sent request entry.
             del aCommandProcessor.mRite.mSentReq['Command_Req_Election'][critthash]
 
-        # There's an active election.
-        if critthash in aCommandProcessor.mRite.mElections:
-            # I am the winner.
-            if self.mMessage.crittnick == aCommandProcessor.mRite.mCritter.mCritterData.mNick:
-                # Get the election topic.
-                message = aCommandProcessor.mRite.mElections[critthash]['message']
+            # There's an active election.
+            if critthash in aCommandProcessor.mRite.mElections:
+                aCommandProcessor.mLogger.debug("Extending the election entry: [%s]." % critthash)
+                aCommandProcessor.mRite.mElections[critthash]['crittnick'] = self.mMessage.crittnick
 
                 # Handle the election topic.
                 if message.messageName == 'Command_Req_ExecuteGraph':
-                    command = GraphCommand_Handle_Command_Req_ExecuteGraph_WonElection(message)
+                    command = GraphCommand_Handle_Command_Req_ExecuteGraph_ElectionFinished(message)
                     aCommandProcessor.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
-
-            # Delete the election entry.
-            del aCommandProcessor.mRite.mElections[critthash]
 
 class GraphCommand_Handle_Command_Req_ExecuteGraph(object):
     def __init__(self, aMessage):
@@ -36,12 +31,21 @@ class GraphCommand_Handle_Command_Req_ExecuteGraph(object):
     def execute(self, aCommandProcessor):
         critthash = self.mMessage.critthash
 
+        assert self.mMessage.messageName in aCommandProcessor.mRite.mRecvReq, "Missing key in the dictionary of sent requests."
+        assert critthash not in aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName], "Not handled yet. Duplicated critthash."
+        aCommandProcessor.mLogger.debug("Storing the received request entry: [%s][%s]." % (self.mMessage.messageName, critthash))
+        aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName][critthash] = True
+
         assert critthash not in aCommandProcessor.mRite.mElections, "Not handled yet. Duplicated critthash."
+        aCommandProcessor.mLogger.debug("Storing the election entry: [%s]." % critthash)
         aCommandProcessor.mRite.mElections[critthash] = {'message': self.mMessage}
 
         assert 'Command_Req_Election' in aCommandProcessor.mRite.mSentReq, "Missing key in the dictionary of sent requests."
         assert critthash not in aCommandProcessor.mRite.mSentReq['Command_Req_Election'], "Not handled yet. Duplicated critthash."
-        aCommandProcessor.mRite.mSentReq['Command_Req_Election'][critthash] = {'critthash': critthash}
+        aCommandProcessor.mLogger.debug("Storing the sent request entry: [%s][%s]." % ('Command_Req_Election', critthash))
+        aCommandProcessor.mRite.mSentReq['Command_Req_Election'][critthash] = True
+
+        aCommandProcessor.mLogger.debug("Sending the Command_Req_ExecuteGraph message.")
         envelope = aCommandProcessor.mRite.mPostOffice.encode(
             'Command_Req_Election',
             {'messageName': 'Command_Req_Election',
@@ -50,7 +54,7 @@ class GraphCommand_Handle_Command_Req_ExecuteGraph(object):
         )
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
-class GraphCommand_Handle_Command_Req_ExecuteGraph_WonElection(object):
+class GraphCommand_Handle_Command_Req_ExecuteGraph_ElectionFinished(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
 
