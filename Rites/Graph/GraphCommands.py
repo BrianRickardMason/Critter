@@ -236,27 +236,6 @@ class GraphCommand_Handle_CommandWorkExecutionSelectVolunteer(object):
             aCommandProcessor.mLogger.debug("Storing CommandWorkExecution volunteering data under a hash: %s." % hashValue)
             aCommandProcessor.mRite.mCommandWorkExecutionVolunteering[hashValue]['worker'] = self.mMessage.receiver.nick
 
-class GraphCommand_Handle_Command_Req_ExecuteGraph(object):
-    def __init__(self, aMessage):
-        self.mMessage = aMessage
-
-    def execute(self, aCommandProcessor):
-        critthash = self.mMessage.critthash
-
-        assert critthash not in aCommandProcessor.mRite.mElections, "Not handled yet. Duplicated critthash."
-        aCommandProcessor.mRite.mElections[critthash] = {'message':   self.mMessage}
-
-        assert 'Command_Req_Election' in aCommandProcessor.mRite.mSentCommands, "Missing key in the dictionary of sent commands."
-        assert critthash not in aCommandProcessor.mRite.mSentCommands['Command_Req_Election'], "Not handled yet. Duplicated critthash."
-        aCommandProcessor.mRite.mSentCommands['Command_Req_Election'][critthash] = {'critthash': critthash}
-        envelope = aCommandProcessor.mRite.mPostOffice.encode(
-            'Command_Req_Election',
-            {'messageName': 'Command_Req_Election',
-             'critthash':   critthash,
-             'crittnick':   aCommandProcessor.mRite.mCritter.mCritterData.mNick}
-        )
-        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
-
 class GraphCommand_Handle_Command_Res_Election(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
@@ -278,13 +257,34 @@ class GraphCommand_Handle_Command_Res_Election(object):
 
                 # Handle the election topic.
                 if message.messageName == 'Command_Req_ExecuteGraph':
-                    command = GraphCommand_WonElection_Command_Req_ExecuteGraph(message)
+                    command = GraphCommand_Handle_Command_Req_ExecuteGraph_WonElection(message)
                     aCommandProcessor.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
 
             # Delete the election entry.
             del aCommandProcessor.mRite.mElections[critthash]
 
-class GraphCommand_WonElection_Command_Req_ExecuteGraph(object):
+class GraphCommand_Handle_Command_Req_ExecuteGraph(object):
+    def __init__(self, aMessage):
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        critthash = self.mMessage.critthash
+
+        assert critthash not in aCommandProcessor.mRite.mElections, "Not handled yet. Duplicated critthash."
+        aCommandProcessor.mRite.mElections[critthash] = {'message':   self.mMessage}
+
+        assert 'Command_Req_Election' in aCommandProcessor.mRite.mSentCommands, "Missing key in the dictionary of sent commands."
+        assert critthash not in aCommandProcessor.mRite.mSentCommands['Command_Req_Election'], "Not handled yet. Duplicated critthash."
+        aCommandProcessor.mRite.mSentCommands['Command_Req_Election'][critthash] = {'critthash': critthash}
+        envelope = aCommandProcessor.mRite.mPostOffice.encode(
+            'Command_Req_Election',
+            {'messageName': 'Command_Req_Election',
+             'critthash':   critthash,
+             'crittnick':   aCommandProcessor.mRite.mCritter.mCritterData.mNick}
+        )
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
+class GraphCommand_Handle_Command_Req_ExecuteGraph_WonElection(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
 
