@@ -12,7 +12,8 @@ class GraphMessageProcessor(MessageProcessor):
     def processMessage(self, aMessage):
         command = None
 
-        if   aMessage.messageName == 'Command_Req_ExecuteGraph': command = GraphCommand_Handle_Command_Req_ExecuteGraph(aMessage)
+        if False: pass
+        elif aMessage.messageName == 'Command_Req_ExecuteGraph': command = GraphCommand_Handle_Command_Req_ExecuteGraph(aMessage)
         elif aMessage.messageName == 'Command_Res_Election':     command = GraphCommand_Handle_Command_Res_Election(aMessage)
         elif aMessage.messageName == 'LoadGraphAndWorkResponse': command = GraphCommand_Handle_LoadGraphAndWorkResponse(aMessage)
 
