@@ -306,7 +306,7 @@ message Command_Res_Election
 //
 
 //
-// Criduler -> Criduler + GraphYeeti.
+// Criduler -> GraphYeeti.
 //
 message Command_Req_ExecuteGraph
 {
