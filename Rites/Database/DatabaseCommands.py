@@ -338,7 +338,7 @@ class DatabaseCommand_Handle_Command_Req_DetermineGraphCycle(object):
 
         assert self.mMessage.messageName in aCommandProcessor.mRite.mRecvReq, "Missing key in the dictionary of received requests."
         assert critthash not in aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName], "Not handled yet. Duplicated critthash."
-        aCommandProcessor.mLogger.info("Insert the received request entry: [%s][%s]." % (self.mMessage.messageName, critthash))
+        aCommandProcessor.mLogger.debug("Insert the received request entry: [%s][%s]." % (self.mMessage.messageName, critthash))
         aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName][critthash] = True
 
         try:
@@ -375,10 +375,10 @@ class DatabaseCommand_Handle_Command_Req_DetermineGraphCycle(object):
 
         assert self.mMessage.messageName in aCommandProcessor.mRite.mRecvReq, "Missing key in the dictionary of received requests."
         if critthash in aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName]:
-            aCommandProcessor.mLogger.info("Delete the received request entry: [%s][%s]." % (self.mMessage.messageName, critthash))
+            aCommandProcessor.mLogger.debug("Delete the received request entry: [%s][%s]." % (self.mMessage.messageName, critthash))
             del aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName][critthash]
 
-        aCommandProcessor.mLogger.info("Sending the Command_Res_DetermineGraphCycle message.")
+        aCommandProcessor.mLogger.debug("Sending the Command_Res_DetermineGraphCycle message.")
         envelope = aCommandProcessor.mRite.mPostOffice.encode(
             'Command_Res_DetermineGraphCycle',
             {'messageName': 'Command_Res_DetermineGraphCycle',
