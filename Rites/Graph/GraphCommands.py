@@ -36,7 +36,7 @@ class GraphCommand_Handle_Command_Req_ExecuteGraph(object):
     def execute(self, aCommandProcessor):
         critthash = self.mMessage.critthash
 
-        assert self.mMessage.messageName in aCommandProcessor.mRite.mRecvReq, "Missing key in the dictionary of sent requests."
+        assert self.mMessage.messageName in aCommandProcessor.mRite.mRecvReq, "Missing key in the dictionary of received requests."
         assert critthash not in aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName], "Not handled yet. Duplicated critthash."
         aCommandProcessor.mLogger.debug("Storing the received request entry: [%s][%s]." % (self.mMessage.messageName, critthash))
         aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName][critthash] = True
