@@ -341,5 +341,6 @@ message Command_Res_DetermineGraphCycle
 {
     optional string messageName = 1;
     optional string critthash   = 2;
-    optional uint32 cycle       = 3;
+    optional string graphName   = 3;
+    optional uint32 graphCycle  = 4;
 }
