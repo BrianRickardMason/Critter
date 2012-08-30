@@ -1,5 +1,7 @@
 """Graph rite commands."""
 
+import Rites.RiteCommon
+
 from GraphRiteSession import GraphRiteSession
 
 class GraphCommandSpawnGraphExecution(object):
@@ -242,9 +244,7 @@ class GraphCommand_Handle_Command_Req_ExecuteGraph(object):
         critthash = self.mMessage.critthash
 
         assert critthash not in aCommandProcessor.mRite.mElections, "Not handled yet. Duplicated critthash."
-        aCommandProcessor.mRite.mElections[critthash] = {'critthash': critthash,
-                                                         'command':   'Command_Req_ExecuteGraph',
-                                                         'graphName': self.mMessage.graphName}
+        aCommandProcessor.mRite.mElections[critthash] = {'message':   self.mMessage}
 
         assert 'Command_Req_Election' in aCommandProcessor.mRite.mSentCommands, "Missing key in the dictionary of sent commands."
         assert critthash not in aCommandProcessor.mRite.mSentCommands['Command_Req_Election'], "Not handled yet. Duplicated critthash."
@@ -256,3 +256,37 @@ class GraphCommand_Handle_Command_Req_ExecuteGraph(object):
              'crittnick':   aCommandProcessor.mRite.mCritter.mCritterData.mNick}
         )
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
+class GraphCommand_Handle_Command_Res_Election(object):
+    def __init__(self, aMessage):
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        critthash = self.mMessage.critthash
+
+        # There's an active sent command.
+        if critthash in aCommandProcessor.mRite.mSentCommands['Command_Req_Election']:
+            # Delete the sent command entry.
+            del aCommandProcessor.mRite.mSentCommands['Command_Req_Election'][critthash]
+
+        # There's an active election.
+        if critthash in aCommandProcessor.mRite.mElections:
+            # I am the winner.
+            if self.mMessage.crittnick == aCommandProcessor.mRite.mCritter.mCritterData.mNick:
+                # Get the election topic.
+                message = aCommandProcessor.mRite.mElections[critthash]['message']
+
+                # Handle the election topic.
+                if message.messageName == 'Command_Req_ExecuteGraph':
+                    command = GraphCommand_WonElection_Command_Req_ExecuteGraph(message)
+                    aCommandProcessor.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
+
+            # Delete the election entry.
+            del aCommandProcessor.mRite.mElections[critthash]
+
+class GraphCommand_WonElection_Command_Req_ExecuteGraph(object):
+    def __init__(self, aMessage):
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        pass
