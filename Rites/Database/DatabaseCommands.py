@@ -338,7 +338,7 @@ class DatabaseCommand_Handle_Command_Req_DetermineGraphCycle(object):
 
         assert self.mMessage.messageName in aCommandProcessor.mRite.mRecvReq, "Missing key in the dictionary of received requests."
         assert critthash not in aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName], "Not handled yet. Duplicated critthash."
-        aCommandProcessor.mLogger.info("Storing the received request entry: [%s][%s]." % (self.mMessage.messageName, critthash))
+        aCommandProcessor.mLogger.info("Insert the received request entry: [%s][%s]." % (self.mMessage.messageName, critthash))
         aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName][critthash] = True
 
         try:

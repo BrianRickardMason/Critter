@@ -14,7 +14,7 @@ class SchedulerCommandCheckSchedule(object):
             assert 'Command_Req_ExecuteGraph' in aCommandProcessor.mRite.mSentCommands, "Missing key in the dictionary of sent commands."
             assert critthash not in aCommandProcessor.mRite.mSentCommands['Command_Req_ExecuteGraph'], "Not handled yet. Duplicated critthash."
 
-            aCommandProcessor.mLogger.debug("Storing the sent message entry: [%s][%s]." % ('Command_Req_ExecuteGraph', critthash))
+            aCommandProcessor.mLogger.debug("Insert the sent message entry: [%s][%s]." % ('Command_Req_ExecuteGraph', critthash))
             aCommandProcessor.mRite.mSentCommands['Command_Req_ExecuteGraph'][critthash] = {'critthash': critthash}
 
             aCommandProcessor.mLogger.debug("Sending the Command_Req_ExecuteGraph message.")
