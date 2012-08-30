@@ -16,19 +16,6 @@ class SchedulerRite(Rite):
                       Rites.RiteCommon.SCHEDULER,
                       SchedulerMessageProcessor)
 
-        # A dictionary of graph execution data.
-        #
-        # It has a structure as follows:
-        # {'hash': CritterHash,
-        #  'data': GraphExecutionData}
-        #
-        # GraphExecutionData:
-        # {'graphName':         string,
-        #  'leadingCriduler':   string,
-        #  'leadingGraphYeeti': string}
-        #
-        self.mGraphExecutionData = {}
-
         # A dictionary of sent commands.
         self.mSentCommands = {}
         self.mSentCommands['Command_Req_ExecuteGraph'] = {}
