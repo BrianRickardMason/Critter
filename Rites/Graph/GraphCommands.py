@@ -289,4 +289,4 @@ class GraphCommand_Handle_Command_Req_ExecuteGraph_WonElection(object):
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
-        pass
+        aCommandProcessor.mLogger.info("TODO: Start from here!")
