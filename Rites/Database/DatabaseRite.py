@@ -15,6 +15,10 @@ class DatabaseRite(Rite):
                       Rites.RiteCommon.DATABASE,
                       DatabaseMessageProcessor)
 
+        # A dictionary of received requests.
+        self.mRecvReq = {}
+        self.mRecvReq['Command_Req_DetermineGraphCycle'] = {}
+
     def run(self):
         while True:
             self.mLogger.debug("Sleeping for a heartbeat.")

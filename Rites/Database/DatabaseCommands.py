@@ -328,3 +328,60 @@ class DatabaseCommand_Handle_Command_Req_Election(object):
              'crittnick':   winnerCrittnick}
         )
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
+class DatabaseCommand_Handle_Command_Req_DetermineGraphCycle(object):
+    def __init__(self, aMessage):
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        critthash = self.mMessage.critthash
+
+        assert self.mMessage.messageName in aCommandProcessor.mRite.mRecvReq, "Missing key in the dictionary of received requests."
+        assert critthash not in aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName], "Not handled yet. Duplicated critthash."
+        aCommandProcessor.mLogger.info("Storing the received request entry: [%s][%s]." % (self.mMessage.messageName, critthash))
+        aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName][critthash] = True
+
+        try:
+            connection = psycopg2.connect("host='localhost' dbname='critter' user='brian' password='brianpassword'")
+            cursor = connection.cursor()
+        except psycopg2.DatabaseError, e:
+            sys.exit(1)
+
+        query = """
+                SELECT
+                    max(cycleseq)
+                FROM
+                    graphCycles
+                WHERE
+                    graphName = '%s'
+                """ % (self.mMessage.graphName)
+        cursor.execute(query)
+
+        row = cursor.fetchone()
+        if row[0] == None:
+            cycle = 1
+        else:
+            cycle = row[0] + 1
+
+        query = """
+                INSERT INTO
+                    graphCycles(graphName, cycleSeq)
+                VALUES
+                    ('%s', '%s')
+                """ % (self.mMessage.graphName, cycle)
+        cursor.execute(query)
+
+        connection.commit()
+
+        assert self.mMessage.messageName in aCommandProcessor.mRite.mRecvReq, "Missing key in the dictionary of received requests."
+        if critthash in aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName]:
+            aCommandProcessor.mLogger.info("Deleting the received request entry: [%s][%s]." % (self.mMessage.messageName, critthash))
+            del aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName][critthash]
+
+        aCommandProcessor.mLogger.info("Sending the Command_Res_DetermineGraphCycle message.")
+        envelope = aCommandProcessor.mRite.mPostOffice.encode(
+            'Command_Res_DetermineGraphCycle',
+            {'messageName': 'Command_Res_DetermineGraphCycle',
+             'critthash':   critthash,
+             'cycle':       cycle})
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
