@@ -24,9 +24,13 @@ class GraphRite(Rite):
         # A dictionary of elections.
         self.mElections = {}
 
-        # A dictionary of sent commands.
-        self.mSentCommands = {}
-        self.mSentCommands['Command_Req_Election'] = {}
+        # A dictionary of sent requests.
+        self.mSentReq = {}
+        self.mSentReq['Command_Req_Election'] = {}
+
+        # A dictionary of received requests.
+        self.mRecvReq = {}
+        self.mRecvReq['Command_Req_ExecuteGraph'] = {}
 
     def run(self):
         # Ask for the configuration of graphs and works.

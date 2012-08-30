@@ -9,10 +9,10 @@ class GraphCommand_Handle_Command_Res_Election(object):
     def execute(self, aCommandProcessor):
         critthash = self.mMessage.critthash
 
-        # There's an active sent command.
-        if critthash in aCommandProcessor.mRite.mSentCommands['Command_Req_Election']:
-            # Delete the sent command entry.
-            del aCommandProcessor.mRite.mSentCommands['Command_Req_Election'][critthash]
+        # There's an active sent request.
+        if critthash in aCommandProcessor.mRite.mSentReq['Command_Req_Election']:
+            # Delete the sent request entry.
+            del aCommandProcessor.mRite.mSentReq['Command_Req_Election'][critthash]
 
         # There's an active election.
         if critthash in aCommandProcessor.mRite.mElections:
@@ -37,11 +37,11 @@ class GraphCommand_Handle_Command_Req_ExecuteGraph(object):
         critthash = self.mMessage.critthash
 
         assert critthash not in aCommandProcessor.mRite.mElections, "Not handled yet. Duplicated critthash."
-        aCommandProcessor.mRite.mElections[critthash] = {'message':   self.mMessage}
+        aCommandProcessor.mRite.mElections[critthash] = {'message': self.mMessage}
 
-        assert 'Command_Req_Election' in aCommandProcessor.mRite.mSentCommands, "Missing key in the dictionary of sent commands."
-        assert critthash not in aCommandProcessor.mRite.mSentCommands['Command_Req_Election'], "Not handled yet. Duplicated critthash."
-        aCommandProcessor.mRite.mSentCommands['Command_Req_Election'][critthash] = {'critthash': critthash}
+        assert 'Command_Req_Election' in aCommandProcessor.mRite.mSentReq, "Missing key in the dictionary of sent requests."
+        assert critthash not in aCommandProcessor.mRite.mSentReq['Command_Req_Election'], "Not handled yet. Duplicated critthash."
+        aCommandProcessor.mRite.mSentReq['Command_Req_Election'][critthash] = {'critthash': critthash}
         envelope = aCommandProcessor.mRite.mPostOffice.encode(
             'Command_Req_Election',
             {'messageName': 'Command_Req_Election',
