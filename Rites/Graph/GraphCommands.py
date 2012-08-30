@@ -1,3 +1,5 @@
+import os
+
 import Rites.RiteCommon
 
 from GraphRiteSession import GraphRiteSession
@@ -18,6 +20,9 @@ class GraphCommand_Handle_Command_Res_Election(object):
             if critthash in aCommandProcessor.mRite.mElections:
                 aCommandProcessor.mLogger.debug("Extending the election entry: [%s]." % critthash)
                 aCommandProcessor.mRite.mElections[critthash]['crittnick'] = self.mMessage.crittnick
+
+                assert 'message' in aCommandProcessor.mRite.mElections[critthash], "There's no information about the message."
+                message = aCommandProcessor.mRite.mElections[critthash]['message']
 
                 # Handle the election topic.
                 if message.messageName == 'Command_Req_ExecuteGraph':
@@ -59,7 +64,26 @@ class GraphCommand_Handle_Command_Req_ExecuteGraph_ElectionFinished(object):
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
-        aCommandProcessor.mLogger.info("TODO: Start from here!")
+        if    aCommandProcessor.mRite.mCritter.mCritterData.mNick \
+           == aCommandProcessor.mRite.mElections[self.mMessage.critthash]['crittnick']:
+
+            aCommandProcessor.mLogger.debug("I am the winner.")
+
+            critthash = os.urandom(32).encode('hex')
+
+            assert 'Command_Req_DetermineGraphCycle' in aCommandProcessor.mRite.mSentReq, "Missing key in the dictionary of sent requests."
+            assert critthash not in aCommandProcessor.mRite.mSentReq['Command_Req_DetermineGraphCycle'], "Not handled yet. Duplicated critthash."
+            aCommandProcessor.mLogger.debug("Storing the sent request entry: [%s][%s]." % ('Command_Req_DetermineGraphCycle', critthash))
+            aCommandProcessor.mRite.mSentReq['Command_Req_DetermineGraphCycle'][critthash] = True
+
+            aCommandProcessor.mLogger.debug("Sending the Command_Req_DetermineGraphCycle message.")
+            envelope = aCommandProcessor.mRite.mPostOffice.encode(
+                'Command_Req_DetermineGraphCycle',
+                {'messageName': 'Command_Req_DetermineGraphCycle',
+                 'critthash':   critthash,
+                 'graphName':   self.mMessage.graphName}
+            )
+            aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
 class GraphCommand_Handle_LoadGraphAndWorkResponse(object):
     def __init__(self, aMessage):
