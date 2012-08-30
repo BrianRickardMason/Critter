@@ -4,7 +4,7 @@ import random
 class SchedulerCommandCheckSchedule(object):
     def execute(self, aCommandProcessor):
         # FIXME: This simulates the need of graph execution.
-        if random.randint(1, 100) > 90:
+        if random.randint(1, 100) > 50:
             aCommandProcessor.mLogger.info("New graph execution needed.")
 
             graphNames = ['GraphName1', 'GraphName2', 'GraphName3', 'GraphName4']
