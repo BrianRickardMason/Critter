@@ -375,7 +375,7 @@ class DatabaseCommand_Handle_Command_Req_DetermineGraphCycle(object):
 
         assert self.mMessage.messageName in aCommandProcessor.mRite.mRecvReq, "Missing key in the dictionary of received requests."
         if critthash in aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName]:
-            aCommandProcessor.mLogger.info("Deleting the received request entry: [%s][%s]." % (self.mMessage.messageName, critthash))
+            aCommandProcessor.mLogger.info("Delete the received request entry: [%s][%s]." % (self.mMessage.messageName, critthash))
             del aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName][critthash]
 
         aCommandProcessor.mLogger.info("Sending the Command_Res_DetermineGraphCycle message.")
