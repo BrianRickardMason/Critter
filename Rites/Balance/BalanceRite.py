@@ -49,6 +49,17 @@ class BalanceRite(Rite):
         #
         self.mCommandWorkExecutionVolunteering = {}
 
+        # A dictionary of elections.
+        self.mElections = {}
+
+        # A dictionary of received requests.
+        self.mRecvReq = {}
+        self.mRecvReq['Command_Req_OrderWorkExecution'] = {}
+
+        # A dictionary of sent requests.
+        self.mSentReq = {}
+        self.mSentReq['Command_Req_Election'] = {}
+
     def run(self):
         """Starts the main loop of the rite."""
         while True:

@@ -80,3 +80,31 @@ class BalanceCommand_Handle_CommandWorkExecutionSelectVolunteer(object):
              'cycle':       self.mMessage.graphCycle,
              'workName':    self.mMessage.workName})
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
+class BalanceCommand_Handle_Command_Req_OrderWorkExecution(object):
+    def __init__(self, aMessage):
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        workExecutionCritthash = self.mMessage.workExecutionCritthash
+
+        assert workExecutionCritthash not in aCommandProcessor.mRite.mRecvReq['Command_Req_OrderWorkExecution'], "Not handled yet. Duplicated critthash."
+        aCommandProcessor.mLogger.debug("Insert the received request entry: [%s][%s]." % ('Command_Req_OrderWorkExecution', workExecutionCritthash))
+        aCommandProcessor.mRite.mRecvReq['Command_Req_OrderWorkExecution'][workExecutionCritthash] = self.mMessage
+
+        assert workExecutionCritthash not in aCommandProcessor.mRite.mElections, "Not handled yet. Duplicated critthash."
+        aCommandProcessor.mLogger.debug("Insert the election entry: [%s]." % workExecutionCritthash)
+        aCommandProcessor.mRite.mElections[workExecutionCritthash] = {'message': self.mMessage}
+
+        messageName = 'Command_Req_Election'
+        envelope = aCommandProcessor.mRite.mPostOffice.encode(
+            messageName,
+            {'messageName': messageName,
+             'critthash':   workExecutionCritthash,
+             'crittnick':   aCommandProcessor.mRite.mCritter.mCritterData.mNick}
+        )
+        assert workExecutionCritthash not in aCommandProcessor.mRite.mSentReq[messageName], "Not handled yet. Duplicated critthash."
+        aCommandProcessor.mLogger.debug("Insert the sent request entry: [%s][%s]." % (messageName, workExecutionCritthash))
+        aCommandProcessor.mRite.mSentReq[messageName][workExecutionCritthash] = envelope
+        aCommandProcessor.mLogger.debug("Sending the %s message." % messageName)
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
