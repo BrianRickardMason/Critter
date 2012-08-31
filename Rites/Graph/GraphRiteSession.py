@@ -20,14 +20,14 @@ class GraphRiteSession(threading.Thread):
     STATE_SUCCEED     = 3
     STATE_FAILED      = 4
 
-    def __init__(self, aRite, aGraphExecutionCritthash, aGraphName, aCycle):
+    def __init__(self, aRite, aGraphExecutionCritthash, aGraphName, aGraphCycle):
         self.mLogger = logging.getLogger('GraphRiteSession')
         self.mLogger.setLevel(logging.INFO)
 
         self.mRite                    = aRite
         self.mGraphExecutionCritthash = aGraphExecutionCritthash
         self.mGraphName               = aGraphName
-        self.mGraphCycle              = aCycle
+        self.mGraphCycle              = aGraphCycle
 
         assert aGraphName in self.mRite.mWorks, "The graph name has not any works associated."
 
