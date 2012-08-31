@@ -101,11 +101,28 @@ class GraphRiteSession(threading.Thread):
             aWorkName: The name of the work.
 
         """
-        self.mLogger.debug("Commanding work execution: %s@%s@%s." % (self.mGraphName, self.mCycle, aWorkName))
-        self.mLogger.debug("TODO: Start from here!")
+        self.mLogger.info("Ordering a work execution: %s@%s@%s." % (self.mGraphName, self.mCycle, aWorkName))
+
+        # Set the state.
+        self.mWorkStates[aWorkName] = self.STATE_STARTED
+
         if    self.mRite.mCritter.mCritterData.mNick \
            == self.mRite.mElections[self.mGraphExecutionCritthash]['crittnick']:
-            self.mLogger.debug("I am the winner!")
+
+            workExecutionCritthash = os.urandom(32).encode('hex')
+
+            # Send the message.
+            self.mLogger.debug("Sending the Command_Req_OrderWorkExecution message.")
+            envelope = self.mRite.mPostOffice.encode(
+                'Command_Req_OrderWorkExecution',
+                {'messageName': 'Command_Req_OrderWorkExecution',
+                 'graphExecutionCritthash': self.mGraphExecutionCritthash,
+                 'graphName':               self.mGraphName,
+                 'graphCycle':              self.mCycle,
+                 'workExecutionCritthash':  workExecutionCritthash,
+                 'workName':                aWorkName}
+            )
+            self.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
 class SpawnChecker(object):
     """Checks whether there's a need to continue spawning works."""
