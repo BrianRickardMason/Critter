@@ -11,7 +11,6 @@ class SchedulerCommandCheckSchedule(object):
 
             graphExecutionCritthash = os.urandom(32).encode('hex')
 
-            assert 'Command_Req_ExecuteGraph' in aCommandProcessor.mRite.mSentCommands, "Missing key in the dictionary of sent commands."
             assert graphExecutionCritthash not in aCommandProcessor.mRite.mSentCommands['Command_Req_ExecuteGraph'], "Not handled yet. Duplicated critthash."
 
             aCommandProcessor.mLogger.debug("Insert the sent message entry: [%s][%s]." % ('Command_Req_ExecuteGraph', graphExecutionCritthash))

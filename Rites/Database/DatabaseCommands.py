@@ -263,7 +263,6 @@ class DatabaseCommand_Handle_Command_Req_DetermineGraphCycle(object):
     def execute(self, aCommandProcessor):
         graphExecutionCritthash = self.mMessage.graphExecutionCritthash
 
-        assert self.mMessage.messageName in aCommandProcessor.mRite.mRecvReq, "Missing key in the dictionary of received requests."
         assert graphExecutionCritthash not in aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName], "Not handled yet. Duplicated critthash."
         aCommandProcessor.mLogger.debug("Insert the received request entry: [%s][%s]." % (self.mMessage.messageName, graphExecutionCritthash))
         aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName][graphExecutionCritthash] = True
@@ -300,7 +299,6 @@ class DatabaseCommand_Handle_Command_Req_DetermineGraphCycle(object):
 
         connection.commit()
 
-        assert self.mMessage.messageName in aCommandProcessor.mRite.mRecvReq, "Missing key in the dictionary of received requests."
         if graphExecutionCritthash in aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName]:
             aCommandProcessor.mLogger.debug("Delete the received request entry: [%s][%s]." % (self.mMessage.messageName, graphExecutionCritthash))
             del aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName][graphExecutionCritthash]
