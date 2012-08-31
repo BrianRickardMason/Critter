@@ -1,5 +1,7 @@
 """The settings read from the manifest."""
 
+import logging
+
 import ConfigParser
 
 class Settings(object):
@@ -36,6 +38,9 @@ class Settings(object):
         self.mSettings['heartbeat'] = {}
         self.mSettings['heartbeat']['period']   = int(configParser.get('heartbeat', 'period'))
         self.mSettings['heartbeat']['maxDelay'] = int(configParser.get('heartbeat', 'maxDelay'))
+
+        self.mSettings['logging'] = {}
+        self.mSettings['logging']['level'] = logging.DEBUG
 
     def get(self, aSection, aEntry):
         """Gets a specific entry of a specific section.
