@@ -294,6 +294,7 @@ message Command_Req_Election
 //
 // Cribrarian -> Any.
 //
+// TODO: Change crittnick to senderCrittnick.
 message Command_Res_Election
 {
     optional string messageName = 1;
@@ -362,6 +363,29 @@ message Command_Req_OrderWorkExecution
 // Balancer -> GraphYeeti.
 //
 message Command_Res_OrderWorkExecution
+{
+    optional string messageName            = 1;
+    optional string workExecutionCritthash = 2;
+}
+
+//
+// Balancer -> Worker.
+//
+message Command_Req_ExecuteWork
+{
+    optional string messageName             = 1;
+    optional string receiverCrittnick       = 2;
+    optional string graphExecutionCritthash = 3;
+    optional string graphName               = 4;
+    optional uint32 graphCycle              = 5;
+    optional string workExecutionCritthash  = 6;
+    optional string workName                = 7;
+}
+
+//
+// Worker -> Balancer.
+//
+message Command_Res_ExecuteWork
 {
     optional string messageName            = 1;
     optional string workExecutionCritthash = 2;
