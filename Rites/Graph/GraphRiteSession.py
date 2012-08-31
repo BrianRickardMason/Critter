@@ -102,25 +102,7 @@ class GraphRiteSession(threading.Thread):
 
         """
         self.mLogger.info("Commanding work execution: %s@%s@%s." % (self.mGraphName, self.mCycle, aWorkName))
-
-        assert aWorkName in self.mWorkStates, "Work %s has not its state attached." % aWorkName
-
-        self.mWorkStates[aWorkName] = GraphRiteSession.STATE_COMMANDED
-
-        hashValue = os.urandom(32).encode('hex')
-        self.mLogger.debug("Storing CommandWorkExecution volunteering data under a hash: %s." % hashValue)
-        self.mRite.mCommandWorkExecutionVolunteering[hashValue] = {}
-        self.mRite.mCommandWorkExecutionVolunteering[hashValue]['graphName']  = self.mGraphName
-        self.mRite.mCommandWorkExecutionVolunteering[hashValue]['graphCycle'] = self.mCycle
-        self.mRite.mCommandWorkExecutionVolunteering[hashValue]['workName']   = aWorkName
-        self.mLogger.debug("Sending the CommandWorkExecutionSeekVolunteers message.")
-        envelope = self.mRite.mPostOffice.encode(
-            'CommandWorkExecutionSeekVolunteers',
-            {'messageName': 'CommandWorkExecutionSeekVolunteers',
-             'sender':      {'type': self.mRite.mCritterData.mType,
-                             'nick': self.mRite.mCritterData.mNick},
-             'hash':        hashValue})
-        self.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+        self.mLogger.info("TODO: Start from here!")
 
 class SpawnChecker(object):
     """Checks whether there's a need to continue spawning works."""
