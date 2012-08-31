@@ -61,6 +61,7 @@ class BalanceRite(Rite):
         # A dictionary of sent requests.
         self.mSentReq = {}
         self.mSentReq['Command_Req_Election'] = {}
+        self.mSentReq['Command_Req_ExecuteWork'] = {}
 
     def run(self):
         """Starts the main loop of the rite."""

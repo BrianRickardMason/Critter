@@ -122,6 +122,35 @@ class BalanceCommand_Handle_Command_Req_OrderWorkExecution_ElectionFinished(obje
             aCommandProcessor.mLogger.debug("I am the winner.")
             aCommandProcessor.mLogger.debug("TODO: Start from here!")
 
+            knownCritters = aCommandProcessor.mRite.mCritter.mRites[Rites.RiteCommon.REGISTRY].getKnownCritters()
+
+            # Filter workers.
+            availableWorkers = []
+            for critterData in knownCritters.values():
+                if critterData.mType == 'Worker':
+                    availableWorkers.append(critterData.mNick)
+
+            # Balance the load.
+            # FIXME: What happens when there are not any workers?
+            receiverCrittnick = choice(availableWorkers)
+
+            messageName = 'Command_Req_ExecuteWork'
+            envelope = aCommandProcessor.mRite.mPostOffice.encode(
+                messageName,
+                {'messageName':             messageName,
+                 'receiverCrittnick':       receiverCrittnick,
+                 'graphExecutionCritthash': self.mMessage.graphExecutionCritthash,
+                 'graphName':               self.mMessage.graphName,
+                 'graphCycle':              self.mMessage.graphCycle,
+                 'workExecutionCritthash':  self.mMessage.workExecutionCritthash,
+                 'workName':                self.mMessage.workName}
+            )
+            assert workExecutionCritthash not in aCommandProcessor.mRite.mSentReq[messageName], "Not handled yet. Duplicated critthash."
+            aCommandProcessor.mLogger.debug("Insert the sent request entry: [%s][%s]." % (messageName, workExecutionCritthash))
+            aCommandProcessor.mRite.mSentReq[messageName][workExecutionCritthash] = envelope
+            aCommandProcessor.mLogger.debug("Sending the %s message." % messageName)
+            aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
 class BalanceCommand_Handle_Command_Res_Election(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
