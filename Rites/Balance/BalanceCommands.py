@@ -108,3 +108,41 @@ class BalanceCommand_Handle_Command_Req_OrderWorkExecution(object):
         aCommandProcessor.mRite.mSentReq[messageName][workExecutionCritthash] = envelope
         aCommandProcessor.mLogger.debug("Sending the %s message." % messageName)
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
+class BalanceCommand_Handle_Command_Req_OrderWorkExecution_ElectionFinished(object):
+    def __init__(self, aMessage):
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        workExecutionCritthash = self.mMessage.workExecutionCritthash
+
+        if    aCommandProcessor.mRite.mCritter.mCritterData.mNick \
+           == aCommandProcessor.mRite.mElections[workExecutionCritthash]['crittnick']:
+
+            aCommandProcessor.mLogger.debug("I am the winner.")
+            aCommandProcessor.mLogger.debug("TODO: Start from here!")
+
+class BalanceCommand_Handle_Command_Res_Election(object):
+    def __init__(self, aMessage):
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        critthash = self.mMessage.critthash
+
+        # There's an active sent request.
+        if critthash in aCommandProcessor.mRite.mSentReq['Command_Req_Election']:
+            # Delete the sent request entry.
+            del aCommandProcessor.mRite.mSentReq['Command_Req_Election'][critthash]
+
+            # There's an active election.
+            if critthash in aCommandProcessor.mRite.mElections:
+                aCommandProcessor.mLogger.debug("Update the election entry: [%s]." % critthash)
+                aCommandProcessor.mRite.mElections[critthash]['crittnick'] = self.mMessage.crittnick
+
+                assert 'message' in aCommandProcessor.mRite.mElections[critthash], "There's no information about the message."
+                message = aCommandProcessor.mRite.mElections[critthash]['message']
+
+                # Handle the election topic.
+                if message.messageName == 'Command_Req_OrderWorkExecution':
+                    command = BalanceCommand_Handle_Command_Req_OrderWorkExecution_ElectionFinished(message)
+                    aCommandProcessor.mRite.mPostOffice.putCommand(Rites.RiteCommon.BALANCE, command)
