@@ -54,7 +54,7 @@ class GraphRiteSession(threading.Thread):
         self.mRite                    = aRite
         self.mGraphExecutionCritthash = aGraphExecutionCritthash
         self.mGraphName               = aGraphName
-        self.mCycle                   = aCycle
+        self.mGraphCycle              = aCycle
 
         assert aGraphName in self.mRite.mWorks, "The graph name has not any works associated."
 
@@ -92,7 +92,7 @@ class GraphRiteSession(threading.Thread):
             time.sleep(GraphRiteSession.SLEEP_WHILE_WAITING)
 
         # Delete myself from sessions.
-        del self.mRite.mSessions[self.mGraphName][self.mCycle]
+        del self.mRite.mSessions[self.mGraphName][self.mGraphCycle]
 
     def __commandWorkExecutionAnnouncement(self, aWorkName):
         """Commands the work execution.
@@ -101,7 +101,7 @@ class GraphRiteSession(threading.Thread):
             aWorkName: The name of the work.
 
         """
-        self.mLogger.info("Ordering a work execution: %s@%s@%s." % (self.mGraphName, self.mCycle, aWorkName))
+        self.mLogger.info("Ordering a work execution: %s@%s@%s." % (self.mGraphName, self.mGraphCycle, aWorkName))
 
         # Set the state.
         self.mWorkStates[aWorkName] = self.STATE_STARTED
@@ -118,7 +118,7 @@ class GraphRiteSession(threading.Thread):
                 {'messageName': 'Command_Req_OrderWorkExecution',
                  'graphExecutionCritthash': self.mGraphExecutionCritthash,
                  'graphName':               self.mGraphName,
-                 'graphCycle':              self.mCycle,
+                 'graphCycle':              self.mGraphCycle,
                  'workExecutionCritthash':  workExecutionCritthash,
                  'workName':                aWorkName}
             )
