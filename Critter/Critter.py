@@ -39,12 +39,12 @@ class Critter(object):
             aRites: The rites to be started (specific ones).
 
         """
+        self.mSettings = Settings()
+
         self.mLogger = logging.getLogger(aType)
-        self.mLogger.setLevel(logging.DEBUG)
+        self.mLogger.setLevel(self.mSettings.get('logging', 'level'))
 
         self.mCritterData = CritterData(aType, aNick)
-
-        self.mSettings = Settings()
 
         # TODO: Implement sequential starting (in order of dependencies).
         #       This is a matter of performing full startup procedure properly.

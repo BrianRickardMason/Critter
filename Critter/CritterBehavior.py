@@ -22,10 +22,10 @@ class CritterBehavior(threading.Thread):
             aCritter The critter.
 
         """
-        self.mLogger = logging.getLogger('CritterBehavior')
-        self.mLogger.setLevel(logging.DEBUG)
-
         self.mCritter = aCritter
+
+        self.mLogger = logging.getLogger('CritterBehavior')
+        self.mLogger.setLevel(self.mCritter.mSettings.get('logging', 'level'))
 
         threading.Thread.__init__(self, name='CritterBehavior')
 

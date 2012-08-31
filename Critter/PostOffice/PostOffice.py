@@ -37,12 +37,12 @@ class PostOffice(object):
             aCritter: The critter.
 
         """
-        self.mLogger = logging.getLogger('PostOffice')
-        self.mLogger.setLevel(logging.DEBUG)
-
         self.mCritter = aCritter
 
         settings = self.mCritter.getSettings()
+
+        self.mLogger = logging.getLogger('PostOffice')
+        self.mLogger.setLevel(self.mCritter.mSettings.get('logging', 'level'))
 
         policy = settings.get('crittwork', 'policy')
 

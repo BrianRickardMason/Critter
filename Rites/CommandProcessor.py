@@ -28,10 +28,10 @@ class CommandProcessor(threading.Thread):
             aRite: The rite.
 
         """
-        self.mLogger = logging.getLogger(aRite.mRiteName + 'CommandProcessor')
-        self.mLogger.setLevel(logging.INFO)
-
         self.mRite = aRite
+
+        self.mLogger = logging.getLogger(aRite.mRiteName + 'CommandProcessor')
+        self.mLogger.setLevel(self.mRite.mSettings.get('logging', 'level'))
 
         self.mQueue = Queue()
 

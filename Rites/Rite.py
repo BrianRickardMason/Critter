@@ -32,12 +32,13 @@ class Rite(threading.Thread):
             aMessageProcessorType: The type of the command processor.
 
         """
+        self.mSettings = aSettings
+
         self.mLogger = logging.getLogger(aRiteName + 'Rite')
-        self.mLogger.setLevel(logging.DEBUG)
+        self.mLogger.setLevel(self.mSettings.get('logging', 'level'))
 
         self.mCritter     = aCritter
         self.mCritterData = aCritterData
-        self.mSettings    = aSettings
         self.mPostOffice  = aPostOffice
         self.mRiteName    = aRiteName
 
