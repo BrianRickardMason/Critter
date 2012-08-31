@@ -1,9 +1,3 @@
-"""The GraphRiteSession.
-
-Handles a full, single graph execution from the beginning to the end.
-
-"""
-
 import copy
 import logging
 import os
@@ -17,19 +11,6 @@ logging.basicConfig(format='[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(
 # FIXME: Many threads access work states.
 
 class GraphRiteSession(threading.Thread):
-    """The message processor of the a rite.
-
-    Attributes:
-        mLogger:           The logger.
-        mRite:             The rite.
-        mGraphName:        The graph name.
-        mCycle:            The cycle number.
-        mWorks:            Keeps the available works.
-        mWorkPredecessors: Keeps the predecessors of the works.
-        mWorkStates:       Keeps the states of works.
-
-    """
-
     SLEEP_BETWEEN_SPAWNING = 1 # [s].
     SLEEP_WHILE_WAITING    = 1 # [s].
 
@@ -40,14 +21,6 @@ class GraphRiteSession(threading.Thread):
     STATE_FAILED      = 4
 
     def __init__(self, aRite, aGraphExecutionCritthash, aGraphName, aCycle):
-        """Initializes the message processor.
-
-        Arguments:
-            aRite:      The rite.
-            aGraphName: The graph name.
-            aCycle:     The cycle number.
-
-        """
         self.mLogger = logging.getLogger('GraphRiteSession')
         self.mLogger.setLevel(logging.INFO)
 
@@ -66,7 +39,6 @@ class GraphRiteSession(threading.Thread):
         threading.Thread.__init__(self, name='GraphRiteSession')
 
     def run(self):
-        """Starts the main loop of the session."""
         # Set all states of works to 'STATE_NOT_STARTED'.
         for work in self.mWorks:
             self.mWorkStates[work] = GraphRiteSession.STATE_NOT_STARTED
@@ -95,12 +67,6 @@ class GraphRiteSession(threading.Thread):
         del self.mRite.mSessions[self.mGraphName][self.mGraphCycle]
 
     def __commandWorkExecutionAnnouncement(self, aWorkName):
-        """Commands the work execution.
-
-        Arguments:
-            aWorkName: The name of the work.
-
-        """
         self.mLogger.info("Ordering a work execution: %s@%s@%s." % (self.mGraphName, self.mGraphCycle, aWorkName))
 
         # Set the state.
@@ -125,18 +91,7 @@ class GraphRiteSession(threading.Thread):
             self.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
 class SpawnChecker(object):
-    """Checks whether there's a need to continue spawning works."""
-
     def continueSpawning(self, aWorkStates):
-        """Checks whether or not to continue spawning works.
-
-        Arguments:
-            aWorkStates: The dictionary of work states.
-
-        Returns:
-            True if there's a need to continue spawning, False otherwise.
-
-        """
         # There's the 'STATE_FAILED' state.
         if GraphRiteSession.STATE_FAILED in aWorkStates.values():
             return False
@@ -164,35 +119,11 @@ class SpawnChecker(object):
         return True
 
 class WorkFinder(object):
-    """Finds the works that should be spawned.
-
-    Attributes:
-        mWorks:            Keeps the available works.
-        mWorkPredecessors: Keeps the predecessors of the works.
-
-    """
-
     def __init__(self, aWorks, aWorkPredecessors):
-        """Initializes the finder.
-
-        Arguments:
-            aWorks:            Keeps the available works.
-            aWorkPredecessors: Keeps the predecessors of the works.
-
-        """
         self.mWorks            = aWorks
         self.mWorkPredecessors = aWorkPredecessors
 
     def findWorks(self, aWorkStates):
-        """Finds the works that should be started.
-
-        Arguments:
-            aWorkStates: Keeps the states of works.
-
-        Returns:
-            The array of works that should be started.
-
-        """
         worksToBeStarted = []
 
         for work in self.mWorks:
@@ -220,18 +151,7 @@ class WorkFinder(object):
         return worksToBeStarted
 
 class Awaiter(object):
-    """Check whether there's a need to keep waiting until all jobs are completed."""
-
     def keepWaiting(self, aWorkStates):
-        """Checks whether or not to keep waiting until all jobs are completed.
-
-        Arguments:
-            aWorkStates: The dictionary of work states.
-
-        Returns:
-            True if there's a need to keep waiting, False otherwise.
-
-        """
         # There's the 'STATE_COMMANDED' or 'STATE_STARTED' state.
         if GraphRiteSession.STATE_COMMANDED in aWorkStates.values() or \
            GraphRiteSession.STATE_STARTED   in aWorkStates.values()    :
