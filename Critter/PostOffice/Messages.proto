@@ -344,3 +344,25 @@ message Command_Res_DetermineGraphCycle
     optional string graphName               = 3;
     optional uint32 graphCycle              = 4;
 }
+
+//
+// GraphYeeti -> Balancer.
+//
+message Command_Req_OrderWorkExecution
+{
+    optional string messageName             = 1;
+    optional string graphExecutionCritthash = 2;
+    optional string graphName               = 3;
+    optional uint32 graphCycle              = 4;
+    optional string workExecutionCritthash  = 5;
+    optional string workName                = 6;
+}
+
+//
+// Balancer -> GraphYeeti.
+//
+message Command_Res_OrderWorkExecution
+{
+    optional string messageName            = 1;
+    optional string workExecutionCritthash = 2;
+}
