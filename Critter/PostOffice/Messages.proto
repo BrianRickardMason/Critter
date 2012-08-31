@@ -310,9 +310,9 @@ message Command_Res_Election
 //
 message Command_Req_ExecuteGraph
 {
-    optional string messageName = 1;
-    optional string critthash   = 2;
-    optional string graphName   = 3;
+    optional string messageName             = 1;
+    optional string graphExecutionCritthash = 2;
+    optional string graphName               = 3;
 }
 
 //
@@ -320,8 +320,8 @@ message Command_Req_ExecuteGraph
 //
 message Command_Res_ExecuteGraph
 {
-    optional string messageName = 1;
-    optional string critthash   = 2;
+    optional string messageName             = 1;
+    optional string graphExecutionCritthash = 2;
 }
 
 //
