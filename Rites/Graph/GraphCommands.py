@@ -23,7 +23,7 @@ class GraphCommand_Handle_Command_Req_ExecuteGraph(object):
         aCommandProcessor.mLogger.debug("Insert the sent request entry: [%s][%s]." % ('Command_Req_Election', graphExecutionCritthash))
         aCommandProcessor.mRite.mSentReq['Command_Req_Election'][graphExecutionCritthash] = True
 
-        aCommandProcessor.mLogger.debug("Sending the Command_Req_ExecuteGraph message.")
+        aCommandProcessor.mLogger.debug("Sending the Command_Req_Election message.")
         envelope = aCommandProcessor.mRite.mPostOffice.encode(
             'Command_Req_Election',
             {'messageName': 'Command_Req_Election',
