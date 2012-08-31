@@ -11,7 +11,6 @@ class GraphCommand_Handle_Command_Req_ExecuteGraph(object):
     def execute(self, aCommandProcessor):
         critthash = self.mMessage.critthash
 
-        assert self.mMessage.messageName in aCommandProcessor.mRite.mRecvReq, "Missing key in the dictionary of received requests."
         assert critthash not in aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName], "Not handled yet. Duplicated critthash."
         aCommandProcessor.mLogger.debug("Insert the received request entry: [%s][%s]." % (self.mMessage.messageName, critthash))
         aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName][critthash] = True
@@ -20,7 +19,6 @@ class GraphCommand_Handle_Command_Req_ExecuteGraph(object):
         aCommandProcessor.mLogger.debug("Insert the election entry: [%s]." % critthash)
         aCommandProcessor.mRite.mElections[critthash] = {'message': self.mMessage}
 
-        assert 'Command_Req_Election' in aCommandProcessor.mRite.mSentReq, "Missing key in the dictionary of sent requests."
         assert critthash not in aCommandProcessor.mRite.mSentReq['Command_Req_Election'], "Not handled yet. Duplicated critthash."
         aCommandProcessor.mLogger.debug("Insert the sent request entry: [%s][%s]." % ('Command_Req_Election', critthash))
         aCommandProcessor.mRite.mSentReq['Command_Req_Election'][critthash] = True
@@ -46,7 +44,6 @@ class GraphCommand_Handle_Command_Req_ExecuteGraph_ElectionFinished(object):
 
             critthash = os.urandom(32).encode('hex')
 
-            assert 'Command_Req_DetermineGraphCycle' in aCommandProcessor.mRite.mSentReq, "Missing key in the dictionary of sent requests."
             assert critthash not in aCommandProcessor.mRite.mSentReq['Command_Req_DetermineGraphCycle'], "Not handled yet. Duplicated critthash."
             aCommandProcessor.mLogger.debug("Insert the sent request entry: [%s][%s]." % ('Command_Req_DetermineGraphCycle', critthash))
             aCommandProcessor.mRite.mSentReq['Command_Req_DetermineGraphCycle'][critthash] = True
@@ -65,8 +62,6 @@ class GraphCommand_Handle_Command_Res_DetermineGraphCycle(object):
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
-        assert 'Command_Req_DetermineGraphCycle' in aCommandProcessor.mRite.mSentReq, "Missing key in the dictionary of sent requests."
-
         critthash = self.mMessage.critthash
 
         if critthash in aCommandProcessor.mRite.mSentReq['Command_Req_DetermineGraphCycle']:
