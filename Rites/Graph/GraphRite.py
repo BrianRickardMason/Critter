@@ -30,8 +30,9 @@ class GraphRite(Rite):
 
         # A dictionary of sent requests.
         self.mSentReq = {}
-        self.mSentReq['Command_Req_Election'] = {}
         self.mSentReq['Command_Req_DetermineGraphCycle'] = {}
+        self.mSentReq['Command_Req_Election'] = {}
+        self.mSentReq['Command_Req_OrderWorkExecution'] = {}
 
     def run(self):
         # Ask for the configuration of graphs and works.

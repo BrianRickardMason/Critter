@@ -76,8 +76,6 @@ class GraphRiteSession(threading.Thread):
 
             workExecutionCritthash = os.urandom(32).encode('hex')
 
-            # Send the message.
-            self.mLogger.debug("Sending the Command_Req_OrderWorkExecution message.")
             envelope = self.mRite.mPostOffice.encode(
                 'Command_Req_OrderWorkExecution',
                 {'messageName': 'Command_Req_OrderWorkExecution',
@@ -87,6 +85,10 @@ class GraphRiteSession(threading.Thread):
                  'workExecutionCritthash':  workExecutionCritthash,
                  'workName':                aWorkName}
             )
+            assert workExecutionCritthash not in self.mRite.mSentReq['Command_Req_OrderWorkExecution'], "Not handled yet. Duplicated critthash."
+            self.mLogger.debug("Insert the sent request entry: [%s][%s]." % ('Command_Req_OrderWorkExecution', workExecutionCritthash))
+            self.mRite.mSentReq['Command_Req_OrderWorkExecution'][workExecutionCritthash] = envelope
+            self.mLogger.debug("Sending the Command_Req_OrderWorkExecution message.")
             self.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
 class SpawnChecker(object):
