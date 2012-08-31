@@ -78,7 +78,7 @@ class GraphRiteSession(threading.Thread):
 
             envelope = self.mRite.mPostOffice.encode(
                 'Command_Req_OrderWorkExecution',
-                {'messageName': 'Command_Req_OrderWorkExecution',
+                {'messageName':             'Command_Req_OrderWorkExecution',
                  'graphExecutionCritthash': self.mGraphExecutionCritthash,
                  'graphName':               self.mGraphName,
                  'graphCycle':              self.mGraphCycle,
