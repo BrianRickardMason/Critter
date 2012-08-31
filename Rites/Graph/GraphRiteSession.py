@@ -101,8 +101,11 @@ class GraphRiteSession(threading.Thread):
             aWorkName: The name of the work.
 
         """
-        self.mLogger.info("Commanding work execution: %s@%s@%s." % (self.mGraphName, self.mCycle, aWorkName))
-        self.mLogger.info("TODO: Start from here!")
+        self.mLogger.debug("Commanding work execution: %s@%s@%s." % (self.mGraphName, self.mCycle, aWorkName))
+        self.mLogger.debug("TODO: Start from here!")
+        if    self.mRite.mCritter.mCritterData.mNick \
+           == self.mRite.mElections[self.mGraphExecutionCritthash]['crittnick']:
+            self.mLogger.debug("I am the winner!")
 
 class SpawnChecker(object):
     """Checks whether there's a need to continue spawning works."""
