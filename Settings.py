@@ -39,8 +39,9 @@ class Settings(object):
         self.mSettings['heartbeat']['period']   = int(configParser.get('heartbeat', 'period'))
         self.mSettings['heartbeat']['maxDelay'] = int(configParser.get('heartbeat', 'maxDelay'))
 
+        # TODO: Hardcoded for now.
         self.mSettings['logging'] = {}
-        self.mSettings['logging']['level'] = logging.DEBUG
+        self.mSettings['logging']['level'] = logging.INFO
 
     def get(self, aSection, aEntry):
         """Gets a specific entry of a specific section.
