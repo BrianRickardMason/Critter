@@ -1,31 +1,10 @@
-"""Work rite commands."""
-
 from WorkRiteSession import WorkRiteSession
 
 class WorkCommandInitializeWorkExecution(object):
-    """InitializeWorkExecution command.
-
-    Attributes:
-        mMessage: The ExecuteWorkAnnouncement.
-
-    """
-
     def __init__(self, aMessage):
-        """Initializes the command.
-
-        Arguments:
-            aMessage: The ExecuteWorkAnnouncement.
-
-        """
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
-        """Executes the command.
-
-        Arguments:
-            aCommandProcessor: The command processor to be visited.
-
-        """
         if aCommandProcessor.mRite.mCritter.mCritterData.mType == self.mMessage.sender.type and \
            aCommandProcessor.mRite.mCritter.mCritterData.mNick == self.mMessage.sender.nick     :
             return
@@ -55,29 +34,10 @@ class WorkCommandLoadWorkDetails(object):
                                                                          'dummy':    workDetail.dummy}
 
 class WorkCommandSpawnWorkExecution(object):
-    """SpawnWorkExecution command.
-
-    Attributes:
-        mMessage: The DetermineWorkCycleResponse.
-
-    """
-
     def __init__(self, aMessage):
-        """Initializes the command.
-
-        Arguments:
-            aMessage: The DetermineWorkCycleResponse.
-
-        """
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
-        """Executes the command.
-
-        Arguments:
-            aCommandProcessor: The command processor to be visited.
-
-        """
         if aCommandProcessor.mRite.mCritter.mCritterData.mType == self.mMessage.sender.type and \
            aCommandProcessor.mRite.mCritter.mCritterData.mNick == self.mMessage.sender.nick     :
             return
@@ -105,3 +65,10 @@ class WorkCommandSpawnWorkExecution(object):
             aCommandProcessor.mRite.mSessions[workName][workCycle].start()
         else:
             aCommandProcessor.mLogger.debug("The message is not addressed to me.")
+
+class WorkCommand_Handle_Command_Req_ExecuteWork(object):
+    def __init__(self, aMessage):
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        aCommandProcessor.mLogger.debug("TODO: Start from here.")
