@@ -347,7 +347,7 @@ class DatabaseCommand_Handle_Command_Req_DetermineWorkCycle(object):
             workCycle = row[0] + 1
 
         query = """
-                INSERT INTOCribrarian handles the Command_Req_DetermineWorkCycle message.
+                INSERT INTO
                     workCycles(workName, cycle)
                 VALUES
                     ('%s', '%s')
