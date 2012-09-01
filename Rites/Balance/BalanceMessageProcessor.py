@@ -4,6 +4,7 @@ from Rites.Balance.BalanceCommands import BalanceCommand_Handle_CommandWorkExecu
 from Rites.Balance.BalanceCommands import BalanceCommand_Handle_CommandWorkExecutionSelectVolunteer
 from Rites.Balance.BalanceCommands import BalanceCommand_Handle_Command_Req_OrderWorkExecution
 from Rites.Balance.BalanceCommands import BalanceCommand_Handle_Command_Res_Election
+from Rites.Balance.BalanceCommands import BalanceCommand_Handle_Command_Res_ExecuteWork
 from Rites.MessageProcessor        import MessageProcessor
 
 class BalanceMessageProcessor(MessageProcessor):
@@ -18,6 +19,7 @@ class BalanceMessageProcessor(MessageProcessor):
         elif aMessage.messageName == 'CommandWorkExecutionSelectVolunteer': command = BalanceCommand_Handle_CommandWorkExecutionSelectVolunteer(aMessage)
         elif aMessage.messageName == 'Command_Req_OrderWorkExecution':      command = BalanceCommand_Handle_Command_Req_OrderWorkExecution(aMessage)
         elif aMessage.messageName == 'Command_Res_Election':                command = BalanceCommand_Handle_Command_Res_Election(aMessage)
+        elif aMessage.messageName == 'Command_Res_ExecuteWork':             command = BalanceCommand_Handle_Command_Res_ExecuteWork(aMessage)
 
         if command:
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.BALANCE, command)

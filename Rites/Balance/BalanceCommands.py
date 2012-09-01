@@ -172,3 +172,28 @@ class BalanceCommand_Handle_Command_Res_Election(object):
                 if message.messageName == 'Command_Req_OrderWorkExecution':
                     command = BalanceCommand_Handle_Command_Req_OrderWorkExecution_ElectionFinished(message)
                     aCommandProcessor.mRite.mPostOffice.putCommand(Rites.RiteCommon.BALANCE, command)
+
+class BalanceCommand_Handle_Command_Res_ExecuteWork(object):
+    def __init__(self, aMessage):
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        workExecutionCritthash = self.mMessage.workExecutionCritthash
+
+        messageNameSentReq = 'Command_Req_ExecuteWork'
+        if workExecutionCritthash in aCommandProcessor.mRite.mSentReq[messageNameSentReq]:
+            aCommandProcessor.mLogger.info("Delete the sent request entry: [%s][%s]." % (messageNameSentReq, workExecutionCritthash))
+            del aCommandProcessor.mRite.mSentReq[messageNameSentReq][workExecutionCritthash]
+
+        messageNameRecvReq = 'Command_Req_OrderWorkExecution'
+        messageNameRecvRes = 'Command_Res_OrderWorkExecution'
+        envelope = aCommandProcessor.mRite.mPostOffice.encode(
+            messageNameRecvRes,
+            {'messageName':             messageNameRecvRes,
+             'workExecutionCritthash':  workExecutionCritthash}
+        )
+        if workExecutionCritthash in aCommandProcessor.mRite.mRecvReq[messageNameRecvReq]:
+            aCommandProcessor.mLogger.info("Delete the received request entry: [%s][%s]." % (messageNameRecvReq, workExecutionCritthash))
+            del aCommandProcessor.mRite.mRecvReq[messageNameRecvReq][workExecutionCritthash]
+        aCommandProcessor.mLogger.info("Sending the %s message." % messageNameRecvRes)
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
