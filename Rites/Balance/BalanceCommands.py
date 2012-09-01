@@ -190,7 +190,11 @@ class BalanceCommand_Handle_Command_Res_ExecuteWork(object):
         envelope = aCommandProcessor.mRite.mPostOffice.encode(
             messageNameRecvRes,
             {'messageName':             messageNameRecvRes,
-             'workExecutionCritthash':  workExecutionCritthash}
+             'graphExecutionCritthash': self.mMessage.graphExecutionCritthash,
+             'graphName':               self.mMessage.graphName,
+             'graphCycle':              self.mMessage.graphCycle,
+             'workExecutionCritthash':  self.mMessage.workExecutionCritthash,
+             'workName':                self.mMessage.workName}
         )
         if workExecutionCritthash in aCommandProcessor.mRite.mRecvReq[messageNameRecvReq]:
             aCommandProcessor.mLogger.debug("Delete the received request entry: [%s][%s]." % (messageNameRecvReq, workExecutionCritthash))
