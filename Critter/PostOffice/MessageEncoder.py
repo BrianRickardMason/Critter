@@ -59,6 +59,8 @@ class MessageEncoder(object):
             elif aMessageName == 'Command_Res_OrderWorkExecution':      return self.__encode(COMMAND_RES_ORDER_WORK_EXECUTION, aData)
             elif aMessageName == 'Command_Req_ExecuteWork':             return self.__encode(COMMAND_REQ_EXECUTE_WORK, aData)
             elif aMessageName == 'Command_Res_ExecuteWork':             return self.__encode(COMMAND_RES_EXECUTE_WORK, aData)
+            elif aMessageName == 'Command_Req_DetermineWorkCycle':      return self.__encode(COMMAND_REQ_DETERMINE_WORK_CYCLE, aData)
+            elif aMessageName == 'Command_Res_DetermineWorkCycle':      return self.__encode(COMMAND_RES_DETERMINE_WORK_CYCLE, aData)
             else:
                 # TODO: Handle this more gracefully
                 print "Invalid message."

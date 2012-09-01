@@ -55,6 +55,8 @@ class MessageDecoder(object):
         elif envelope.header.id == COMMAND_RES_ORDER_WORK_EXECUTION:        message = Messages_pb2.Command_Res_OrderWorkExecution()
         elif envelope.header.id == COMMAND_REQ_EXECUTE_WORK:                message = Messages_pb2.Command_Req_ExecuteWork()
         elif envelope.header.id == COMMAND_RES_EXECUTE_WORK:                message = Messages_pb2.Command_Res_ExecuteWork()
+        elif envelope.header.id == COMMAND_REQ_DETERMINE_WORK_CYCLE:        message = Messages_pb2.Command_Req_DetermineWorkCycle()
+        elif envelope.header.id == COMMAND_RES_DETERMINE_WORK_CYCLE:        message = Messages_pb2.Command_Res_DetermineWorkCycle()
         else:                                                               return None
 
         message.ParseFromString(envelope.payload.payload)

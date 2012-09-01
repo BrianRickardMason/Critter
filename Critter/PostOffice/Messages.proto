@@ -390,3 +390,30 @@ message Command_Res_ExecuteWork
     optional string messageName            = 1;
     optional string workExecutionCritthash = 2;
 }
+
+//
+// Worker -> Cribrarian.
+//
+message Command_Req_DetermineWorkCycle
+{
+    optional string messageName             = 1;
+    optional string graphExecutionCritthash = 2;
+    optional string graphName               = 3;
+    optional uint32 graphCycle              = 4;
+    optional string workExecutionCritthash  = 5;
+    optional string workName                = 6;
+}
+
+//
+// Cribrarian -> Worker.
+//
+message Command_Res_DetermineWorkCycle
+{
+    optional string messageName             = 1;
+    optional string graphExecutionCritthash = 2;
+    optional string graphName               = 3;
+    optional uint32 graphCycle              = 4;
+    optional string workExecutionCritthash  = 5;
+    optional string workName                = 6;
+    optional uint32 workCycle               = 7;
+}
