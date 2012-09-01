@@ -120,7 +120,6 @@ class BalanceCommand_Handle_Command_Req_OrderWorkExecution_ElectionFinished(obje
            == aCommandProcessor.mRite.mElections[workExecutionCritthash]['crittnick']:
 
             aCommandProcessor.mLogger.debug("I am the winner.")
-            aCommandProcessor.mLogger.debug("TODO: Start from here!")
 
             knownCritters = aCommandProcessor.mRite.mCritter.mRites[Rites.RiteCommon.REGISTRY].getKnownCritters()
 
