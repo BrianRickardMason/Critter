@@ -39,7 +39,11 @@ class WorkRiteSession(threading.Thread):
         envelope = self.mRite.mPostOffice.encode(
             messageNameRes,
             {'messageName':             messageNameRes,
-             'workExecutionCritthash':  self.mWorkExecutionCritthash}
+             'graphExecutionCritthash': self.mGraphExecutionCritthash,
+             'graphName':               self.mGraphName,
+             'graphCycle':              self.mGraphCycle,
+             'workExecutionCritthash':  self.mWorkExecutionCritthash,
+             'workName':                self.mWorkName}
         )
         if self.mWorkExecutionCritthash in self.mRite.mRecvReq[messageNameReq]:
             self.mLogger.debug("Delete the received request entry: [%s][%s]." % (messageNameReq, self.mWorkExecutionCritthash))
