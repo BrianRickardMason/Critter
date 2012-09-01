@@ -109,6 +109,31 @@ class GraphCommand_Handle_Command_Res_Election(object):
                     command = GraphCommand_Handle_Command_Req_ExecuteGraph_ElectionFinished(message)
                     aCommandProcessor.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
 
+class GraphCommand_Handle_Command_Res_OrderWorkExecution(object):
+    def __init__(self, aMessage):
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        workExecutionCritthash = self.mMessage.workExecutionCritthash
+
+        messageNameSentReq = 'Command_Req_OrderWorkExecution'
+        if workExecutionCritthash in aCommandProcessor.mRite.mSentReq[messageNameSentReq]:
+            aCommandProcessor.mLogger.debug("Delete the sent request entry: [%s][%s]." % (messageNameSentReq, workExecutionCritthash))
+            del aCommandProcessor.mRite.mSentReq[messageNameSentReq][workExecutionCritthash]
+
+        state = GraphRiteSession.STATE_SUCCEED
+
+        graphName  = self.mMessage.graphName
+        graphCycle = self.mMessage.graphCycle
+        workName   = self.mMessage.workName
+
+        # TODO: Please, do it nicer. Consider holding exceptional cases as well.
+        # REMARK: It is possible not to hit the [graphName][graphCycle] entry (e.g. due to a timeout).
+        try:
+            aCommandProcessor.mRite.mSessions[graphName][graphCycle].mWorkStates[workName] = state
+        except KeyError, e:
+            pass
+
 class GraphCommand_Handle_LoadGraphAndWorkResponse(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
