@@ -15,6 +15,14 @@ class WorkRite(Rite):
                       Rites.RiteCommon.BALANCE,
                       WorkMessageProcessor)
 
+        # A dictionary of received requests.
+        self.mRecvReq = {}
+        self.mRecvReq['Command_Req_ExecuteWork'] = {}
+
+        # A dictionary of sent requests.
+        self.mSentReq = {}
+        self.mSentReq['Command_Req_DetermineWorkCycle'] = {}
+
         self.mWorkDetails = {}
 
         self.mSessions    = {}
