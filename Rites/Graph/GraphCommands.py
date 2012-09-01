@@ -71,7 +71,7 @@ class GraphCommand_Handle_Command_Res_DetermineGraphCycle(object):
             graphCycle = self.mMessage.graphCycle
             graphName  = self.mMessage.graphName
 
-            assert graphCycle > 0, "Invalid graph cycle value determined."
+            assert graphCycle > 0, "Invalid graphCycle value determined."
 
             # Create and run a session.
             if graphName not in aCommandProcessor.mRite.mSessions:
