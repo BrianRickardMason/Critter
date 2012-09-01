@@ -1,9 +1,3 @@
-"""The WorkRiteSession.
-
-Handles a full, single work execution from the beginning to the end.
-
-"""
-
 import logging
 import time
 import threading
@@ -11,41 +5,24 @@ import threading
 logging.basicConfig(format='[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
 
 class WorkRiteSession(threading.Thread):
-    """The message processor of the a rite.
-
-    Attributes:
-        mLogger:     The logger.
-        mRite:       The rite.
-        mGraphName:  The graph name.
-        mGraphCycle: The cycle number.
-        mWorkName:   The work name.
-        mWorkCycle:  The work cycle.
-
-    """
-
-    def __init__(self, aRite, aGraphName, aGraphCycle, aWorkName, aWorkCycle):
-        """Initializes the message processor.
-
-        Arguments:
-            aRite:       The rite.
-            aGraphName:  The graph name.
-            aGraphCycle: The graph cycle.
-            aWorkName:   The work name.
-            aWorkCycle:  The work cycle.
-
-        """
+    def __init__(self, aRite, aGraphExecutionCritthash, aGraphName, aGraphCycle, aWorkExecutionCritthash, aWorkName, aWorkCycle):
         self.mLogger = logging.getLogger('WorkRiteSession')
         self.mLogger.setLevel(logging.INFO)
 
-        self.mRite       = aRite
-        self.mGraphName  = aGraphName
-        self.mGraphCycle = aGraphCycle
-        self.mWorkName   = aWorkName
-        self.mWorkCycle  = aWorkCycle
+        self.mRite                    = aRite
+        self.mGraphExecutionCritthash = aGraphExecutionCritthash
+        self.mGraphName               = aGraphName
+        self.mGraphCycle              = aGraphCycle
+        self.mWorkExecutionCritthash  = aWorkExecutionCritthash
+        self.mWorkName                = aWorkName
+        self.mWorkCycle               = aWorkCycle
 
         threading.Thread.__init__(self, name='WorkRiteSession')
 
     def run(self):
+        # TODO: Start from here.
+        return
+
         """Starts the main flow of the session."""
         self.mLogger.info("Work started: %s@%s: %s@%s." % (self.mGraphName,
                                                            self.mGraphCycle,

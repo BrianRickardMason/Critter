@@ -77,7 +77,7 @@ class WorkCommand_Handle_Command_Req_ExecuteWork(object):
 
             workExecutionCritthash = self.mMessage.workExecutionCritthash
 
-            messageName = 'Command_Req_ExecuteWork'
+            messageName = self.mMessage.messageName
             assert workExecutionCritthash not in aCommandProcessor.mRite.mRecvReq[messageName], "Not handled yet. Duplicated critthash."
             aCommandProcessor.mLogger.debug("Insert the received request entry: [%s][%s]." % (messageName, workExecutionCritthash))
             aCommandProcessor.mRite.mRecvReq[messageName][workExecutionCritthash] = self.mMessage
@@ -97,3 +97,37 @@ class WorkCommand_Handle_Command_Req_ExecuteWork(object):
             aCommandProcessor.mRite.mSentReq[messageName][workExecutionCritthash] = envelope
             aCommandProcessor.mLogger.debug("Sending the %s message." % messageName)
             aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
+class WorkCommand_Handle_Command_Res_DetermineWorkCycle(object):
+    def __init__(self, aMessage):
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        messageName = 'Command_Req_DetermineWorkCycle'
+
+        workExecutionCritthash = self.mMessage.workExecutionCritthash
+
+        if workExecutionCritthash in aCommandProcessor.mRite.mSentReq[messageName]:
+            aCommandProcessor.mLogger.debug("Delete the sent request entry: [%s][%s]." % (messageName, workExecutionCritthash))
+            del aCommandProcessor.mRite.mSentReq[messageName][workExecutionCritthash]
+
+            graphCycle = self.mMessage.graphCycle
+            workCycle  = self.mMessage.workCycle
+            workName   = self.mMessage.workName
+
+            assert graphCycle > 0, "Invalid graphCycle value determined."
+            assert workCycle  > 0, "Invalid workCycle value determined."
+
+            # Create and run a session.
+            if workName not in aCommandProcessor.mRite.mSessions:
+                aCommandProcessor.mRite.mSessions[workName] = {}
+
+            aCommandProcessor.mRite.mSessions[workName][workCycle] = WorkRiteSession(aCommandProcessor.mRite,
+                                                                                     self.mMessage.graphExecutionCritthash,
+                                                                                     self.mMessage.graphName,
+                                                                                     graphCycle,
+                                                                                     workExecutionCritthash,
+                                                                                     workName,
+                                                                                     workCycle)
+            aCommandProcessor.mRite.mSessions[workName][workCycle].setDaemon(True)
+            aCommandProcessor.mRite.mSessions[workName][workCycle].start()
