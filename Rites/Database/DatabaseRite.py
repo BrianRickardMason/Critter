@@ -18,6 +18,7 @@ class DatabaseRite(Rite):
         # A dictionary of received requests.
         self.mRecvReq = {}
         self.mRecvReq['Command_Req_DetermineGraphCycle'] = {}
+        self.mRecvReq['Command_Req_DetermineWorkCycle'] = {}
 
     def run(self):
         while True:

@@ -311,3 +311,65 @@ class DatabaseCommand_Handle_Command_Req_DetermineGraphCycle(object):
              'graphName':               self.mMessage.graphName,
              'graphCycle':              cycle})
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
+class DatabaseCommand_Handle_Command_Req_DetermineWorkCycle(object):
+    def __init__(self, aMessage):
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        workExecutionCritthash = self.mMessage.workExecutionCritthash
+
+        messageName = self.mMessage.messageName
+        assert workExecutionCritthash not in aCommandProcessor.mRite.mRecvReq[messageName], "Not handled yet. Duplicated critthash."
+        aCommandProcessor.mLogger.debug("Insert the received request entry: [%s][%s]." % (messageName, workExecutionCritthash))
+        aCommandProcessor.mRite.mRecvReq[messageName][workExecutionCritthash] = self.mMessage
+
+        try:
+            connection = psycopg2.connect("host='localhost' dbname='critter' user='brian' password='brianpassword'")
+            cursor = connection.cursor()
+        except psycopg2.DatabaseError, e:
+            sys.exit(1)
+
+        query = """
+                SELECT
+                    max(cycle)
+                FROM
+                    workCycles
+                WHERE
+                    workName = '%s'
+                """ % (self.mMessage.workName)
+        cursor.execute(query)
+
+        row = cursor.fetchone()
+        if row[0] == None:
+            workCycle = 1
+        else:
+            workCycle = row[0] + 1
+
+        query = """
+                INSERT INTOCribrarian handles the Command_Req_DetermineWorkCycle message.
+                    workCycles(workName, cycle)
+                VALUES
+                    ('%s', '%s')
+                """ % (self.mMessage.workName, workCycle)
+        cursor.execute(query)
+
+        connection.commit()
+
+        if workExecutionCritthash in aCommandProcessor.mRite.mRecvReq[messageName]:
+            aCommandProcessor.mLogger.debug("Delete the received request entry: [%s][%s]." % (messageName, workExecutionCritthash))
+            del aCommandProcessor.mRite.mRecvReq[messageName][workExecutionCritthash]
+
+        messageName = 'Command_Res_DetermineWorkCycle'
+        envelope = aCommandProcessor.mRite.mPostOffice.encode(
+            messageName,
+            {'messageName':             messageName,
+             'graphExecutionCritthash': self.mMessage.graphExecutionCritthash,
+             'graphName':               self.mMessage.graphName,
+             'graphCycle':              self.mMessage.graphCycle,
+             'workExecutionCritthash':  workExecutionCritthash,
+             'workName':                self.mMessage.workName,
+             'workCycle':               workCycle}
+        )
+        aCommandProcessor.mLogger.debug("Sending the %s message." % messageName)
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
