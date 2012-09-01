@@ -1,5 +1,3 @@
-"""Balance rite commands."""
-
 from random import choice
 
 import Rites.RiteCommon
