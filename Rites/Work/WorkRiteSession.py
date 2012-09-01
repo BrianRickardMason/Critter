@@ -20,10 +20,6 @@ class WorkRiteSession(threading.Thread):
         threading.Thread.__init__(self, name='WorkRiteSession')
 
     def run(self):
-        # TODO: Start from here.
-        return
-
-        """Starts the main flow of the session."""
         self.mLogger.info("Work started: %s@%s: %s@%s." % (self.mGraphName,
                                                            self.mGraphCycle,
                                                            self.mWorkName,
@@ -33,30 +29,23 @@ class WorkRiteSession(threading.Thread):
         import random
         time.sleep(random.randint(1, 12))
 
-        # Succeed.
-        if random.randint(0, 90) > 100:
-            result = True
-        # Failed.
-        else:
-            result = False
-
-        # Report finished work.
-        envelope = self.mRite.mPostOffice.encode(
-            'ReportFinishedWorkAnnouncement',
-            {'messageName': 'ReportFinishedWorkAnnouncement',
-             'sender':      {'type': self.mRite.mCritterData.mType,
-                             'nick': self.mRite.mCritterData.mNick},
-             'graphName':   self.mGraphName,
-             'graphCycle':  self.mGraphCycle,
-             'workName':    self.mWorkName,
-             'workCycle':   self.mWorkCycle,
-             'result':      result})
-        self.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
-
         self.mLogger.info("Work ended: %s@%s: %s@%s." % (self.mGraphName,
                                                          self.mGraphCycle,
                                                          self.mWorkName,
                                                          self.mWorkCycle))
+
+        messageNameReq = 'Command_Req_ExecuteWork'
+        messageNameRes = 'Command_Res_ExecuteWork'
+        envelope = self.mRite.mPostOffice.encode(
+            messageNameRes,
+            {'messageName':             messageNameRes,
+             'workExecutionCritthash':  self.mWorkExecutionCritthash}
+        )
+        if self.mWorkExecutionCritthash in self.mRite.mRecvReq[messageNameReq]:
+            self.mLogger.debug("Delete the received request entry: [%s][%s]." % (messageNameReq, self.mWorkExecutionCritthash))
+            del self.mRite.mRecvReq[messageNameReq][self.mWorkExecutionCritthash]
+        self.mLogger.debug("Sending the %s message." % messageNameRes)
+        self.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
         # Delete myself from sessions.
         del self.mRite.mSessions[self.mWorkName][self.mWorkCycle]
