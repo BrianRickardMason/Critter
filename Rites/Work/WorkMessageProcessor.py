@@ -1,9 +1,7 @@
 import Rites.RiteCommon
 
 from Rites.MessageProcessor  import MessageProcessor
-from Rites.Work.WorkCommands import WorkCommandInitializeWorkExecution
 from Rites.Work.WorkCommands import WorkCommandLoadWorkDetails
-from Rites.Work.WorkCommands import WorkCommandSpawnWorkExecution
 from Rites.Work.WorkCommands import WorkCommand_Handle_Command_DetermineWorkCycle_Res
 from Rites.Work.WorkCommands import WorkCommand_Handle_Command_ExecuteWork_Req
 
@@ -18,8 +16,6 @@ class WorkMessageProcessor(MessageProcessor):
         if False: pass
         elif aMessage.messageName == 'Command_DetermineWorkCycle_Res': command = WorkCommand_Handle_Command_DetermineWorkCycle_Res(aMessage)
         elif aMessage.messageName == 'Command_ExecuteWork_Req':        command = WorkCommand_Handle_Command_ExecuteWork_Req(aMessage)
-        elif aMessage.messageName == 'DetermineWorkCycleResponse':     command = WorkCommandSpawnWorkExecution(aMessage)
-        elif aMessage.messageName == 'ExecuteWorkAnnouncement':        command = WorkCommandInitializeWorkExecution(aMessage)
         elif aMessage.messageName == 'LoadWorkDetailsResponse':        command = WorkCommandLoadWorkDetails(aMessage)
 
         if command:
