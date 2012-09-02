@@ -52,7 +52,7 @@ class GraphRiteSession(threading.Thread):
 
             # Start works.
             for work in worksToBeStarted:
-                self.__commandWorkExecutionAnnouncement(work)
+                self.__orderWorkExecution(work)
 
             time.sleep(GraphRiteSession.SLEEP_BETWEEN_SPAWNING)
 
@@ -65,7 +65,7 @@ class GraphRiteSession(threading.Thread):
         # Delete myself from sessions.
         del self.mRite.mSessions[self.mGraphName][self.mGraphCycle]
 
-    def __commandWorkExecutionAnnouncement(self, aWorkName):
+    def __orderWorkExecution(self, aWorkName):
         self.mLogger.info("Ordering a work execution: %s@%s@%s." % (self.mGraphName, self.mGraphCycle, aWorkName))
 
         # Set the state.

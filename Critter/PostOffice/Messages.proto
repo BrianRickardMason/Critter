@@ -47,13 +47,6 @@ message PokeAnnouncement
     optional CritterData sender      = 2;
 }
 
-message ExecuteGraphAnnouncement
-{
-    optional string      messageName = 1;
-    optional CritterData sender      = 2;
-    optional string      graphName   = 3;
-}
-
 // LoadGraphAndWorkRequest/Response: GraphYeeti -> Cribrarian -> GraphYeeti.
 
 message GraphData
@@ -89,47 +82,6 @@ message LoadGraphAndWorkResponse
     repeated WorkPredecessorData workPredecessors = 6;
 }
 
-// DetermineGraphCycleRequest/Response: GraphYeeti -> Cribrarian -> GraphYeeti.
-
-message DetermineGraphCycleRequest
-{
-    optional string      messageName = 1;
-    optional CritterData sender      = 2;
-    optional string      graphName   = 3;
-}
-
-message DetermineGraphCycleResponse
-{
-    optional string      messageName = 1;
-    optional CritterData sender      = 2;
-    optional CritterData receiver    = 3;
-    optional string      graphName   = 4;
-    optional uint32      cycle       = 5;
-}
-
-// CommandWorkExecutionAnnouncement: GraphYeeti -> Balancer.
-
-message CommandWorkExecutionAnnouncement
-{
-    optional string      messageName = 1;
-    optional CritterData sender      = 2;
-    optional string      graphName   = 3;
-    optional uint32      cycle       = 4;
-    optional string      workName    = 5;
-}
-
-// ExecuteWorkAnnouncement: Balancer -> Worker.
-
-message ExecuteWorkAnnouncement
-{
-    optional string      messageName = 1;
-    optional CritterData sender      = 2;
-    optional CritterData receiver    = 3;
-    optional string      graphName   = 4;
-    optional uint32      cycle       = 5;
-    optional string      workName    = 6;
-}
-
 // CantExecuteWorkNow: Worker -> Balancer.
 
 message CantExecuteWorkNowAnnouncement
@@ -140,43 +92,6 @@ message CantExecuteWorkNowAnnouncement
     optional string      graphName   = 4;
     optional uint32      cycle       = 5;
     optional string      workName    = 6;
-}
-
-// DetermineWorkCycleRequest/Response: Worker -> Cribrarian -> Worker.
-
-message DetermineWorkCycleRequest
-{
-    optional string      messageName = 1;
-    optional CritterData sender      = 2;
-    optional string      graphName   = 3;
-    optional uint32      cycle       = 4;
-    optional string      workName    = 5;
-}
-
-message DetermineWorkCycleResponse
-{
-    optional string      messageName = 1;
-    optional CritterData sender      = 2;
-    optional CritterData receiver    = 3;
-    optional string      graphName   = 4;
-    optional uint32      cycle       = 5;
-    optional string      workName    = 6;
-    optional uint32      workCycle   = 7;
-}
-
-// ReportFinishedWorkAnnouncement: Worker -> GraphYeeti.
-
-// TODO: Add missing information on whom inform about the result.
-
-message ReportFinishedWorkAnnouncement
-{
-    optional string      messageName = 1;
-    optional CritterData sender      = 2;
-    optional string      graphName   = 3;
-    optional uint32      graphCycle  = 4;
-    optional string      workName    = 5;
-    optional uint32      workCycle   = 6;
-    optional bool        result      = 7;
 }
 
 // LoadWorkDetailsRequest/Response: Worker -> Cribrarian -> Worker.
@@ -199,82 +114,6 @@ message LoadWorkDetailsResponse
     optional CritterData     sender      = 2;
     optional CritterData     receiver    = 3;
     repeated WorkDetailsData details     = 4;
-}
-
-//
-// Graph execution.
-//
-
-//
-// Criduler -> Criduler + GraphYeeti.
-//
-message ExecuteGraphSeekVolunteers
-{
-    optional string      messageName = 1;
-    optional CritterData sender      = 2;
-    optional string      hash        = 3;
-}
-
-//
-// GraphYeeti -> Criduler.
-//
-message ExecuteGraphVoluntee
-{
-    optional string      messageName = 1;
-    optional CritterData sender      = 2;
-    optional CritterData receiver    = 3;
-    optional string      hash        = 4;
-}
-
-//
-// Criduler -> Criduler + GraphYeeti.
-//
-message ExecuteGraphSelectVolunteer
-{
-    optional string      messageName = 1;
-    optional CritterData sender      = 2;
-    optional CritterData receiver    = 3;
-    optional string      hash        = 4;
-    optional string      graphName   = 5;
-}
-
-//
-// Work execution.
-//
-
-//
-// GraphYeeti -> GraphYeeti + Balancer.
-//
-message CommandWorkExecutionSeekVolunteers
-{
-    optional string      messageName = 1;
-    optional CritterData sender      = 2;
-    optional string      hash        = 3;
-}
-
-//
-// Balancer -> GraphYeeti.
-//
-message CommandWorkExecutionVoluntee
-{
-    optional string      messageName = 1;
-    optional CritterData sender      = 2;
-    optional CritterData receiver    = 3;
-    optional string      hash        = 4;
-}
-
-//
-// GraphYeeti -> GraphYeeti + Balancer.
-//
-message CommandWorkExecutionSelectVolunteer
-{
-    optional string      messageName = 1;
-    optional CritterData sender      = 2;
-    optional CritterData receiver    = 3;
-    optional string      hash        = 4;
-    optional string      graphName   = 5;
-    optional uint32      graphCycle  = 6;
-    optional string      workName    = 7;
 }
 
 //

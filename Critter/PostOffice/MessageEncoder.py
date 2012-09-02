@@ -26,14 +26,8 @@ class MessageEncoder(object):
 
         """
         try:
-            if   aMessageName == 'CantExecuteWorkNowAnnouncement':      return self.__encode(CANT_EXECUTE_WORK_NOW_ANNOUNCEMENT, aData)
-            elif aMessageName == 'CommandWorkExecutionAnnouncement':    return self.__encode(COMMAND_WORK_EXECUTION_ANNOUNCEMENT, aData)
-            elif aMessageName == 'DetermineGraphCycleRequest':          return self.__encode(DETERMINE_GRAPH_CYCLE_REQUEST, aData)
-            elif aMessageName == 'DetermineGraphCycleResponse':         return self.__encode(DETERMINE_GRAPH_CYCLE_RESPONSE, aData)
-            elif aMessageName == 'DetermineWorkCycleRequest':           return self.__encode(DETERMINE_WORK_CYCLE_REQUEST, aData)
-            elif aMessageName == 'DetermineWorkCycleResponse':          return self.__encode(DETERMINE_WORK_CYCLE_RESPONSE, aData)
-            elif aMessageName == 'ExecuteGraphAnnouncement':            return self.__encode(EXECUTE_GRAPH_ANNOUNCEMENT, aData)
-            elif aMessageName == 'ExecuteWorkAnnouncement':             return self.__encode(EXECUTE_WORK_ANNOUNCEMENT, aData)
+            if False: pass
+            elif aMessageName == 'CantExecuteWorkNowAnnouncement':      return self.__encode(CANT_EXECUTE_WORK_NOW_ANNOUNCEMENT, aData)
             elif aMessageName == 'HeartbeatAnnouncement':               return self.__encode(HEARTBEAT_ANNOUNCEMENT, aData)
             elif aMessageName == 'LoadGraphAndWorkRequest':             return self.__encode(LOAD_GRAPH_AND_WORK_REQUEST, aData)
             elif aMessageName == 'LoadGraphAndWorkResponse':            return self.__encode(LOAD_GRAPH_AND_WORK_RESPONSE, aData)
@@ -42,13 +36,6 @@ class MessageEncoder(object):
             elif aMessageName == 'PokeAnnouncement':                    return self.__encode(POKE_ANNOUNCEMENT, aData)
             elif aMessageName == 'PresentYourselfRequest':              return self.__encode(PRESENT_YOURSELF_REQUEST, aData)
             elif aMessageName == 'PresentYourselfResponse':             return self.__encode(PRESENT_YOURSELF_RESPONSE, aData)
-            elif aMessageName == 'ReportFinishedWorkAnnouncement':      return self.__encode(REPORT_FINISHED_WORK_ANNOUNCEMENT, aData)
-            elif aMessageName == 'ExecuteGraphSeekVolunteers':          return self.__encode(EXECUTE_GRAPH_SEEK_VOLUNTEERS, aData)
-            elif aMessageName == 'ExecuteGraphVoluntee':                return self.__encode(EXECUTE_GRAPH_VOLUNTEE, aData)
-            elif aMessageName == 'ExecuteGraphSelectVolunteer':         return self.__encode(EXECUTE_GRAPH_SELECT_VOLUNTEER, aData)
-            elif aMessageName == 'CommandWorkExecutionSeekVolunteers':  return self.__encode(COMMAND_WORK_EXECUTION_SEEK_VOLUNTEERS, aData)
-            elif aMessageName == 'CommandWorkExecutionVoluntee':        return self.__encode(COMMAND_WORK_EXECUTION_VOLUNTEE, aData)
-            elif aMessageName == 'CommandWorkExecutionSelectVolunteer': return self.__encode(COMMAND_WORK_EXECUTION_SELECT_VOLUNTEER, aData)
             elif aMessageName == 'Command_Req_ExecuteGraph':            return self.__encode(COMMAND_REQ_EXECUTE_GRAPH, aData)
             elif aMessageName == 'Command_Res_ExecuteGraph':            return self.__encode(COMMAND_RES_EXECUTE_GRAPH, aData)
             elif aMessageName == 'Command_Req_Election':                return self.__encode(COMMAND_REQ_ELECTION, aData)

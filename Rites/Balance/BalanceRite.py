@@ -17,21 +17,6 @@ class BalanceRite(Rite):
                       Rites.RiteCommon.BALANCE,
                       BalanceMessageProcessor)
 
-        # CommandWorkExecution volunteering.
-        #
-        # It has a structure as follows:
-        # {'hash': CritterHash,
-        #  'data': data}
-        #
-        # data:
-        # {'graphName':  string,
-        #  'graphCycle': integer,
-        #  'workName':   string,
-        #  'boss':       string,
-        #  'worker':     string}
-        #
-        self.mCommandWorkExecutionVolunteering = {}
-
         # A dictionary of elections.
         self.mElections = {}
 
