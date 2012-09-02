@@ -41,7 +41,7 @@ class WorkCommand_Handle_Command_ExecuteWork_Req(object):
                  'workName':                self.mMessage.workName}
             )
             assert workExecutionCritthash not in aCommandProcessor.mRite.mSentReq[messageName], "Not handled yet. Duplicated critthash."
-            aCommandProcessor.mLogger.debug("Insert the sent request entry: [%s][%s]." % (messageName, workExecutionCritthash))
+            aCommandProcessor.mLogger.debug("Insert(ing) the sent request: [%s][%s]." % (messageName, workExecutionCritthash))
             aCommandProcessor.mRite.mSentReq[messageName][workExecutionCritthash] = envelope
             aCommandProcessor.mLogger.debug("Sending the %s message." % messageName)
             aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)

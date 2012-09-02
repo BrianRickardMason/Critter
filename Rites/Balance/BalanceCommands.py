@@ -26,7 +26,7 @@ class BalanceCommand_Handle_Command_OrderWorkExecution_Req(object):
              'crittnick':   aCommandProcessor.mRite.mCritter.mCritterData.mNick}
         )
         assert workExecutionCritthash not in aCommandProcessor.mRite.mSentReq[messageName], "Not handled yet. Duplicated critthash."
-        aCommandProcessor.mLogger.debug("Insert the sent request entry: [%s][%s]." % (messageName, workExecutionCritthash))
+        aCommandProcessor.mLogger.debug("Insert(ing) the sent request: [%s][%s]." % (messageName, workExecutionCritthash))
         aCommandProcessor.mRite.mSentReq[messageName][workExecutionCritthash] = envelope
         aCommandProcessor.mLogger.debug("Sending the %s message." % messageName)
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
@@ -67,7 +67,7 @@ class BalanceCommand_Handle_Command_OrderWorkExecution_ElectionFinished_Req(obje
                  'workName':                self.mMessage.workName}
             )
             assert workExecutionCritthash not in aCommandProcessor.mRite.mSentReq[messageName], "Not handled yet. Duplicated critthash."
-            aCommandProcessor.mLogger.debug("Insert the sent request entry: [%s][%s]." % (messageName, workExecutionCritthash))
+            aCommandProcessor.mLogger.debug("Insert(ing) the sent request: [%s][%s]." % (messageName, workExecutionCritthash))
             aCommandProcessor.mRite.mSentReq[messageName][workExecutionCritthash] = envelope
             aCommandProcessor.mLogger.debug("Sending the %s message." % messageName)
             aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)

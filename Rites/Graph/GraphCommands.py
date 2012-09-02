@@ -28,7 +28,7 @@ class GraphCommand_Handle_Command_ExecuteGraph_Req(object):
              'crittnick':   aCommandProcessor.mRite.mCritter.mCritterData.mNick}
         )
         assert graphExecutionCritthash not in aCommandProcessor.mRite.mSentReq[messageName], "Not handled yet. Duplicated critthash."
-        aCommandProcessor.mLogger.debug("Insert the sent request entry: [%s][%s]." % (messageName, graphExecutionCritthash))
+        aCommandProcessor.mLogger.debug("Insert(ing) the sent request: [%s][%s]." % (messageName, graphExecutionCritthash))
         aCommandProcessor.mRite.mSentReq['Command_Election_Req'][graphExecutionCritthash] = envelope
         aCommandProcessor.mLogger.debug("Sending the %s message." % messageName)
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
@@ -46,7 +46,7 @@ class GraphCommand_Handle_Command_ExecuteGraph_ElectionFinished_Req(object):
             aCommandProcessor.mLogger.debug("I am the winner.")
 
             assert graphExecutionCritthash not in aCommandProcessor.mRite.mSentReq['Command_DetermineGraphCycle_Req'], "Not handled yet. Duplicated critthash."
-            aCommandProcessor.mLogger.debug("Insert the sent request entry: [%s][%s]." % ('Command_DetermineGraphCycle_Req', graphExecutionCritthash))
+            aCommandProcessor.mLogger.debug("Insert(ing) the sent request: [%s][%s]." % ('Command_DetermineGraphCycle_Req', graphExecutionCritthash))
             aCommandProcessor.mRite.mSentReq['Command_DetermineGraphCycle_Req'][graphExecutionCritthash] = True
 
             aCommandProcessor.mLogger.debug("Sending the Command_DetermineGraphCycle_Req message.")

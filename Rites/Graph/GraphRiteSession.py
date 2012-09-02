@@ -87,7 +87,7 @@ class GraphRiteSession(threading.Thread):
                  'workName':                aWorkName}
             )
             assert workExecutionCritthash not in self.mRite.mSentReq[messageName], "Not handled yet. Duplicated critthash."
-            self.mLogger.debug("Insert the sent request entry: [%s][%s]." % (messageName, workExecutionCritthash))
+            self.mLogger.debug("Insert(ing) the sent request: [%s][%s]." % (messageName, workExecutionCritthash))
             self.mRite.mSentReq[messageName][workExecutionCritthash] = envelope
             self.mLogger.debug("Sending the %s message." % messageName)
             self.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
