@@ -9,9 +9,10 @@ class BalanceCommand_Handle_Command_OrderWorkExecution_Req(object):
     def execute(self, aCommandProcessor):
         workExecutionCritthash = self.mMessage.workExecutionCritthash
 
-        assert workExecutionCritthash not in aCommandProcessor.mRite.mRecvReq['Command_OrderWorkExecution_Req'], "Not handled yet. Duplicated critthash."
-        aCommandProcessor.mLogger.debug("Insert the received request entry: [%s][%s]." % ('Command_OrderWorkExecution_Req', workExecutionCritthash))
-        aCommandProcessor.mRite.mRecvReq['Command_OrderWorkExecution_Req'][workExecutionCritthash] = self.mMessage
+        messageName = self.mMessage.messageName
+        assert workExecutionCritthash not in aCommandProcessor.mRite.mRecvReq[messageName], "Not handled yet. Duplicated critthash."
+        aCommandProcessor.mLogger.debug("Insert the received request entry: [%s][%s]." % (messageName, workExecutionCritthash))
+        aCommandProcessor.mRite.mRecvReq[messageName][workExecutionCritthash] = self.mMessage
 
         assert workExecutionCritthash not in aCommandProcessor.mRite.mElections, "Not handled yet. Duplicated critthash."
         aCommandProcessor.mLogger.debug("Insert the election entry: [%s]." % workExecutionCritthash)
