@@ -188,10 +188,10 @@ class DatabaseCommand_Handle_Command_DetermineGraphCycle_Req(object):
     def execute(self, aCommandProcessor):
         graphExecutionCritthash = self.mMessage.graphExecutionCritthash
 
-        messageName = self.mMessage.messageName
-        assert graphExecutionCritthash not in aCommandProcessor.mRite.mRecvReq[messageName], "Not handled yet. Duplicated critthash."
-        aCommandProcessor.mLogger.debug("Insert(ing) the recv request: [%s][%s]." % (messageName, graphExecutionCritthash))
-        aCommandProcessor.mRite.mRecvReq[messageName][graphExecutionCritthash] = self.mMessage
+        messageNameRecvReq = self.mMessage.messageName
+        assert graphExecutionCritthash not in aCommandProcessor.mRite.mRecvReq[messageNameRecvReq], "Not handled yet. Duplicated critthash."
+        aCommandProcessor.mLogger.debug("Insert(ing) the recv request: [%s][%s]." % (messageNameRecvReq, graphExecutionCritthash))
+        aCommandProcessor.mRite.mRecvReq[messageNameRecvReq][graphExecutionCritthash] = self.mMessage
 
         try:
             connection = psycopg2.connect("host='localhost' dbname='critter' user='brian' password='brianpassword'")
@@ -225,17 +225,17 @@ class DatabaseCommand_Handle_Command_DetermineGraphCycle_Req(object):
 
         connection.commit()
 
-        if graphExecutionCritthash in aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName]:
-            aCommandProcessor.mLogger.debug("Delete the received request entry: [%s][%s]." % (self.mMessage.messageName, graphExecutionCritthash))
-            del aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName][graphExecutionCritthash]
-
-        aCommandProcessor.mLogger.debug("Sending the Command_DetermineGraphCycle_Res message.")
+        messageNameRecvRes = 'Command_DetermineGraphCycle_Res'
         envelope = aCommandProcessor.mRite.mPostOffice.encode(
-            'Command_DetermineGraphCycle_Res',
-            {'messageName':             'Command_DetermineGraphCycle_Res',
+            messageNameRecvRes,
+            {'messageName':             messageNameRecvRes,
              'graphExecutionCritthash': graphExecutionCritthash,
              'graphName':               self.mMessage.graphName,
              'graphCycle':              cycle})
+        if graphExecutionCritthash in aCommandProcessor.mRite.mRecvReq[messageNameRecvReq]:
+            aCommandProcessor.mLogger.debug("Delete the received request entry: [%s][%s]." % (messageNameRecvReq, graphExecutionCritthash))
+            del aCommandProcessor.mRite.mRecvReq[messageNameRecvReq][graphExecutionCritthash]
+        aCommandProcessor.mLogger.debug("Sending the %s message." % messageNameRecvRes)
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
 class DatabaseCommand_Handle_Command_DetermineWorkCycle_Req(object):
@@ -245,10 +245,10 @@ class DatabaseCommand_Handle_Command_DetermineWorkCycle_Req(object):
     def execute(self, aCommandProcessor):
         workExecutionCritthash = self.mMessage.workExecutionCritthash
 
-        messageName = self.mMessage.messageName
-        assert workExecutionCritthash not in aCommandProcessor.mRite.mRecvReq[messageName], "Not handled yet. Duplicated critthash."
-        aCommandProcessor.mLogger.debug("Insert(ing) the recv request: [%s][%s]." % (messageName, workExecutionCritthash))
-        aCommandProcessor.mRite.mRecvReq[messageName][workExecutionCritthash] = self.mMessage
+        messageNameRecvReq = self.mMessage.messageName
+        assert workExecutionCritthash not in aCommandProcessor.mRite.mRecvReq[messageNameRecvReq], "Not handled yet. Duplicated critthash."
+        aCommandProcessor.mLogger.debug("Insert(ing) the recv request: [%s][%s]." % (messageNameRecvReq, workExecutionCritthash))
+        aCommandProcessor.mRite.mRecvReq[messageNameRecvReq][workExecutionCritthash] = self.mMessage
 
         try:
             connection = psycopg2.connect("host='localhost' dbname='critter' user='brian' password='brianpassword'")
@@ -282,14 +282,10 @@ class DatabaseCommand_Handle_Command_DetermineWorkCycle_Req(object):
 
         connection.commit()
 
-        if workExecutionCritthash in aCommandProcessor.mRite.mRecvReq[messageName]:
-            aCommandProcessor.mLogger.debug("Delete the received request entry: [%s][%s]." % (messageName, workExecutionCritthash))
-            del aCommandProcessor.mRite.mRecvReq[messageName][workExecutionCritthash]
-
-        messageName = 'Command_DetermineWorkCycle_Res'
+        messageNameRecvRes = 'Command_DetermineWorkCycle_Res'
         envelope = aCommandProcessor.mRite.mPostOffice.encode(
-            messageName,
-            {'messageName':             messageName,
+            messageNameRecvRes,
+            {'messageName':             messageNameRecvRes,
              'graphExecutionCritthash': self.mMessage.graphExecutionCritthash,
              'graphName':               self.mMessage.graphName,
              'graphCycle':              self.mMessage.graphCycle,
@@ -297,5 +293,8 @@ class DatabaseCommand_Handle_Command_DetermineWorkCycle_Req(object):
              'workName':                self.mMessage.workName,
              'workCycle':               workCycle}
         )
-        aCommandProcessor.mLogger.debug("Sending the %s message." % messageName)
+        if workExecutionCritthash in aCommandProcessor.mRite.mRecvReq[messageNameRecvReq]:
+            aCommandProcessor.mLogger.debug("Delete the received request entry: [%s][%s]." % (messageNameRecvReq, workExecutionCritthash))
+            del aCommandProcessor.mRite.mRecvReq[messageNameRecvReq][workExecutionCritthash]
+        aCommandProcessor.mLogger.debug("Sending the %s message." % messageNameRecvRes)
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
