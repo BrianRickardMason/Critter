@@ -67,7 +67,7 @@ class GraphCommand_Handle_Command_DetermineGraphCycle_Res(object):
 
         messageNameSentReq = 'Command_DetermineGraphCycle_Req'
         if graphExecutionCritthash in aCommandProcessor.mRite.mSentReq[messageNameSentReq]:
-            aCommandProcessor.mLogger.debug("Delete the sent request entry: [%s][%s]." % (messageNameSentReq, graphExecutionCritthash))
+            aCommandProcessor.mLogger.debug("Delete(ing) the sent request: [%s][%s]." % (messageNameSentReq, graphExecutionCritthash))
             del aCommandProcessor.mRite.mSentReq[messageNameSentReq][graphExecutionCritthash]
 
             graphCycle = self.mMessage.graphCycle
@@ -96,7 +96,7 @@ class GraphCommand_Handle_Command_Election_Res(object):
         messageNameSentReq = 'Command_Election_Req'
         # There's an active sent request.
         if critthash in aCommandProcessor.mRite.mSentReq[messageNameSentReq]:
-            aCommandProcessor.mLogger.debug("Delete the sent request entry: [%s][%s]." % (messageNameSentReq, critthash))
+            aCommandProcessor.mLogger.debug("Delete(ing) the sent request: [%s][%s]." % (messageNameSentReq, critthash))
             del aCommandProcessor.mRite.mSentReq[messageNameSentReq][critthash]
 
             # There's an active election.
@@ -121,7 +121,7 @@ class GraphCommand_Handle_Command_OrderWorkExecution_Res(object):
 
         messageNameSentReq = 'Command_OrderWorkExecution_Req'
         if workExecutionCritthash in aCommandProcessor.mRite.mSentReq[messageNameSentReq]:
-            aCommandProcessor.mLogger.debug("Delete the sent request entry: [%s][%s]." % (messageNameSentReq, workExecutionCritthash))
+            aCommandProcessor.mLogger.debug("Delete(ing) the sent request: [%s][%s]." % (messageNameSentReq, workExecutionCritthash))
             del aCommandProcessor.mRite.mSentReq[messageNameSentReq][workExecutionCritthash]
 
         state = GraphRiteSession.STATE_SUCCEED

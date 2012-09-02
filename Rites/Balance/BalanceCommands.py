@@ -86,7 +86,7 @@ class BalanceCommand_Handle_Command_Election_Res(object):
         messageNameSentReq = 'Command_Election_Req'
         # There's an active sent request.
         if critthash in aCommandProcessor.mRite.mSentReq[messageNameSentReq]:
-            aCommandProcessor.mLogger.debug("Delete the sent request entry: [%s][%s]." % (messageNameSentReq, critthash))
+            aCommandProcessor.mLogger.debug("Delete(ing) the sent request: [%s][%s]." % (messageNameSentReq, critthash))
             del aCommandProcessor.mRite.mSentReq[messageNameSentReq][critthash]
 
             # There's an active election.
@@ -111,7 +111,7 @@ class BalanceCommand_Handle_Command_ExecuteWork_Res(object):
 
         messageNameSentReq = 'Command_ExecuteWork_Req'
         if workExecutionCritthash in aCommandProcessor.mRite.mSentReq[messageNameSentReq]:
-            aCommandProcessor.mLogger.debug("Delete the sent request entry: [%s][%s]." % (messageNameSentReq, workExecutionCritthash))
+            aCommandProcessor.mLogger.debug("Delete(ing) the sent request: [%s][%s]." % (messageNameSentReq, workExecutionCritthash))
             del aCommandProcessor.mRite.mSentReq[messageNameSentReq][workExecutionCritthash]
 
         messageNameRecvReq = 'Command_OrderWorkExecution_Req'

@@ -55,7 +55,7 @@ class WorkCommand_Handle_Command_DetermineWorkCycle_Res(object):
 
         messageNameSentReq = 'Command_DetermineWorkCycle_Req'
         if workExecutionCritthash in aCommandProcessor.mRite.mSentReq[messageNameSentReq]:
-            aCommandProcessor.mLogger.debug("Delete the sent request entry: [%s][%s]." % (messageNameSentReq, workExecutionCritthash))
+            aCommandProcessor.mLogger.debug("Delete(ing) the sent request: [%s][%s]." % (messageNameSentReq, workExecutionCritthash))
             del aCommandProcessor.mRite.mSentReq[messageNameSentReq][workExecutionCritthash]
 
             graphCycle = self.mMessage.graphCycle
