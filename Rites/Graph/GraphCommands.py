@@ -17,7 +17,7 @@ class GraphCommand_Handle_Command_ExecuteGraph_Req(object):
         aCommandProcessor.mRite.mRecvReq[messageName][graphExecutionCritthash] = self.mMessage
 
         assert graphExecutionCritthash not in aCommandProcessor.mRite.mElections, "Not handled yet. Duplicated critthash."
-        aCommandProcessor.mLogger.debug("Insert the election entry: [%s]." % graphExecutionCritthash)
+        aCommandProcessor.mLogger.debug("Insert(ing) the election: [%s]." % graphExecutionCritthash)
         aCommandProcessor.mRite.mElections[graphExecutionCritthash] = {'message': self.mMessage}
 
         messageName = 'Command_Election_Req'
