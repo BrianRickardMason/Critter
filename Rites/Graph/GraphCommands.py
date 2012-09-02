@@ -97,7 +97,7 @@ class GraphCommand_Handle_Command_Election_Res(object):
 
             # There's an active election.
             if critthash in aCommandProcessor.mRite.mElections:
-                aCommandProcessor.mLogger.debug("Update the election entry: [%s]." % critthash)
+                aCommandProcessor.mLogger.debug("Update(ing) the election entry: [%s]." % critthash)
                 aCommandProcessor.mRite.mElections[critthash]['crittnick'] = self.mMessage.crittnick
 
                 assert 'message' in aCommandProcessor.mRite.mElections[critthash], "There's no information about the message."
