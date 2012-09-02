@@ -69,14 +69,15 @@ class Function_SendExecuteWorkAnnouncement(Function):
                 'nick': Charstring().assignValueType(CharstringValue("Worker1"))
             }
 
-            executeWorkAnnouncement = PiewikExecuteWorkAnnouncement()
+            executeWorkAnnouncement = Piewik_Command_ExecuteWork_Req()
             executeWorkAnnouncement.assignValueType({
-                'messageName': Charstring().assignValueType(CharstringValue("ExecuteWorkAnnouncement")),
-                'sender':      balancer1,
-                'receiver':    worker1,
-                'graphName':   Charstring().assignValueType(CharstringValue("GraphName")),
-                'cycle':       Integer().assignValueType(IntegerValue(22)),
-                'workName':    Charstring().assignValueType(CharstringValue("WorkName"))
+                'messageName':             Charstring().assignValueType(CharstringValue("Command_ExecuteWork_Req")),
+                'receiverCrittnick':       Charstring().assignValueType(CharstringValue("Worker1")),
+                'graphExecutionCritthash': Charstring().assignValueType(CharstringValue("GraphExecutionCritthash1")),
+                'graphName':               Charstring().assignValueType(CharstringValue("GraphName")),
+                'graphCycle':              Integer()   .assignValueType(IntegerValue(1)),
+                'workExecutionCritthash':  Charstring().assignValueType(CharstringValue("WorkExecutionCritthash1")),
+                'workName':                Charstring().assignValueType(CharstringValue("WorkName"))
             })
 
             aComponent.mPort.send(executeWorkAnnouncement)
@@ -100,24 +101,25 @@ class Function_DetermineWorkCycleRequestResponse(Function):
                 'nick': Charstring().assignValueType(CharstringValue("Worker1"))
             }
 
-            determineWorkCycleRequest = PiewikDetermineWorkCycleRequest()
+            determineWorkCycleRequest = Piewik_Command_DetermineWorkCycle_Req()
             determineWorkCycleRequest.assignValueType({
-                'messageName': Charstring().assignValueType(CharstringValue("DetermineWorkCycleRequest")),
-                'sender':      worker1,
-                'graphName':   Charstring().assignValueType(CharstringValue("GraphName")),
-                'cycle':       Integer().assignValueType(IntegerValue(22)),
-                'workName':    Charstring().assignValueType(CharstringValue("WorkName"))
+                'messageName':             Charstring().assignValueType(CharstringValue("Command_DetermineWorkCycle_Req")),
+                'graphExecutionCritthash': Charstring().assignValueType(CharstringValue("GraphExecutionCritthash1")),
+                'graphName':               Charstring().assignValueType(CharstringValue("GraphName")),
+                'graphCycle':              Integer()   .assignValueType(IntegerValue(1)),
+                'workExecutionCritthash':  Charstring().assignValueType(CharstringValue("WorkExecutionCritthash1")),
+                'workName':                Charstring().assignValueType(CharstringValue("WorkName"))
             })
 
-            determineWorkCycleResponse = PiewikDetermineWorkCycleResponse()
+            determineWorkCycleResponse = Piewik_Command_DetermineWorkCycle_Res()
             determineWorkCycleResponse.assignValueType({
-                'messageName': Charstring().assignValueType(CharstringValue("DetermineWorkCycleResponse")),
-                'sender':      cribrarian1,
-                'receiver':    worker1,
-                'graphName':   Charstring().assignValueType(CharstringValue("GraphName")),
-                'cycle':       Integer().assignValueType(IntegerValue(22)),
-                'workName':    Charstring().assignValueType(CharstringValue("WorkName")),
-                'workCycle':   Integer().assignValueType(IntegerValue(484))
+                'messageName':             Charstring().assignValueType(CharstringValue("Command_DetermineWorkCycle_Res")),
+                'graphExecutionCritthash': Charstring().assignValueType(CharstringValue("GraphExecutionCritthash1")),
+                'graphName':               Charstring().assignValueType(CharstringValue("GraphName")),
+                'graphCycle':              Integer()   .assignValueType(IntegerValue(1)),
+                'workExecutionCritthash':  Charstring().assignValueType(CharstringValue("WorkExecutionCritthash1")),
+                'workName':                Charstring().assignValueType(CharstringValue("WorkName")),
+                'workCycle':               Integer()   .assignValueType(IntegerValue(484))
             })
 
             aComponent.executeBlockingAction(
@@ -143,16 +145,14 @@ class Function_AwaitReportFinishedWorkAnnouncement(Function):
                 'nick': Charstring().assignValueType(CharstringValue("Worker1"))
             }
 
-            reportFinishedWorkAnnouncement = PiewikReportFinishedWorkAnnouncement()
-            reportFinishedWorkAnnouncement.addAcceptDecorator(TemplateAcceptDecorator, {})
+            reportFinishedWorkAnnouncement = Piewik_Command_ExecuteWork_Res()
             reportFinishedWorkAnnouncement.assignValueType({
-                'messageName': Charstring().assignValueType(CharstringValue("ReportFinishedWorkAnnouncement")),
-                'sender':      worker1,
-                'graphName':   Charstring().assignValueType(CharstringValue("GraphName")),
-                'graphCycle':  Integer().assignValueType(IntegerValue(22)),
-                'workName':    Charstring().assignValueType(CharstringValue("WorkName")),
-                'workCycle':   Integer().assignValueType(IntegerValue(484)),
-                'result':      TemplateBoolean().assignValueType(AnyValue())
+                'messageName':             Charstring().assignValueType(CharstringValue("Command_ExecuteWork_Res")),
+                'graphExecutionCritthash': Charstring().assignValueType(CharstringValue("GraphExecutionCritthash1")),
+                'graphName':               Charstring().assignValueType(CharstringValue("GraphName")),
+                'graphCycle':              Integer()   .assignValueType(IntegerValue(1)),
+                'workExecutionCritthash':  Charstring().assignValueType(CharstringValue("WorkExecutionCritthash1")),
+                'workName':                Charstring().assignValueType(CharstringValue("WorkName"))
             })
 
             aComponent.executeBlockingAction(

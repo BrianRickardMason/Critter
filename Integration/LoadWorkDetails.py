@@ -64,14 +64,14 @@ class Function_LoadWorkDetails(Function):
                 'nick': Charstring().assignValueType(CharstringValue("Worker1"))
             }
 
-            loadWorkDetailsRequest = PiewikLoadWorkDetailsRequest()
+            loadWorkDetailsRequest = Piewik_LoadWorkDetailsRequest()
             loadWorkDetailsRequest.assignValueType({
                 'messageName': Charstring().assignValueType(CharstringValue("LoadWorkDetailsRequest")),
                 'sender':      worker1
             })
 
             # TODO: Should be verified in a more detailed way.
-            loadWorkDetailsResponse = PiewikLoadWorkDetailsResponse()
+            loadWorkDetailsResponse = Piewik_LoadWorkDetailsResponse()
             loadWorkDetailsResponse.addAcceptDecorator(TemplateAcceptDecorator, {})
             loadWorkDetailsResponse.assignValueType({
                 'messageName': Charstring().assignValueType(CharstringValue("LoadWorkDetailsResponse")),

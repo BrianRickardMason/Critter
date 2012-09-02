@@ -45,6 +45,36 @@ class Function(object):
     def __init__(self):
         self.mRunsOn = None
 
+class Function_Election(Function):
+    def __init__(self):
+        self.mRunsOn = Component_Cribrarian_Cribrarian1
+
+    def __call__(self, aComponent):
+        if isinstance(aComponent, self.mRunsOn):
+            commandElectionReq = Piewik_Command_Election_Req()
+            commandElectionReq.assignValueType({
+                'messageName': Charstring().assignValueType(CharstringValue("Command_Election_Req")),
+                'critthash':   Charstring().assignValueType(CharstringValue("WorkExecutionCritthash1")),
+                'crittnick':   Charstring().assignValueType(CharstringValue("Balancer1")),
+            })
+
+            commandElectionRes = Piewik_Command_Election_Res()
+            commandElectionRes.assignValueType({
+                'messageName': Charstring().assignValueType(CharstringValue("Command_Election_Res")),
+                'critthash':   Charstring().assignValueType(CharstringValue("WorkExecutionCritthash1")),
+                'crittnick':   Charstring().assignValueType(CharstringValue("Balancer1")),
+            })
+
+            aComponent.executeBlockingAction(
+                Blocking(PortReceiveExpectation(aComponent.mPort, commandElectionReq)),
+            )
+
+            aComponent.mPort.send(commandElectionRes)
+        else:
+            # TODO: Raise a meaningful exception.
+            raise
+
+
 class Function_SendHeartbeat(Function):
     def __init__(self):
         self.mRunsOn = Component_Worker_Worker1_Heartbeat
@@ -58,7 +88,7 @@ class Function_SendHeartbeat(Function):
 
             # TODO: Remove hardcoded value.
             for i in range(5):
-                heartbeatAnnouncement = PiewikHeartbeatAnnouncement()
+                heartbeatAnnouncement = Piewik_HeartbeatAnnouncement()
                 heartbeatAnnouncement.assignValueType({
                     'messageName': Charstring().assignValueType(CharstringValue("HeartbeatAnnouncement")),
                     'sender':      worker1,
@@ -87,14 +117,14 @@ class Function_RegisterResponse(Function):
                 'nick': Charstring().assignValueType(CharstringValue("Worker1"))
             }
 
-            presentYourselfRequest = PiewikPresentYourselfRequest()
+            presentYourselfRequest = Piewik_PresentYourselfRequest()
             presentYourselfRequest.assignValueType({
                 'messageName': Charstring().assignValueType(CharstringValue("PresentYourselfRequest")),
                 'sender':      balancer1,
                 'receiver':    worker1
             })
 
-            presentYourselfResponse = PiewikPresentYourselfResponse()
+            presentYourselfResponse = Piewik_PresentYourselfResponse()
             presentYourselfResponse.assignValueType({
                 'messageName': Charstring().assignValueType(CharstringValue("PresentYourselfResponse")),
                 'sender':      worker1,
@@ -124,13 +154,14 @@ class Function_CommandWorkExecutionAnnouncement(Function):
                 'nick': Charstring().assignValueType(CharstringValue("GraphYeeti1"))
             }
 
-            commandWorkExecutionAnnouncement = PiewikCommandWorkExecutionAnnouncement()
+            commandWorkExecutionAnnouncement = Piewik_Command_OrderWorkExecution_Req()
             commandWorkExecutionAnnouncement.assignValueType({
-                'messageName': Charstring().assignValueType(CharstringValue("CommandWorkExecutionAnnouncement")),
-                'sender':      graphYeeti1,
-                'graphName':   Charstring().assignValueType(CharstringValue("GraphName")),
-                'cycle':       Integer().assignValueType(IntegerValue(1)),
-                'workName':    Charstring().assignValueType(CharstringValue("WorkName"))
+                'messageName':             Charstring().assignValueType(CharstringValue("Command_OrderWorkExecution_Req")),
+                'graphExecutionCritthash': Charstring().assignValueType(CharstringValue("GraphExecutionCritthash1")),
+                'graphName':               Charstring().assignValueType(CharstringValue("GraphName")),
+                'graphCycle':              Integer()   .assignValueType(IntegerValue(1)),
+                'workExecutionCritthash':  Charstring().assignValueType(CharstringValue("WorkExecutionCritthash1")),
+                'workName':                Charstring().assignValueType(CharstringValue("WorkName"))
             })
 
             aComponent.mPort.send(commandWorkExecutionAnnouncement)
@@ -157,17 +188,18 @@ class Function_CantExecuteWorkNow(Function):
                 'nick': Charstring().assignValueType(CharstringValue("Balancer1"))
             }
 
-            executeWorkAnnouncement = PiewikExecuteWorkAnnouncement()
+            executeWorkAnnouncement = Piewik_Command_ExecuteWork_Req()
             executeWorkAnnouncement.assignValueType({
-                'messageName': Charstring().assignValueType(CharstringValue("ExecuteWorkAnnouncement")),
-                'sender':      balancer1,
-                'receiver':    worker1,
-                'graphName':   Charstring().assignValueType(CharstringValue("GraphName")),
-                'cycle':       Integer().assignValueType(IntegerValue(1)),
-                'workName':    Charstring().assignValueType(CharstringValue("WorkName"))
+                'messageName':             Charstring().assignValueType(CharstringValue("Command_ExecuteWork_Req")),
+                'receiverCrittnick':       Charstring().assignValueType(CharstringValue("Worker1")),
+                'graphExecutionCritthash': Charstring().assignValueType(CharstringValue("GraphExecutionCritthash1")),
+                'graphName':               Charstring().assignValueType(CharstringValue("GraphName")),
+                'graphCycle':              Integer()   .assignValueType(IntegerValue(1)),
+                'workExecutionCritthash':  Charstring().assignValueType(CharstringValue("WorkExecutionCritthash1")),
+                'workName':                Charstring().assignValueType(CharstringValue("WorkName"))
             })
 
-            cantExecuteWorkNowAnnouncement = PiewikCantExecuteWorkNowAnnouncement()
+            cantExecuteWorkNowAnnouncement = Piewik_CantExecuteWorkNowAnnouncement()
             cantExecuteWorkNowAnnouncement.assignValueType({
                 'messageName': Charstring().assignValueType(CharstringValue("CantExecuteWorkNowAnnouncement")),
                 'sender':      worker1,
@@ -195,6 +227,11 @@ class Mtc(Component):
         self.mTestcase.executePTC()
 
 class Component_GraphYeeti_GraphYeeti1(Component):
+    def __init__(self, aName):
+        Component.__init__(self, aName)
+        self.mPort = PiewikPort(self.mEventQueue)
+
+class Component_Cribrarian_Cribrarian1(Component):
     def __init__(self, aName):
         Component.__init__(self, aName)
         self.mPort = PiewikPort(self.mEventQueue)
@@ -229,17 +266,21 @@ class SimpleTestcase(Testcase):
         componentWorker1_RegisterResponse = Component_Worker_Worker1_RegisterResponse("Worker1_RegisterResponse")
         componentGraphYeeti = Component_GraphYeeti_GraphYeeti1("GraphYeeti")
         componentWorker = Component_Worker_Worker1("Worker")
+        componentCribrarian = Component_Cribrarian_Cribrarian1("Component_Cribrarian_Cribrarian1")
 
         componentGraphYeeti.setContext(self.mMtc, self)
         componentWorker.setContext(self.mMtc, self)
         componentWorker1_Heartbeat.setContext(self.mMtc, self)
         componentWorker1_RegisterResponse.setContext(self.mMtc, self)
+        componentCribrarian.setContext(self.mMtc, self)
 
         componentGraphYeeti.addFunction(Function_CommandWorkExecutionAnnouncement())
         componentWorker.addFunction(Function_CantExecuteWorkNow())
         componentWorker1_RegisterResponse.addFunction(Function_RegisterResponse())
         componentWorker1_Heartbeat.addFunction(Function_SendHeartbeat())
+        componentCribrarian.addFunction(Function_Election())
 
+        componentCribrarian.start()
         componentGraphYeeti.start()
         componentWorker.start()
         componentWorker1_Heartbeat.start()
@@ -247,6 +288,7 @@ class SimpleTestcase(Testcase):
 
         self.mMtc.executeBlockingAction(
             Interleave([
+                Blocking(ComponentDoneExpectation(componentCribrarian)),
                 Blocking(ComponentDoneExpectation(componentGraphYeeti)),
                 Blocking(ComponentDoneExpectation(componentWorker)),
                 Blocking(ComponentDoneExpectation(componentWorker1_RegisterResponse)),

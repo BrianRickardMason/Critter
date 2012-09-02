@@ -69,7 +69,7 @@ class Function_SendHeartbeat(Function):
 
             # TODO: Remove hardcoded value.
             for i in range(2):
-                heartbeatAnnouncement = PiewikHeartbeatAnnouncement()
+                heartbeatAnnouncement = Piewik_HeartbeatAnnouncement()
                 heartbeatAnnouncement.assignValueType({'messageName': Charstring().assignValueType(CharstringValue("HeartbeatAnnouncement")),
                                                        'sender':      helloCritty2,
                                                        'timestamp':   Float().assignValueType(FloatValue(time.time()))})
@@ -92,18 +92,18 @@ class Function_RegisterRequest(Function):
             helloCritty2 = {'type': Charstring().assignValueType(CharstringValue("HelloCritty")),
                             'nick': Charstring().assignValueType(CharstringValue("HelloCritty2"))}
 
-            heartbeatAnnouncement = PiewikHeartbeatAnnouncement()
+            heartbeatAnnouncement = Piewik_HeartbeatAnnouncement()
             heartbeatAnnouncement.addAcceptDecorator(TemplateAcceptDecorator, {})
             heartbeatAnnouncement.assignValueType({'messageName': Charstring().assignValueType(CharstringValue("HeartbeatAnnouncement")),
                                                    'sender':      helloCritty1,
                                                    'timestamp':   TemplateFloat().assignValueType(AnyValue())})
 
-            presentYourselfRequest = PiewikPresentYourselfRequest()
+            presentYourselfRequest = Piewik_PresentYourselfRequest()
             presentYourselfRequest.assignValueType({'messageName': Charstring().assignValueType(CharstringValue("PresentYourselfRequest")),
                                                     'sender':      helloCritty2,
                                                     'receiver':    helloCritty1})
 
-            presentYourselfResponse = PiewikPresentYourselfResponse()
+            presentYourselfResponse = Piewik_PresentYourselfResponse()
             presentYourselfResponse.assignValueType({'messageName': Charstring().assignValueType(CharstringValue("PresentYourselfResponse")),
                                                      'sender':      helloCritty1,
                                                      'receiver':    helloCritty2})
@@ -134,12 +134,12 @@ class Function_RegisterResponse(Function):
             helloCritty2 = {'type': Charstring().assignValueType(CharstringValue("HelloCritty")),
                             'nick': Charstring().assignValueType(CharstringValue("HelloCritty2"))}
 
-            presentYourselfRequest = PiewikPresentYourselfRequest()
+            presentYourselfRequest = Piewik_PresentYourselfRequest()
             presentYourselfRequest.assignValueType({'messageName': Charstring().assignValueType(CharstringValue("PresentYourselfRequest")),
                                                     'sender':      helloCritty1,
                                                     'receiver':    helloCritty2})
 
-            presentYourselfResponse = PiewikPresentYourselfResponse()
+            presentYourselfResponse = Piewik_PresentYourselfResponse()
             presentYourselfResponse.assignValueType({'messageName': Charstring().assignValueType(CharstringValue("PresentYourselfResponse")),
                                                      'sender':      helloCritty2,
                                                      'receiver':    helloCritty1})
