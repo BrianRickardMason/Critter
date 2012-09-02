@@ -72,6 +72,10 @@ class BalanceCommand_Handle_Command_OrderWorkExecution_ElectionFinished_Req(obje
             aCommandProcessor.mLogger.debug("Sending the %s message." % messageName)
             aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
+        if workExecutionCritthash in aCommandProcessor.mRite.mElections:
+            aCommandProcessor.mLogger.debug("Delete(ing) the election: [%s]." % (workExecutionCritthash))
+            del aCommandProcessor.mRite.mElections[workExecutionCritthash]
+
 class BalanceCommand_Handle_Command_Election_Res(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
