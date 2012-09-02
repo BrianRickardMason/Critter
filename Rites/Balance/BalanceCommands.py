@@ -11,7 +11,7 @@ class BalanceCommand_Handle_Command_OrderWorkExecution_Req(object):
 
         messageName = self.mMessage.messageName
         assert workExecutionCritthash not in aCommandProcessor.mRite.mRecvReq[messageName], "Not handled yet. Duplicated critthash."
-        aCommandProcessor.mLogger.debug("Insert the received request entry: [%s][%s]." % (messageName, workExecutionCritthash))
+        aCommandProcessor.mLogger.debug("Insert(ing) the recv request: [%s][%s]." % (messageName, workExecutionCritthash))
         aCommandProcessor.mRite.mRecvReq[messageName][workExecutionCritthash] = self.mMessage
 
         assert workExecutionCritthash not in aCommandProcessor.mRite.mElections, "Not handled yet. Duplicated critthash."

@@ -190,7 +190,7 @@ class DatabaseCommand_Handle_Command_DetermineGraphCycle_Req(object):
 
         messageName = self.mMessage.messageName
         assert graphExecutionCritthash not in aCommandProcessor.mRite.mRecvReq[messageName], "Not handled yet. Duplicated critthash."
-        aCommandProcessor.mLogger.debug("Insert the received request entry: [%s][%s]." % (messageName, graphExecutionCritthash))
+        aCommandProcessor.mLogger.debug("Insert(ing) the recv request: [%s][%s]." % (messageName, graphExecutionCritthash))
         aCommandProcessor.mRite.mRecvReq[messageName][graphExecutionCritthash] = self.mMessage
 
         try:
@@ -247,7 +247,7 @@ class DatabaseCommand_Handle_Command_DetermineWorkCycle_Req(object):
 
         messageName = self.mMessage.messageName
         assert workExecutionCritthash not in aCommandProcessor.mRite.mRecvReq[messageName], "Not handled yet. Duplicated critthash."
-        aCommandProcessor.mLogger.debug("Insert the received request entry: [%s][%s]." % (messageName, workExecutionCritthash))
+        aCommandProcessor.mLogger.debug("Insert(ing) the recv request: [%s][%s]." % (messageName, workExecutionCritthash))
         aCommandProcessor.mRite.mRecvReq[messageName][workExecutionCritthash] = self.mMessage
 
         try:

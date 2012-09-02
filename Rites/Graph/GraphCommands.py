@@ -13,7 +13,7 @@ class GraphCommand_Handle_Command_ExecuteGraph_Req(object):
 
         messageName = self.mMessage.messageName
         assert graphExecutionCritthash not in aCommandProcessor.mRite.mRecvReq[messageName], "Not handled yet. Duplicated critthash."
-        aCommandProcessor.mLogger.debug("Insert the received request entry: [%s][%s]." % (messageName, graphExecutionCritthash))
+        aCommandProcessor.mLogger.debug("Insert(ing) the recv request: [%s][%s]." % (messageName, graphExecutionCritthash))
         aCommandProcessor.mRite.mRecvReq[messageName][graphExecutionCritthash] = self.mMessage
 
         assert graphExecutionCritthash not in aCommandProcessor.mRite.mElections, "Not handled yet. Duplicated critthash."
