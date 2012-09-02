@@ -1,8 +1,8 @@
 import Rites.RiteCommon
 
-from Rites.Balance.BalanceCommands import BalanceCommand_Handle_Command_Req_OrderWorkExecution
-from Rites.Balance.BalanceCommands import BalanceCommand_Handle_Command_Res_Election
-from Rites.Balance.BalanceCommands import BalanceCommand_Handle_Command_Res_ExecuteWork
+from Rites.Balance.BalanceCommands import BalanceCommand_Handle_Command_OrderWorkExecution_Req
+from Rites.Balance.BalanceCommands import BalanceCommand_Handle_Command_Election_Res
+from Rites.Balance.BalanceCommands import BalanceCommand_Handle_Command_ExecuteWork_Res
 from Rites.MessageProcessor        import MessageProcessor
 
 class BalanceMessageProcessor(MessageProcessor):
@@ -13,9 +13,9 @@ class BalanceMessageProcessor(MessageProcessor):
         command = None
 
         if False: pass
-        elif aMessage.messageName == 'Command_Req_OrderWorkExecution':      command = BalanceCommand_Handle_Command_Req_OrderWorkExecution(aMessage)
-        elif aMessage.messageName == 'Command_Res_Election':                command = BalanceCommand_Handle_Command_Res_Election(aMessage)
-        elif aMessage.messageName == 'Command_Res_ExecuteWork':             command = BalanceCommand_Handle_Command_Res_ExecuteWork(aMessage)
+        elif aMessage.messageName == 'Command_OrderWorkExecution_Req':      command = BalanceCommand_Handle_Command_OrderWorkExecution_Req(aMessage)
+        elif aMessage.messageName == 'Command_Election_Res':                command = BalanceCommand_Handle_Command_Election_Res(aMessage)
+        elif aMessage.messageName == 'Command_ExecuteWork_Res':             command = BalanceCommand_Handle_Command_ExecuteWork_Res(aMessage)
 
         if command:
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.BALANCE, command)

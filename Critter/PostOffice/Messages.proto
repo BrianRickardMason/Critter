@@ -123,7 +123,7 @@ message LoadWorkDetailsResponse
 //
 // Any -> Cribrarian.
 //
-message Command_Req_Election
+message Command_Election_Req
 {
     optional string messageName = 1;
     optional string critthash   = 2;
@@ -134,7 +134,7 @@ message Command_Req_Election
 // Cribrarian -> Any.
 //
 // TODO: Change crittnick to senderCrittnick.
-message Command_Res_Election
+message Command_Election_Res
 {
     optional string messageName = 1;
     optional string critthash   = 2;
@@ -148,7 +148,7 @@ message Command_Res_Election
 //
 // Criduler -> GraphYeeti.
 //
-message Command_Req_ExecuteGraph
+message Command_ExecuteGraph_Req
 {
     optional string messageName             = 1;
     optional string graphExecutionCritthash = 2;
@@ -158,7 +158,7 @@ message Command_Req_ExecuteGraph
 //
 // GraphYeeti -> Criduler.
 //
-message Command_Res_ExecuteGraph
+message Command_ExecuteGraph_Res
 {
     optional string messageName             = 1;
     optional string graphExecutionCritthash = 2;
@@ -167,7 +167,7 @@ message Command_Res_ExecuteGraph
 //
 // GraphYeeti -> Cribrarian.
 //
-message Command_Req_DetermineGraphCycle
+message Command_DetermineGraphCycle_Req
 {
     optional string messageName             = 1;
     optional string graphExecutionCritthash = 2;
@@ -177,7 +177,7 @@ message Command_Req_DetermineGraphCycle
 //
 // Cribrarian -> GraphYeeti.
 //
-message Command_Res_DetermineGraphCycle
+message Command_DetermineGraphCycle_Res
 {
     optional string messageName             = 1;
     optional string graphExecutionCritthash = 2;
@@ -188,7 +188,7 @@ message Command_Res_DetermineGraphCycle
 //
 // GraphYeeti -> Balancer.
 //
-message Command_Req_OrderWorkExecution
+message Command_OrderWorkExecution_Req
 {
     optional string messageName             = 1;
     optional string graphExecutionCritthash = 2;
@@ -201,7 +201,7 @@ message Command_Req_OrderWorkExecution
 //
 // Balancer -> GraphYeeti.
 //
-message Command_Res_OrderWorkExecution
+message Command_OrderWorkExecution_Res
 {
     optional string messageName             = 1;
     optional string graphExecutionCritthash = 2;
@@ -214,7 +214,7 @@ message Command_Res_OrderWorkExecution
 //
 // Balancer -> Worker.
 //
-message Command_Req_ExecuteWork
+message Command_ExecuteWork_Req
 {
     optional string messageName             = 1;
     optional string receiverCrittnick       = 2;
@@ -228,7 +228,7 @@ message Command_Req_ExecuteWork
 //
 // Worker -> Balancer.
 //
-message Command_Res_ExecuteWork
+message Command_ExecuteWork_Res
 {
     optional string messageName             = 1;
     optional string graphExecutionCritthash = 2;
@@ -241,7 +241,7 @@ message Command_Res_ExecuteWork
 //
 // Worker -> Cribrarian.
 //
-message Command_Req_DetermineWorkCycle
+message Command_DetermineWorkCycle_Req
 {
     optional string messageName             = 1;
     optional string graphExecutionCritthash = 2;
@@ -254,7 +254,7 @@ message Command_Req_DetermineWorkCycle
 //
 // Cribrarian -> Worker.
 //
-message Command_Res_DetermineWorkCycle
+message Command_DetermineWorkCycle_Res
 {
     optional string messageName             = 1;
     optional string graphExecutionCritthash = 2;

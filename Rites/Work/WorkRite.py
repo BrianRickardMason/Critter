@@ -17,11 +17,11 @@ class WorkRite(Rite):
 
         # A dictionary of received requests.
         self.mRecvReq = {}
-        self.mRecvReq['Command_Req_ExecuteWork'] = {}
+        self.mRecvReq['Command_ExecuteWork_Req'] = {}
 
         # A dictionary of sent requests.
         self.mSentReq = {}
-        self.mSentReq['Command_Req_DetermineWorkCycle'] = {}
+        self.mSentReq['Command_DetermineWorkCycle_Req'] = {}
 
         self.mWorkDetails = {}
 

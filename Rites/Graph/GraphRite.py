@@ -26,13 +26,13 @@ class GraphRite(Rite):
 
         # A dictionary of received requests.
         self.mRecvReq = {}
-        self.mRecvReq['Command_Req_ExecuteGraph'] = {}
+        self.mRecvReq['Command_ExecuteGraph_Req'] = {}
 
         # A dictionary of sent requests.
         self.mSentReq = {}
-        self.mSentReq['Command_Req_DetermineGraphCycle'] = {}
-        self.mSentReq['Command_Req_Election'] = {}
-        self.mSentReq['Command_Req_OrderWorkExecution'] = {}
+        self.mSentReq['Command_DetermineGraphCycle_Req'] = {}
+        self.mSentReq['Command_Election_Req'] = {}
+        self.mSentReq['Command_OrderWorkExecution_Req'] = {}
 
     def run(self):
         # Ask for the configuration of graphs and works.

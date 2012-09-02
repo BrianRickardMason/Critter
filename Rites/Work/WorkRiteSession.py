@@ -34,8 +34,8 @@ class WorkRiteSession(threading.Thread):
                                                          self.mWorkName,
                                                          self.mWorkCycle))
 
-        messageNameReq = 'Command_Req_ExecuteWork'
-        messageNameRes = 'Command_Res_ExecuteWork'
+        messageNameReq = 'Command_ExecuteWork_Req'
+        messageNameRes = 'Command_ExecuteWork_Res'
         envelope = self.mRite.mPostOffice.encode(
             messageNameRes,
             {'messageName':             messageNameRes,

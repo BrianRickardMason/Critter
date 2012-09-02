@@ -18,7 +18,7 @@ class SchedulerRite(Rite):
 
         # A dictionary of sent commands.
         self.mSentCommands = {}
-        self.mSentCommands['Command_Req_ExecuteGraph'] = {}
+        self.mSentCommands['Command_ExecuteGraph_Req'] = {}
 
     def run(self):
         while True:

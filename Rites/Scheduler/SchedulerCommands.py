@@ -11,15 +11,15 @@ class SchedulerCommandCheckSchedule(object):
 
             graphExecutionCritthash = os.urandom(32).encode('hex')
 
-            assert graphExecutionCritthash not in aCommandProcessor.mRite.mSentCommands['Command_Req_ExecuteGraph'], "Not handled yet. Duplicated critthash."
+            assert graphExecutionCritthash not in aCommandProcessor.mRite.mSentCommands['Command_ExecuteGraph_Req'], "Not handled yet. Duplicated critthash."
 
-            aCommandProcessor.mLogger.debug("Insert the sent message entry: [%s][%s]." % ('Command_Req_ExecuteGraph', graphExecutionCritthash))
-            aCommandProcessor.mRite.mSentCommands['Command_Req_ExecuteGraph'][graphExecutionCritthash] = {'graphExecutionCritthash': graphExecutionCritthash}
+            aCommandProcessor.mLogger.debug("Insert the sent message entry: [%s][%s]." % ('Command_ExecuteGraph_Req', graphExecutionCritthash))
+            aCommandProcessor.mRite.mSentCommands['Command_ExecuteGraph_Req'][graphExecutionCritthash] = {'graphExecutionCritthash': graphExecutionCritthash}
 
-            aCommandProcessor.mLogger.debug("Sending the Command_Req_ExecuteGraph message.")
+            aCommandProcessor.mLogger.debug("Sending the Command_ExecuteGraph_Req message.")
             envelope = aCommandProcessor.mRite.mPostOffice.encode(
-                'Command_Req_ExecuteGraph',
-                {'messageName':             'Command_Req_ExecuteGraph',
+                'Command_ExecuteGraph_Req',
+                {'messageName':             'Command_ExecuteGraph_Req',
                  'graphExecutionCritthash': graphExecutionCritthash,
                  'graphName':               random.choice(graphNames)}
             )

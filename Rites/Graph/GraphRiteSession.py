@@ -76,7 +76,7 @@ class GraphRiteSession(threading.Thread):
 
             workExecutionCritthash = os.urandom(32).encode('hex')
 
-            messageName = 'Command_Req_OrderWorkExecution'
+            messageName = 'Command_OrderWorkExecution_Req'
             envelope = self.mRite.mPostOffice.encode(
                 messageName,
                 {'messageName':             messageName,

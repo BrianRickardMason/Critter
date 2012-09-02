@@ -2,9 +2,9 @@ import Rites.RiteCommon
 
 from Rites.Database.DatabaseCommands import DatabaseCommandLoadGraphsAndWorks
 from Rites.Database.DatabaseCommands import DatabaseCommandLoadWorkDetails
-from Rites.Database.DatabaseCommands import DatabaseCommand_Handle_Command_Req_DetermineGraphCycle
-from Rites.Database.DatabaseCommands import DatabaseCommand_Handle_Command_Req_DetermineWorkCycle
-from Rites.Database.DatabaseCommands import DatabaseCommand_Handle_Command_Req_Election
+from Rites.Database.DatabaseCommands import DatabaseCommand_Handle_Command_DetermineGraphCycle_Req
+from Rites.Database.DatabaseCommands import DatabaseCommand_Handle_Command_DetermineWorkCycle_Req
+from Rites.Database.DatabaseCommands import DatabaseCommand_Handle_Command_Election_Req
 from Rites.MessageProcessor          import MessageProcessor
 
 class DatabaseMessageProcessor(MessageProcessor):
@@ -15,9 +15,9 @@ class DatabaseMessageProcessor(MessageProcessor):
         command = None
 
         if False: pass
-        elif aMessage.messageName == 'Command_Req_DetermineGraphCycle': command = DatabaseCommand_Handle_Command_Req_DetermineGraphCycle(aMessage)
-        elif aMessage.messageName == 'Command_Req_DetermineWorkCycle':  command = DatabaseCommand_Handle_Command_Req_DetermineWorkCycle(aMessage)
-        elif aMessage.messageName == 'Command_Req_Election':            command = DatabaseCommand_Handle_Command_Req_Election(aMessage)
+        elif aMessage.messageName == 'Command_DetermineGraphCycle_Req': command = DatabaseCommand_Handle_Command_DetermineGraphCycle_Req(aMessage)
+        elif aMessage.messageName == 'Command_DetermineWorkCycle_Req':  command = DatabaseCommand_Handle_Command_DetermineWorkCycle_Req(aMessage)
+        elif aMessage.messageName == 'Command_Election_Req':            command = DatabaseCommand_Handle_Command_Election_Req(aMessage)
         elif aMessage.messageName == 'LoadGraphAndWorkRequest':         command = DatabaseCommandLoadGraphsAndWorks(aMessage)
         elif aMessage.messageName == 'LoadWorkDetailsRequest':          command = DatabaseCommandLoadWorkDetails(aMessage)
 

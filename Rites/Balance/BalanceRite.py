@@ -22,12 +22,12 @@ class BalanceRite(Rite):
 
         # A dictionary of received requests.
         self.mRecvReq = {}
-        self.mRecvReq['Command_Req_OrderWorkExecution'] = {}
+        self.mRecvReq['Command_OrderWorkExecution_Req'] = {}
 
         # A dictionary of sent requests.
         self.mSentReq = {}
-        self.mSentReq['Command_Req_Election'] = {}
-        self.mSentReq['Command_Req_ExecuteWork'] = {}
+        self.mSentReq['Command_Election_Req'] = {}
+        self.mSentReq['Command_ExecuteWork_Req'] = {}
 
     def run(self):
         while True:

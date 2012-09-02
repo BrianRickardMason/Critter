@@ -2,22 +2,22 @@ from random import choice
 
 import Rites.RiteCommon
 
-class BalanceCommand_Handle_Command_Req_OrderWorkExecution(object):
+class BalanceCommand_Handle_Command_OrderWorkExecution_Req(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
         workExecutionCritthash = self.mMessage.workExecutionCritthash
 
-        assert workExecutionCritthash not in aCommandProcessor.mRite.mRecvReq['Command_Req_OrderWorkExecution'], "Not handled yet. Duplicated critthash."
-        aCommandProcessor.mLogger.debug("Insert the received request entry: [%s][%s]." % ('Command_Req_OrderWorkExecution', workExecutionCritthash))
-        aCommandProcessor.mRite.mRecvReq['Command_Req_OrderWorkExecution'][workExecutionCritthash] = self.mMessage
+        assert workExecutionCritthash not in aCommandProcessor.mRite.mRecvReq['Command_OrderWorkExecution_Req'], "Not handled yet. Duplicated critthash."
+        aCommandProcessor.mLogger.debug("Insert the received request entry: [%s][%s]." % ('Command_OrderWorkExecution_Req', workExecutionCritthash))
+        aCommandProcessor.mRite.mRecvReq['Command_OrderWorkExecution_Req'][workExecutionCritthash] = self.mMessage
 
         assert workExecutionCritthash not in aCommandProcessor.mRite.mElections, "Not handled yet. Duplicated critthash."
         aCommandProcessor.mLogger.debug("Insert the election entry: [%s]." % workExecutionCritthash)
         aCommandProcessor.mRite.mElections[workExecutionCritthash] = {'message': self.mMessage}
 
-        messageName = 'Command_Req_Election'
+        messageName = 'Command_Election_Req'
         envelope = aCommandProcessor.mRite.mPostOffice.encode(
             messageName,
             {'messageName': messageName,
@@ -30,7 +30,7 @@ class BalanceCommand_Handle_Command_Req_OrderWorkExecution(object):
         aCommandProcessor.mLogger.debug("Sending the %s message." % messageName)
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
-class BalanceCommand_Handle_Command_Req_OrderWorkExecution_ElectionFinished(object):
+class BalanceCommand_Handle_Command_OrderWorkExecution_ElectionFinished_Req(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
 
@@ -54,7 +54,7 @@ class BalanceCommand_Handle_Command_Req_OrderWorkExecution_ElectionFinished(obje
             # FIXME: What happens when there are not any workers?
             receiverCrittnick = choice(availableWorkers)
 
-            messageName = 'Command_Req_ExecuteWork'
+            messageName = 'Command_ExecuteWork_Req'
             envelope = aCommandProcessor.mRite.mPostOffice.encode(
                 messageName,
                 {'messageName':             messageName,
@@ -71,7 +71,7 @@ class BalanceCommand_Handle_Command_Req_OrderWorkExecution_ElectionFinished(obje
             aCommandProcessor.mLogger.debug("Sending the %s message." % messageName)
             aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
-class BalanceCommand_Handle_Command_Res_Election(object):
+class BalanceCommand_Handle_Command_Election_Res(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
 
@@ -79,9 +79,9 @@ class BalanceCommand_Handle_Command_Res_Election(object):
         critthash = self.mMessage.critthash
 
         # There's an active sent request.
-        if critthash in aCommandProcessor.mRite.mSentReq['Command_Req_Election']:
+        if critthash in aCommandProcessor.mRite.mSentReq['Command_Election_Req']:
             # Delete the sent request entry.
-            del aCommandProcessor.mRite.mSentReq['Command_Req_Election'][critthash]
+            del aCommandProcessor.mRite.mSentReq['Command_Election_Req'][critthash]
 
             # There's an active election.
             if critthash in aCommandProcessor.mRite.mElections:
@@ -92,24 +92,24 @@ class BalanceCommand_Handle_Command_Res_Election(object):
                 message = aCommandProcessor.mRite.mElections[critthash]['message']
 
                 # Handle the election topic.
-                if message.messageName == 'Command_Req_OrderWorkExecution':
-                    command = BalanceCommand_Handle_Command_Req_OrderWorkExecution_ElectionFinished(message)
+                if message.messageName == 'Command_OrderWorkExecution_Req':
+                    command = BalanceCommand_Handle_Command_OrderWorkExecution_ElectionFinished_Req(message)
                     aCommandProcessor.mRite.mPostOffice.putCommand(Rites.RiteCommon.BALANCE, command)
 
-class BalanceCommand_Handle_Command_Res_ExecuteWork(object):
+class BalanceCommand_Handle_Command_ExecuteWork_Res(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
         workExecutionCritthash = self.mMessage.workExecutionCritthash
 
-        messageNameSentReq = 'Command_Req_ExecuteWork'
+        messageNameSentReq = 'Command_ExecuteWork_Req'
         if workExecutionCritthash in aCommandProcessor.mRite.mSentReq[messageNameSentReq]:
             aCommandProcessor.mLogger.debug("Delete the sent request entry: [%s][%s]." % (messageNameSentReq, workExecutionCritthash))
             del aCommandProcessor.mRite.mSentReq[messageNameSentReq][workExecutionCritthash]
 
-        messageNameRecvReq = 'Command_Req_OrderWorkExecution'
-        messageNameRecvRes = 'Command_Res_OrderWorkExecution'
+        messageNameRecvReq = 'Command_OrderWorkExecution_Req'
+        messageNameRecvRes = 'Command_OrderWorkExecution_Res'
         envelope = aCommandProcessor.mRite.mPostOffice.encode(
             messageNameRecvRes,
             {'messageName':             messageNameRecvRes,

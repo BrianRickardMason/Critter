@@ -126,7 +126,7 @@ class DatabaseCommandLoadWorkDetails(object):
              'details':     workDetailsDictionaries})
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
-class DatabaseCommand_Handle_Command_Req_Election(object):
+class DatabaseCommand_Handle_Command_Election_Req(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
 
@@ -174,14 +174,14 @@ class DatabaseCommand_Handle_Command_Req_Election(object):
         connection.commit()
 
         envelope = aCommandProcessor.mRite.mPostOffice.encode(
-            'Command_Res_Election',
-            {'messageName': 'Command_Res_Election',
+            'Command_Election_Res',
+            {'messageName': 'Command_Election_Res',
              'critthash':   self.mMessage.critthash,
              'crittnick':   winnerCrittnick}
         )
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
-class DatabaseCommand_Handle_Command_Req_DetermineGraphCycle(object):
+class DatabaseCommand_Handle_Command_DetermineGraphCycle_Req(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
 
@@ -228,16 +228,16 @@ class DatabaseCommand_Handle_Command_Req_DetermineGraphCycle(object):
             aCommandProcessor.mLogger.debug("Delete the received request entry: [%s][%s]." % (self.mMessage.messageName, graphExecutionCritthash))
             del aCommandProcessor.mRite.mRecvReq[self.mMessage.messageName][graphExecutionCritthash]
 
-        aCommandProcessor.mLogger.debug("Sending the Command_Res_DetermineGraphCycle message.")
+        aCommandProcessor.mLogger.debug("Sending the Command_DetermineGraphCycle_Res message.")
         envelope = aCommandProcessor.mRite.mPostOffice.encode(
-            'Command_Res_DetermineGraphCycle',
-            {'messageName':             'Command_Res_DetermineGraphCycle',
+            'Command_DetermineGraphCycle_Res',
+            {'messageName':             'Command_DetermineGraphCycle_Res',
              'graphExecutionCritthash': graphExecutionCritthash,
              'graphName':               self.mMessage.graphName,
              'graphCycle':              cycle})
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
-class DatabaseCommand_Handle_Command_Req_DetermineWorkCycle(object):
+class DatabaseCommand_Handle_Command_DetermineWorkCycle_Req(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
 
@@ -285,7 +285,7 @@ class DatabaseCommand_Handle_Command_Req_DetermineWorkCycle(object):
             aCommandProcessor.mLogger.debug("Delete the received request entry: [%s][%s]." % (messageName, workExecutionCritthash))
             del aCommandProcessor.mRite.mRecvReq[messageName][workExecutionCritthash]
 
-        messageName = 'Command_Res_DetermineWorkCycle'
+        messageName = 'Command_DetermineWorkCycle_Res'
         envelope = aCommandProcessor.mRite.mPostOffice.encode(
             messageName,
             {'messageName':             messageName,

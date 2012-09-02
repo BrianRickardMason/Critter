@@ -1,9 +1,9 @@
 import Rites.RiteCommon
 
-from Rites.Graph.GraphCommands import GraphCommand_Handle_Command_Req_ExecuteGraph
-from Rites.Graph.GraphCommands import GraphCommand_Handle_Command_Res_DetermineGraphCycle
-from Rites.Graph.GraphCommands import GraphCommand_Handle_Command_Res_Election
-from Rites.Graph.GraphCommands import GraphCommand_Handle_Command_Res_OrderWorkExecution
+from Rites.Graph.GraphCommands import GraphCommand_Handle_Command_ExecuteGraph_Req
+from Rites.Graph.GraphCommands import GraphCommand_Handle_Command_DetermineGraphCycle_Res
+from Rites.Graph.GraphCommands import GraphCommand_Handle_Command_Election_Res
+from Rites.Graph.GraphCommands import GraphCommand_Handle_Command_OrderWorkExecution_Res
 from Rites.Graph.GraphCommands import GraphCommand_Handle_LoadGraphAndWorkResponse
 from Rites.MessageProcessor    import MessageProcessor
 
@@ -15,10 +15,10 @@ class GraphMessageProcessor(MessageProcessor):
         command = None
 
         if False: pass
-        elif aMessage.messageName == 'Command_Req_ExecuteGraph':        command = GraphCommand_Handle_Command_Req_ExecuteGraph(aMessage)
-        elif aMessage.messageName == 'Command_Res_DetermineGraphCycle': command = GraphCommand_Handle_Command_Res_DetermineGraphCycle(aMessage)
-        elif aMessage.messageName == 'Command_Res_Election':            command = GraphCommand_Handle_Command_Res_Election(aMessage)
-        elif aMessage.messageName == 'Command_Res_OrderWorkExecution':  command = GraphCommand_Handle_Command_Res_OrderWorkExecution(aMessage)
+        elif aMessage.messageName == 'Command_ExecuteGraph_Req':        command = GraphCommand_Handle_Command_ExecuteGraph_Req(aMessage)
+        elif aMessage.messageName == 'Command_DetermineGraphCycle_Res': command = GraphCommand_Handle_Command_DetermineGraphCycle_Res(aMessage)
+        elif aMessage.messageName == 'Command_Election_Res':            command = GraphCommand_Handle_Command_Election_Res(aMessage)
+        elif aMessage.messageName == 'Command_OrderWorkExecution_Res':  command = GraphCommand_Handle_Command_OrderWorkExecution_Res(aMessage)
         elif aMessage.messageName == 'LoadGraphAndWorkResponse':        command = GraphCommand_Handle_LoadGraphAndWorkResponse(aMessage)
 
         if command:

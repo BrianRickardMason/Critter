@@ -4,7 +4,7 @@ import Rites.RiteCommon
 
 from GraphRiteSession import GraphRiteSession
 
-class GraphCommand_Handle_Command_Req_ExecuteGraph(object):
+class GraphCommand_Handle_Command_ExecuteGraph_Req(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
 
@@ -19,20 +19,20 @@ class GraphCommand_Handle_Command_Req_ExecuteGraph(object):
         aCommandProcessor.mLogger.debug("Insert the election entry: [%s]." % graphExecutionCritthash)
         aCommandProcessor.mRite.mElections[graphExecutionCritthash] = {'message': self.mMessage}
 
-        assert graphExecutionCritthash not in aCommandProcessor.mRite.mSentReq['Command_Req_Election'], "Not handled yet. Duplicated critthash."
-        aCommandProcessor.mLogger.debug("Insert the sent request entry: [%s][%s]." % ('Command_Req_Election', graphExecutionCritthash))
-        aCommandProcessor.mRite.mSentReq['Command_Req_Election'][graphExecutionCritthash] = True
+        assert graphExecutionCritthash not in aCommandProcessor.mRite.mSentReq['Command_Election_Req'], "Not handled yet. Duplicated critthash."
+        aCommandProcessor.mLogger.debug("Insert the sent request entry: [%s][%s]." % ('Command_Election_Req', graphExecutionCritthash))
+        aCommandProcessor.mRite.mSentReq['Command_Election_Req'][graphExecutionCritthash] = True
 
-        aCommandProcessor.mLogger.debug("Sending the Command_Req_Election message.")
+        aCommandProcessor.mLogger.debug("Sending the Command_Election_Req message.")
         envelope = aCommandProcessor.mRite.mPostOffice.encode(
-            'Command_Req_Election',
-            {'messageName': 'Command_Req_Election',
+            'Command_Election_Req',
+            {'messageName': 'Command_Election_Req',
              'critthash':   graphExecutionCritthash,
              'crittnick':   aCommandProcessor.mRite.mCritter.mCritterData.mNick}
         )
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
-class GraphCommand_Handle_Command_Req_ExecuteGraph_ElectionFinished(object):
+class GraphCommand_Handle_Command_ExecuteGraph_ElectionFinished_Req(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
 
@@ -44,29 +44,29 @@ class GraphCommand_Handle_Command_Req_ExecuteGraph_ElectionFinished(object):
 
             aCommandProcessor.mLogger.debug("I am the winner.")
 
-            assert graphExecutionCritthash not in aCommandProcessor.mRite.mSentReq['Command_Req_DetermineGraphCycle'], "Not handled yet. Duplicated critthash."
-            aCommandProcessor.mLogger.debug("Insert the sent request entry: [%s][%s]." % ('Command_Req_DetermineGraphCycle', graphExecutionCritthash))
-            aCommandProcessor.mRite.mSentReq['Command_Req_DetermineGraphCycle'][graphExecutionCritthash] = True
+            assert graphExecutionCritthash not in aCommandProcessor.mRite.mSentReq['Command_DetermineGraphCycle_Req'], "Not handled yet. Duplicated critthash."
+            aCommandProcessor.mLogger.debug("Insert the sent request entry: [%s][%s]." % ('Command_DetermineGraphCycle_Req', graphExecutionCritthash))
+            aCommandProcessor.mRite.mSentReq['Command_DetermineGraphCycle_Req'][graphExecutionCritthash] = True
 
-            aCommandProcessor.mLogger.debug("Sending the Command_Req_DetermineGraphCycle message.")
+            aCommandProcessor.mLogger.debug("Sending the Command_DetermineGraphCycle_Req message.")
             envelope = aCommandProcessor.mRite.mPostOffice.encode(
-                'Command_Req_DetermineGraphCycle',
-                {'messageName':             'Command_Req_DetermineGraphCycle',
+                'Command_DetermineGraphCycle_Req',
+                {'messageName':             'Command_DetermineGraphCycle_Req',
                  'graphExecutionCritthash': graphExecutionCritthash,
                  'graphName':               self.mMessage.graphName}
             )
             aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
-class GraphCommand_Handle_Command_Res_DetermineGraphCycle(object):
+class GraphCommand_Handle_Command_DetermineGraphCycle_Res(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
         graphExecutionCritthash = self.mMessage.graphExecutionCritthash
 
-        if graphExecutionCritthash in aCommandProcessor.mRite.mSentReq['Command_Req_DetermineGraphCycle']:
-            aCommandProcessor.mLogger.debug("Delete the sent request entry: [%s][%s]." % ('Command_Req_DetermineGraphCycle', graphExecutionCritthash))
-            del aCommandProcessor.mRite.mSentReq['Command_Req_DetermineGraphCycle'][graphExecutionCritthash]
+        if graphExecutionCritthash in aCommandProcessor.mRite.mSentReq['Command_DetermineGraphCycle_Req']:
+            aCommandProcessor.mLogger.debug("Delete the sent request entry: [%s][%s]." % ('Command_DetermineGraphCycle_Req', graphExecutionCritthash))
+            del aCommandProcessor.mRite.mSentReq['Command_DetermineGraphCycle_Req'][graphExecutionCritthash]
 
             graphCycle = self.mMessage.graphCycle
             graphName  = self.mMessage.graphName
@@ -84,7 +84,7 @@ class GraphCommand_Handle_Command_Res_DetermineGraphCycle(object):
             aCommandProcessor.mRite.mSessions[graphName][graphCycle].setDaemon(True)
             aCommandProcessor.mRite.mSessions[graphName][graphCycle].start()
 
-class GraphCommand_Handle_Command_Res_Election(object):
+class GraphCommand_Handle_Command_Election_Res(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
 
@@ -92,9 +92,9 @@ class GraphCommand_Handle_Command_Res_Election(object):
         critthash = self.mMessage.critthash
 
         # There's an active sent request.
-        if critthash in aCommandProcessor.mRite.mSentReq['Command_Req_Election']:
+        if critthash in aCommandProcessor.mRite.mSentReq['Command_Election_Req']:
             # Delete the sent request entry.
-            del aCommandProcessor.mRite.mSentReq['Command_Req_Election'][critthash]
+            del aCommandProcessor.mRite.mSentReq['Command_Election_Req'][critthash]
 
             # There's an active election.
             if critthash in aCommandProcessor.mRite.mElections:
@@ -105,18 +105,18 @@ class GraphCommand_Handle_Command_Res_Election(object):
                 message = aCommandProcessor.mRite.mElections[critthash]['message']
 
                 # Handle the election topic.
-                if message.messageName == 'Command_Req_ExecuteGraph':
-                    command = GraphCommand_Handle_Command_Req_ExecuteGraph_ElectionFinished(message)
+                if message.messageName == 'Command_ExecuteGraph_Req':
+                    command = GraphCommand_Handle_Command_ExecuteGraph_ElectionFinished_Req(message)
                     aCommandProcessor.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
 
-class GraphCommand_Handle_Command_Res_OrderWorkExecution(object):
+class GraphCommand_Handle_Command_OrderWorkExecution_Res(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
         workExecutionCritthash = self.mMessage.workExecutionCritthash
 
-        messageNameSentReq = 'Command_Req_OrderWorkExecution'
+        messageNameSentReq = 'Command_OrderWorkExecution_Req'
         if workExecutionCritthash in aCommandProcessor.mRite.mSentReq[messageNameSentReq]:
             aCommandProcessor.mLogger.debug("Delete the sent request entry: [%s][%s]." % (messageNameSentReq, workExecutionCritthash))
             del aCommandProcessor.mRite.mSentReq[messageNameSentReq][workExecutionCritthash]

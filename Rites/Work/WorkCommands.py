@@ -66,7 +66,7 @@ class WorkCommandSpawnWorkExecution(object):
         else:
             aCommandProcessor.mLogger.debug("The message is not addressed to me.")
 
-class WorkCommand_Handle_Command_Req_ExecuteWork(object):
+class WorkCommand_Handle_Command_ExecuteWork_Req(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
 
@@ -82,7 +82,7 @@ class WorkCommand_Handle_Command_Req_ExecuteWork(object):
             aCommandProcessor.mLogger.debug("Insert the received request entry: [%s][%s]." % (messageName, workExecutionCritthash))
             aCommandProcessor.mRite.mRecvReq[messageName][workExecutionCritthash] = self.mMessage
 
-            messageName = 'Command_Req_DetermineWorkCycle'
+            messageName = 'Command_DetermineWorkCycle_Req'
             envelope = aCommandProcessor.mRite.mPostOffice.encode(
                 messageName,
                 {'messageName':             messageName,
@@ -98,12 +98,12 @@ class WorkCommand_Handle_Command_Req_ExecuteWork(object):
             aCommandProcessor.mLogger.debug("Sending the %s message." % messageName)
             aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
-class WorkCommand_Handle_Command_Res_DetermineWorkCycle(object):
+class WorkCommand_Handle_Command_DetermineWorkCycle_Res(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
-        messageName = 'Command_Req_DetermineWorkCycle'
+        messageName = 'Command_DetermineWorkCycle_Req'
 
         workExecutionCritthash = self.mMessage.workExecutionCritthash
 
