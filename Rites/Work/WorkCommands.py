@@ -51,13 +51,12 @@ class WorkCommand_Handle_Command_DetermineWorkCycle_Res(object):
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
-        messageName = 'Command_DetermineWorkCycle_Req'
-
         workExecutionCritthash = self.mMessage.workExecutionCritthash
 
-        if workExecutionCritthash in aCommandProcessor.mRite.mSentReq[messageName]:
-            aCommandProcessor.mLogger.debug("Delete the sent request entry: [%s][%s]." % (messageName, workExecutionCritthash))
-            del aCommandProcessor.mRite.mSentReq[messageName][workExecutionCritthash]
+        messageNameSentReq = 'Command_DetermineWorkCycle_Req'
+        if workExecutionCritthash in aCommandProcessor.mRite.mSentReq[messageNameSentReq]:
+            aCommandProcessor.mLogger.debug("Delete the sent request entry: [%s][%s]." % (messageNameSentReq, workExecutionCritthash))
+            del aCommandProcessor.mRite.mSentReq[messageNameSentReq][workExecutionCritthash]
 
             graphCycle = self.mMessage.graphCycle
             workCycle  = self.mMessage.workCycle
