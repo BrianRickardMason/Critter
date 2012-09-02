@@ -94,12 +94,10 @@ class GraphCommand_Handle_Command_Election_Res(object):
         critthash = self.mMessage.critthash
 
         messageNameSentReq = 'Command_Election_Req'
-        # There's an active sent request.
         if critthash in aCommandProcessor.mRite.mSentReq[messageNameSentReq]:
             aCommandProcessor.mLogger.debug("Delete(ing) the sent request: [%s][%s]." % (messageNameSentReq, critthash))
             del aCommandProcessor.mRite.mSentReq[messageNameSentReq][critthash]
 
-            # There's an active election.
             if critthash in aCommandProcessor.mRite.mElections:
                 aCommandProcessor.mLogger.debug("Update(ing) the election entry: [%s]." % critthash)
                 aCommandProcessor.mRite.mElections[critthash]['crittnick'] = self.mMessage.crittnick
