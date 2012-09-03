@@ -29,7 +29,7 @@ class GraphCommand_Handle_Command_ExecuteGraph_Req(object):
         )
         assert graphExecutionCritthash not in aCommandProcessor.mRite.mSentReq[messageName], "Not handled yet. Duplicated critthash."
         aCommandProcessor.mLogger.debug("Insert(ing) the sent request: [%s][%s]." % (messageName, graphExecutionCritthash))
-        aCommandProcessor.mRite.mSentReq['Command_Election_Req'][graphExecutionCritthash] = envelope
+        aCommandProcessor.mRite.mSentReq[messageName][graphExecutionCritthash] = envelope
         aCommandProcessor.mLogger.debug("Sending the %s message." % messageName)
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
