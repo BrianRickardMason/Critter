@@ -10,9 +10,7 @@ class BalanceCommand_Handle_Command_OrderWorkExecution_Req(object):
         workExecutionCritthash = self.mMessage.workExecutionCritthash
 
         messageName = self.mMessage.messageName
-        assert workExecutionCritthash not in aCommandProcessor.mRite.mRecvReq[messageName], "Not handled yet. Duplicated critthash."
-        aCommandProcessor.mLogger.debug("Insert(ing) the recv request: [%s][%s]." % (messageName, workExecutionCritthash))
-        aCommandProcessor.mRite.mRecvReq[messageName][workExecutionCritthash] = self.mMessage
+        aCommandProcessor.mRite.insertRecvRequest(messageName, workExecutionCritthash, self.mMessage)
 
         assert workExecutionCritthash not in aCommandProcessor.mRite.mElections, "Not handled yet. Duplicated critthash."
         aCommandProcessor.mLogger.debug("Insert(ing) the election: [%s]." % workExecutionCritthash)
@@ -113,8 +111,6 @@ class BalanceCommand_Handle_Command_ExecuteWork_Res(object):
              'workExecutionCritthash':  self.mMessage.workExecutionCritthash,
              'workName':                self.mMessage.workName}
         )
-        if workExecutionCritthash in aCommandProcessor.mRite.mRecvReq[messageNameRecvReq]:
-            aCommandProcessor.mLogger.debug("Delete(ing) the recv request: [%s][%s]." % (messageNameRecvReq, workExecutionCritthash))
-            del aCommandProcessor.mRite.mRecvReq[messageNameRecvReq][workExecutionCritthash]
+        aCommandProcessor.mRite.deleteRecvRequest(messageNameRecvReq, workExecutionCritthash)
         aCommandProcessor.mLogger.debug("Sending the %s message." % messageNameRecvRes)
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)

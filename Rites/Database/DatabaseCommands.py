@@ -189,9 +189,7 @@ class DatabaseCommand_Handle_Command_DetermineGraphCycle_Req(object):
         graphExecutionCritthash = self.mMessage.graphExecutionCritthash
 
         messageNameRecvReq = self.mMessage.messageName
-        assert graphExecutionCritthash not in aCommandProcessor.mRite.mRecvReq[messageNameRecvReq], "Not handled yet. Duplicated critthash."
-        aCommandProcessor.mLogger.debug("Insert(ing) the recv request: [%s][%s]." % (messageNameRecvReq, graphExecutionCritthash))
-        aCommandProcessor.mRite.mRecvReq[messageNameRecvReq][graphExecutionCritthash] = self.mMessage
+        aCommandProcessor.mRite.insertRecvRequest(messageNameRecvReq, graphExecutionCritthash, self.mMessage)
 
         try:
             connection = psycopg2.connect("host='localhost' dbname='critter' user='brian' password='brianpassword'")
@@ -232,9 +230,7 @@ class DatabaseCommand_Handle_Command_DetermineGraphCycle_Req(object):
              'graphExecutionCritthash': graphExecutionCritthash,
              'graphName':               self.mMessage.graphName,
              'graphCycle':              cycle})
-        if graphExecutionCritthash in aCommandProcessor.mRite.mRecvReq[messageNameRecvReq]:
-            aCommandProcessor.mLogger.debug("Delete(ing) the recv request: [%s][%s]." % (messageNameRecvReq, graphExecutionCritthash))
-            del aCommandProcessor.mRite.mRecvReq[messageNameRecvReq][graphExecutionCritthash]
+        aCommandProcessor.mRite.deleteRecvRequest(messageNameRecvReq, graphExecutionCritthash)
         aCommandProcessor.mLogger.debug("Sending the %s message." % messageNameRecvRes)
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
@@ -246,9 +242,7 @@ class DatabaseCommand_Handle_Command_DetermineWorkCycle_Req(object):
         workExecutionCritthash = self.mMessage.workExecutionCritthash
 
         messageNameRecvReq = self.mMessage.messageName
-        assert workExecutionCritthash not in aCommandProcessor.mRite.mRecvReq[messageNameRecvReq], "Not handled yet. Duplicated critthash."
-        aCommandProcessor.mLogger.debug("Insert(ing) the recv request: [%s][%s]." % (messageNameRecvReq, workExecutionCritthash))
-        aCommandProcessor.mRite.mRecvReq[messageNameRecvReq][workExecutionCritthash] = self.mMessage
+        aCommandProcessor.mRite.insertRecvRequest(messageNameRecvReq, workExecutionCritthash, self.mMessage)
 
         try:
             connection = psycopg2.connect("host='localhost' dbname='critter' user='brian' password='brianpassword'")
@@ -293,8 +287,6 @@ class DatabaseCommand_Handle_Command_DetermineWorkCycle_Req(object):
              'workName':                self.mMessage.workName,
              'workCycle':               workCycle}
         )
-        if workExecutionCritthash in aCommandProcessor.mRite.mRecvReq[messageNameRecvReq]:
-            aCommandProcessor.mLogger.debug("Delete(ing) the recv request: [%s][%s]." % (messageNameRecvReq, workExecutionCritthash))
-            del aCommandProcessor.mRite.mRecvReq[messageNameRecvReq][workExecutionCritthash]
+        aCommandProcessor.mRite.deleteRecvRequest(messageNameRecvReq, workExecutionCritthash)
         aCommandProcessor.mLogger.debug("Sending the %s message." % messageNameRecvRes)
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)

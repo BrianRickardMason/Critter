@@ -26,9 +26,7 @@ class WorkCommand_Handle_Command_ExecuteWork_Req(object):
             workExecutionCritthash = self.mMessage.workExecutionCritthash
 
             messageName = self.mMessage.messageName
-            assert workExecutionCritthash not in aCommandProcessor.mRite.mRecvReq[messageName], "Not handled yet. Duplicated critthash."
-            aCommandProcessor.mLogger.debug("Insert(ing) the recv request: [%s][%s]." % (messageName, workExecutionCritthash))
-            aCommandProcessor.mRite.mRecvReq[messageName][workExecutionCritthash] = self.mMessage
+            aCommandProcessor.mRite.insertRecvRequest(messageName, workExecutionCritthash, self.mMessage)
 
             messageName = 'Command_DetermineWorkCycle_Req'
             envelope = aCommandProcessor.mRite.mPostOffice.encode(
