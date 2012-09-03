@@ -77,6 +77,10 @@ class GraphRiteSession(threading.Thread):
         self.mLogger.debug("Sending the %s message." % messageNameRes)
         self.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
+        if self.mGraphExecutionCritthash in self.mRite.mElections:
+            self.mLogger.debug("Delete(ing) the election: [%s]." % (self.mGraphExecutionCritthash))
+            del self.mRite.mElections[self.mGraphExecutionCritthash]
+
         self.mLogger.info("Graph ended: %s@%s." % (self.mGraphName, self.mGraphCycle))
 
         # Delete myself from sessions.

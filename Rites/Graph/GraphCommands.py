@@ -2,8 +2,6 @@ import Rites.RiteCommon
 
 from GraphRiteSession import GraphRiteSession
 
-# TODO: Add deleting of election at the end of the graph execution.
-
 class GraphCommand_Handle_Command_ExecuteGraph_Req(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
