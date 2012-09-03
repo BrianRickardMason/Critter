@@ -17,8 +17,8 @@ class SchedulerRite(Rite):
                       SchedulerMessageProcessor)
 
         # A dictionary of sent commands.
-        self.mSentCommands = {}
-        self.mSentCommands['Command_ExecuteGraph_Req'] = {}
+        self.mSentReq = {}
+        self.mSentReq['Command_ExecuteGraph_Req'] = {}
 
     def run(self):
         while True:

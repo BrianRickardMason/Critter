@@ -1,8 +1,19 @@
-from Rites.MessageProcessor import MessageProcessor
+import Rites.RiteCommon
+
+from Rites.Scheduler.SchedulerCommands import SchedulerCommand_Handle_Command_ExecuteGraph_Res
+from Rites.MessageProcessor            import MessageProcessor
 
 class SchedulerMessageProcessor(MessageProcessor):
     def __init__(self, aRite):
         MessageProcessor.__init__(self, aRite)
 
     def processMessage(self, aMessage):
-        self.mLogger.debug("Dropping unknown message: %s" % aMessage.messageName)
+        command = None
+
+        if False: pass
+        elif aMessage.messageName == 'Command_ExecuteGraph_Res': command = SchedulerCommand_Handle_Command_ExecuteGraph_Res(aMessage)
+
+        if command:
+            self.mRite.mPostOffice.putCommand(Rites.RiteCommon.SCHEDULER, command)
+        else:
+            self.mLogger.debug("Dropping unknown message: %s." % aMessage.messageName)
