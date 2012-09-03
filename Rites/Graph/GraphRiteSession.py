@@ -70,7 +70,7 @@ class GraphRiteSession(threading.Thread):
              'graphExecutionCritthash': self.mGraphExecutionCritthash}
         )
         if self.mGraphExecutionCritthash in self.mRite.mRecvReq[messageNameReq]:
-            self.mLogger.debug("Delete(ing) the received request: [%s][%s]." % (messageNameReq, self.mGraphExecutionCritthash))
+            self.mLogger.debug("Delete(ing) the recv request: [%s][%s]." % (messageNameReq, self.mGraphExecutionCritthash))
             del self.mRite.mRecvReq[messageNameReq][self.mGraphExecutionCritthash]
         self.mLogger.debug("Sending the %s message." % messageNameRes)
         self.mRite.mPostOffice.putOutgoingAnnouncement(envelope)

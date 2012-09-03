@@ -124,7 +124,7 @@ class BalanceCommand_Handle_Command_ExecuteWork_Res(object):
              'workName':                self.mMessage.workName}
         )
         if workExecutionCritthash in aCommandProcessor.mRite.mRecvReq[messageNameRecvReq]:
-            aCommandProcessor.mLogger.debug("Delete(ing) the received request: [%s][%s]." % (messageNameRecvReq, workExecutionCritthash))
+            aCommandProcessor.mLogger.debug("Delete(ing) the recv request: [%s][%s]." % (messageNameRecvReq, workExecutionCritthash))
             del aCommandProcessor.mRite.mRecvReq[messageNameRecvReq][workExecutionCritthash]
         aCommandProcessor.mLogger.debug("Sending the %s message." % messageNameRecvRes)
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)

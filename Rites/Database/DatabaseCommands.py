@@ -233,7 +233,7 @@ class DatabaseCommand_Handle_Command_DetermineGraphCycle_Req(object):
              'graphName':               self.mMessage.graphName,
              'graphCycle':              cycle})
         if graphExecutionCritthash in aCommandProcessor.mRite.mRecvReq[messageNameRecvReq]:
-            aCommandProcessor.mLogger.debug("Delete(ing) the received request: [%s][%s]." % (messageNameRecvReq, graphExecutionCritthash))
+            aCommandProcessor.mLogger.debug("Delete(ing) the recv request: [%s][%s]." % (messageNameRecvReq, graphExecutionCritthash))
             del aCommandProcessor.mRite.mRecvReq[messageNameRecvReq][graphExecutionCritthash]
         aCommandProcessor.mLogger.debug("Sending the %s message." % messageNameRecvRes)
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
@@ -294,7 +294,7 @@ class DatabaseCommand_Handle_Command_DetermineWorkCycle_Req(object):
              'workCycle':               workCycle}
         )
         if workExecutionCritthash in aCommandProcessor.mRite.mRecvReq[messageNameRecvReq]:
-            aCommandProcessor.mLogger.debug("Delete(ing) the received request: [%s][%s]." % (messageNameRecvReq, workExecutionCritthash))
+            aCommandProcessor.mLogger.debug("Delete(ing) the recv request: [%s][%s]." % (messageNameRecvReq, workExecutionCritthash))
             del aCommandProcessor.mRite.mRecvReq[messageNameRecvReq][workExecutionCritthash]
         aCommandProcessor.mLogger.debug("Sending the %s message." % messageNameRecvRes)
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)

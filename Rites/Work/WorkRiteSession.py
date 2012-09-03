@@ -46,7 +46,7 @@ class WorkRiteSession(threading.Thread):
              'workName':                self.mWorkName}
         )
         if self.mWorkExecutionCritthash in self.mRite.mRecvReq[messageNameReq]:
-            self.mLogger.debug("Delete(ing) the received request: [%s][%s]." % (messageNameReq, self.mWorkExecutionCritthash))
+            self.mLogger.debug("Delete(ing) the recv request: [%s][%s]." % (messageNameReq, self.mWorkExecutionCritthash))
             del self.mRite.mRecvReq[messageNameReq][self.mWorkExecutionCritthash]
         self.mLogger.debug("Sending the %s message." % messageNameRes)
         self.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
