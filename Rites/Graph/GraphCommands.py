@@ -71,7 +71,6 @@ class GraphCommand_Handle_Command_DetermineGraphCycle_Res(object):
         graphName  = self.mMessage.graphName
         graphCycle = self.mMessage.graphCycle
 
-
         assert graphCycle > 0, "Invalid graphCycle value determined."
 
         # Create and run a session.
@@ -139,20 +138,24 @@ class GraphCommand_Handle_LoadGraphAndWorkResponse(object):
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
-        # Store graphs.
-        for graph in self.mMessage.graphs:
-            aCommandProcessor.mRite.mGraphs.append(graph.graphName)
+        if self.mMessage.receiver.type == aCommandProcessor.mRite.mCritter.mCritterData.mType and \
+           self.mMessage.receiver.nick == aCommandProcessor.mRite.mCritter.mCritterData.mNick     :
+            # Store graphs.
+            for graph in self.mMessage.graphs:
+                aCommandProcessor.mRite.mGraphs.append(graph.graphName)
 
-        # Store works.
-        for work in self.mMessage.works:
-            if work.graphName not in aCommandProcessor.mRite.mWorks:
-                aCommandProcessor.mRite.mWorks[work.graphName] = []
+            # Store works.
+            for work in self.mMessage.works:
+                if work.graphName not in aCommandProcessor.mRite.mWorks:
+                    aCommandProcessor.mRite.mWorks[work.graphName] = []
 
-            aCommandProcessor.mRite.mWorks[work.graphName].append(work.workName)
+                aCommandProcessor.mRite.mWorks[work.graphName].append(work.workName)
 
-        # Store predecessors.
-        for predecessor in self.mMessage.workPredecessors:
-            if predecessor.workName not in aCommandProcessor.mRite.mWorkPredecessors:
-                aCommandProcessor.mRite.mWorkPredecessors[predecessor.workName] = []
+            # Store predecessors.
+            for predecessor in self.mMessage.workPredecessors:
+                if predecessor.workName not in aCommandProcessor.mRite.mWorkPredecessors:
+                    aCommandProcessor.mRite.mWorkPredecessors[predecessor.workName] = []
 
-            aCommandProcessor.mRite.mWorkPredecessors[predecessor.workName].append(predecessor.predecessorWorkName)
+                aCommandProcessor.mRite.mWorkPredecessors[predecessor.workName].append(predecessor.predecessorWorkName)
+        else:
+            aCommandProcessor.mLogger.debug("The message is not addressed to me.")

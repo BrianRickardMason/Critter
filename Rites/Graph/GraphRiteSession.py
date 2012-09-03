@@ -92,11 +92,12 @@ class GraphRiteSession(threading.Thread):
         # Set the state.
         self.mWorkStates[aWorkName] = self.STATE_STARTED
 
+        messageName = 'Command_OrderWorkExecution_Req'
+
         if    self.mRite.mCritter.mCritterData.mNick \
            == self.mRite.mElections[self.mGraphExecutionCritthash]['crittnick']:
             workExecutionCritthash = os.urandom(32).encode('hex')
 
-            messageName = 'Command_OrderWorkExecution_Req'
             envelope = self.mRite.mPostOffice.encode(
                 messageName,
                 {'messageName':             messageName,
