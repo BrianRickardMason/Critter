@@ -68,21 +68,22 @@ class GraphCommand_Handle_Command_DetermineGraphCycle_Res(object):
             aCommandProcessor.mLogger.debug("Delete(ing) the sent request: [%s][%s]." % (messageNameSentReq, graphExecutionCritthash))
             del aCommandProcessor.mRite.mSentReq[messageNameSentReq][graphExecutionCritthash]
 
-            graphCycle = self.mMessage.graphCycle
-            graphName  = self.mMessage.graphName
+        graphName  = self.mMessage.graphName
+        graphCycle = self.mMessage.graphCycle
 
-            assert graphCycle > 0, "Invalid graphCycle value determined."
 
-            # Create and run a session.
-            if graphName not in aCommandProcessor.mRite.mSessions:
-                aCommandProcessor.mRite.mSessions[graphName] = {}
+        assert graphCycle > 0, "Invalid graphCycle value determined."
 
-            aCommandProcessor.mRite.mSessions[graphName][graphCycle] = GraphRiteSession(aCommandProcessor.mRite,
-                                                                                        graphExecutionCritthash,
-                                                                                        graphName,
-                                                                                        graphCycle)
-            aCommandProcessor.mRite.mSessions[graphName][graphCycle].setDaemon(True)
-            aCommandProcessor.mRite.mSessions[graphName][graphCycle].start()
+        # Create and run a session.
+        if graphName not in aCommandProcessor.mRite.mSessions:
+            aCommandProcessor.mRite.mSessions[graphName] = {}
+
+        aCommandProcessor.mRite.mSessions[graphName][graphCycle] = GraphRiteSession(aCommandProcessor.mRite,
+                                                                                    graphExecutionCritthash,
+                                                                                    graphName,
+                                                                                    graphCycle)
+        aCommandProcessor.mRite.mSessions[graphName][graphCycle].setDaemon(True)
+        aCommandProcessor.mRite.mSessions[graphName][graphCycle].start()
 
 class GraphCommand_Handle_Command_Election_Res(object):
     def __init__(self, aMessage):

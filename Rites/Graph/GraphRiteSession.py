@@ -94,7 +94,6 @@ class GraphRiteSession(threading.Thread):
 
         if    self.mRite.mCritter.mCritterData.mNick \
            == self.mRite.mElections[self.mGraphExecutionCritthash]['crittnick']:
-
             workExecutionCritthash = os.urandom(32).encode('hex')
 
             messageName = 'Command_OrderWorkExecution_Req'
@@ -112,6 +111,8 @@ class GraphRiteSession(threading.Thread):
             self.mRite.mSentReq[messageName][workExecutionCritthash] = envelope
             self.mLogger.debug("Sending the %s message." % messageName)
             self.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+        else:
+            self.mLogger.debug("Not sending the %s message." % messageName)
 
 class SpawnChecker(object):
     def continueSpawning(self, aWorkStates):
