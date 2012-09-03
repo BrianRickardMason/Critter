@@ -62,6 +62,19 @@ class GraphRiteSession(threading.Thread):
         while awaiter.keepWaiting(self.mWorkStates):
             time.sleep(GraphRiteSession.SLEEP_WHILE_WAITING)
 
+        messageNameReq = 'Command_ExecuteGraph_Req'
+        messageNameRes = 'Command_ExecuteGraph_Res'
+        envelope = self.mRite.mPostOffice.encode(
+            messageNameRes,
+            {'messageName':             messageNameRes,
+             'graphExecutionCritthash': self.mGraphExecutionCritthash}
+        )
+        if self.mGraphExecutionCritthash in self.mRite.mRecvReq[messageNameReq]:
+            self.mLogger.debug("Delete(ing) the received request: [%s][%s]." % (messageNameReq, self.mGraphExecutionCritthash))
+            del self.mRite.mRecvReq[messageNameReq][self.mGraphExecutionCritthash]
+        self.mLogger.debug("Sending the %s message." % messageNameRes)
+        self.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
         # Delete myself from sessions.
         del self.mRite.mSessions[self.mGraphName][self.mGraphCycle]
 
