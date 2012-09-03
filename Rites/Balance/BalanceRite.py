@@ -42,12 +42,12 @@ class BalanceRite(Rite):
             'softTimeout': aSoftTimeout,
             'hardTimeout': aHardTimeout
         }
-        self.mLogger.info("Sending the %s message." % aMessageName)
+        self.mLogger.debug("Sending the %s message." % aMessageName)
         self.mPostOffice.putOutgoingAnnouncement(aEnvelope)
 
     def deleteSentRequest(self, aMessageName, aCritthash):
         if aCritthash in self.mSentReq[aMessageName]:
-            self.mLogger.info("Delete(ing) the sent request: [%s][%s]." % (aMessageName, aCritthash))
+            self.mLogger.debug("Delete(ing) the sent request: [%s][%s]." % (aMessageName, aCritthash))
             del self.mSentReq[aMessageName][aCritthash]
 
     def insertRecvRequest(self, aMessageName, aCritthash, aMessage, aSoftTimeout=3, aHardTimeout=5):
