@@ -40,11 +40,7 @@ class WorkCommand_Handle_Command_ExecuteWork_Req(object):
                  'workExecutionCritthash':  self.mMessage.workExecutionCritthash,
                  'workName':                self.mMessage.workName}
             )
-            assert workExecutionCritthash not in aCommandProcessor.mRite.mSentReq[messageName], "Not handled yet. Duplicated critthash."
-            aCommandProcessor.mLogger.debug("Insert(ing) the sent request: [%s][%s]." % (messageName, workExecutionCritthash))
-            aCommandProcessor.mRite.mSentReq[messageName][workExecutionCritthash] = envelope
-            aCommandProcessor.mLogger.debug("Sending the %s message." % messageName)
-            aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+            aCommandProcessor.mRite.insertSentRequest(messageName, workExecutionCritthash, envelope)
 
 class WorkCommand_Handle_Command_DetermineWorkCycle_Res(object):
     def __init__(self, aMessage):
@@ -55,8 +51,7 @@ class WorkCommand_Handle_Command_DetermineWorkCycle_Res(object):
 
         messageNameSentReq = 'Command_DetermineWorkCycle_Req'
         if workExecutionCritthash in aCommandProcessor.mRite.mSentReq[messageNameSentReq]:
-            aCommandProcessor.mLogger.debug("Delete(ing) the sent request: [%s][%s]." % (messageNameSentReq, workExecutionCritthash))
-            del aCommandProcessor.mRite.mSentReq[messageNameSentReq][workExecutionCritthash]
+            aCommandProcessor.mRite.deleteSentRequest(messageNameSentReq, workExecutionCritthash)
 
             graphCycle = self.mMessage.graphCycle
             workCycle  = self.mMessage.workCycle

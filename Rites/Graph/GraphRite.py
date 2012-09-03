@@ -57,3 +57,19 @@ class GraphRite(Rite):
                 self.mLogger.debug("The number of sessions GraphName4: %d" % len(self.mSessions['GraphName4']))
 
             time.sleep(self.mSettings.get('heartbeat', 'period'))
+
+    def insertSentRequest(self, aMessageName, aCritthash, aEnvelope, aSoftTimeout=3, aHardTimeout=5):
+        assert aCritthash not in self.mSentReq[aMessageName], "Not handled yet. Duplicated critthash."
+        self.mLogger.info("Insert(ing) the sent request: [%s][%s]." % (aMessageName, aCritthash))
+        self.mSentReq[aMessageName][aCritthash] = {
+            'envelope':    aEnvelope,
+            'softTimeout': aSoftTimeout,
+            'hardTimeout': aHardTimeout
+        }
+        self.mLogger.info("Sending the %s message." % aMessageName)
+        self.mPostOffice.putOutgoingAnnouncement(aEnvelope)
+
+    def deleteSentRequest(self, aMessageName, aCritthash):
+        if aCritthash in self.mSentReq[aMessageName]:
+            self.mLogger.info("Delete(ing) the sent request: [%s][%s]." % (aMessageName, aCritthash))
+            del self.mSentReq[aMessageName][aCritthash]

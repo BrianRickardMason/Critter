@@ -10,19 +10,15 @@ class SchedulerCommandCheckSchedule(object):
             graphNames = ['GraphName1', 'GraphName2', 'GraphName3', 'GraphName4']
 
             graphExecutionCritthash = os.urandom(32).encode('hex')
-
             messageName = 'Command_ExecuteGraph_Req'
+
             envelope = aCommandProcessor.mRite.mPostOffice.encode(
                 messageName,
                 {'messageName':             messageName,
                  'graphExecutionCritthash': graphExecutionCritthash,
                  'graphName':               random.choice(graphNames)}
             )
-            assert graphExecutionCritthash not in aCommandProcessor.mRite.mSentReq[messageName], "Not handled yet. Duplicated critthash."
-            aCommandProcessor.mLogger.debug("Insert(ing) the sent request: [%s][%s]." % (messageName, graphExecutionCritthash))
-            aCommandProcessor.mRite.mSentReq[messageName][graphExecutionCritthash] = envelope
-            aCommandProcessor.mLogger.debug("Sending the %s message." % messageName)
-            aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+            aCommandProcessor.mRite.insertSentRequest(messageName, graphExecutionCritthash, envelope)
 
 class SchedulerCommand_Handle_Command_ExecuteGraph_Res(object):
     def __init__(self, aMessage):
@@ -30,8 +26,5 @@ class SchedulerCommand_Handle_Command_ExecuteGraph_Res(object):
 
     def execute(self, aCommandProcessor):
         graphExecutionCritthash = self.mMessage.graphExecutionCritthash
-
         messageNameSentReq = 'Command_ExecuteGraph_Req'
-        if graphExecutionCritthash in aCommandProcessor.mRite.mSentReq[messageNameSentReq]:
-            aCommandProcessor.mLogger.debug("Delete(ing) the sent request: [%s][%s]." % (messageNameSentReq, graphExecutionCritthash))
-            del aCommandProcessor.mRite.mSentReq[messageNameSentReq][graphExecutionCritthash]
+        aCommandProcessor.mRite.deleteSentRequest(messageNameSentReq, graphExecutionCritthash)

@@ -25,11 +25,7 @@ class BalanceCommand_Handle_Command_OrderWorkExecution_Req(object):
              'critthash':   workExecutionCritthash,
              'crittnick':   aCommandProcessor.mRite.mCritter.mCritterData.mNick}
         )
-        assert workExecutionCritthash not in aCommandProcessor.mRite.mSentReq[messageName], "Not handled yet. Duplicated critthash."
-        aCommandProcessor.mLogger.debug("Insert(ing) the sent request: [%s][%s]." % (messageName, workExecutionCritthash))
-        aCommandProcessor.mRite.mSentReq[messageName][workExecutionCritthash] = envelope
-        aCommandProcessor.mLogger.debug("Sending the %s message." % messageName)
-        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+        aCommandProcessor.mRite.insertSentRequest(messageName, workExecutionCritthash, envelope)
 
 class BalanceCommand_Handle_Command_OrderWorkExecution_ElectionFinished_Req(object):
     def __init__(self, aMessage):
@@ -66,11 +62,7 @@ class BalanceCommand_Handle_Command_OrderWorkExecution_ElectionFinished_Req(obje
                  'workExecutionCritthash':  self.mMessage.workExecutionCritthash,
                  'workName':                self.mMessage.workName}
             )
-            assert workExecutionCritthash not in aCommandProcessor.mRite.mSentReq[messageName], "Not handled yet. Duplicated critthash."
-            aCommandProcessor.mLogger.debug("Insert(ing) the sent request: [%s][%s]." % (messageName, workExecutionCritthash))
-            aCommandProcessor.mRite.mSentReq[messageName][workExecutionCritthash] = envelope
-            aCommandProcessor.mLogger.debug("Sending the %s message." % messageName)
-            aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+            aCommandProcessor.mRite.insertSentRequest(messageName, workExecutionCritthash, envelope)
 
         if workExecutionCritthash in aCommandProcessor.mRite.mElections:
             aCommandProcessor.mLogger.debug("Delete(ing) the election: [%s]." % (workExecutionCritthash))
@@ -85,8 +77,7 @@ class BalanceCommand_Handle_Command_Election_Res(object):
 
         messageNameSentReq = 'Command_Election_Req'
         if critthash in aCommandProcessor.mRite.mSentReq[messageNameSentReq]:
-            aCommandProcessor.mLogger.debug("Delete(ing) the sent request: [%s][%s]." % (messageNameSentReq, critthash))
-            del aCommandProcessor.mRite.mSentReq[messageNameSentReq][critthash]
+            aCommandProcessor.mRite.deleteSentRequest(messageNameSentReq, critthash)
 
             if critthash in aCommandProcessor.mRite.mElections:
                 aCommandProcessor.mLogger.debug("Update(ing) the election entry: [%s]." % critthash)
@@ -109,8 +100,7 @@ class BalanceCommand_Handle_Command_ExecuteWork_Res(object):
 
         messageNameSentReq = 'Command_ExecuteWork_Req'
         if workExecutionCritthash in aCommandProcessor.mRite.mSentReq[messageNameSentReq]:
-            aCommandProcessor.mLogger.debug("Delete(ing) the sent request: [%s][%s]." % (messageNameSentReq, workExecutionCritthash))
-            del aCommandProcessor.mRite.mSentReq[messageNameSentReq][workExecutionCritthash]
+            aCommandProcessor.mRite.deleteSentRequest(messageNameSentReq, workExecutionCritthash)
 
         messageNameRecvReq = 'Command_OrderWorkExecution_Req'
         messageNameRecvRes = 'Command_OrderWorkExecution_Res'
