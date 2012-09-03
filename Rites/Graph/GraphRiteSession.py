@@ -38,6 +38,8 @@ class GraphRiteSession(threading.Thread):
         threading.Thread.__init__(self, name='GraphRiteSession')
 
     def run(self):
+        self.mLogger.info("Graph started: %s@%s." % (self.mGraphName, self.mGraphCycle))
+
         # Set all states of works to 'STATE_NOT_STARTED'.
         for work in self.mWorks:
             self.mWorkStates[work] = GraphRiteSession.STATE_NOT_STARTED
@@ -74,6 +76,8 @@ class GraphRiteSession(threading.Thread):
             del self.mRite.mRecvReq[messageNameReq][self.mGraphExecutionCritthash]
         self.mLogger.debug("Sending the %s message." % messageNameRes)
         self.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
+        self.mLogger.info("Graph ended: %s@%s." % (self.mGraphName, self.mGraphCycle))
 
         # Delete myself from sessions.
         del self.mRite.mSessions[self.mGraphName][self.mGraphCycle]
