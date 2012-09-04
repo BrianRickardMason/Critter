@@ -1,6 +1,7 @@
 import Rites.RiteCommon
 
 from Rites.Scheduler.SchedulerCommands import SchedulerCommand_Handle_Command_ExecuteGraph_Res
+from Rites.Scheduler.SchedulerCommands import SchedulerCommand_Handle_Command_LoadGraphDetails_Res
 from Rites.MessageProcessor            import MessageProcessor
 
 class SchedulerMessageProcessor(MessageProcessor):
@@ -11,7 +12,8 @@ class SchedulerMessageProcessor(MessageProcessor):
         command = None
 
         if False: pass
-        elif aMessage.messageName == 'Command_ExecuteGraph_Res': command = SchedulerCommand_Handle_Command_ExecuteGraph_Res(aMessage)
+        elif aMessage.messageName == 'Command_ExecuteGraph_Res':     command = SchedulerCommand_Handle_Command_ExecuteGraph_Res(aMessage)
+        elif aMessage.messageName == 'Command_LoadGraphDetails_Res': command = SchedulerCommand_Handle_Command_LoadGraphDetails_Res(aMessage)
 
         if command:
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.SCHEDULER, command)

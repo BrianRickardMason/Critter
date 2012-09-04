@@ -28,3 +28,10 @@ class SchedulerCommand_Handle_Command_ExecuteGraph_Res(object):
         graphExecutionCritthash = self.mMessage.graphExecutionCritthash
         messageNameSentReq = 'Command_ExecuteGraph_Req'
         aCommandProcessor.mRite.deleteSentRequest(messageNameSentReq, graphExecutionCritthash)
+
+class SchedulerCommand_Handle_Command_LoadGraphDetails_Res(object):
+    def __init__(self, aMessage):
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        aCommandProcessor.mLogger.debug("TODO: Start from here.")
