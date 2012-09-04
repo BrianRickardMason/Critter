@@ -295,5 +295,6 @@ message Command_LoadGraphDetails_Req
 message Command_LoadGraphDetails_Res
 {
     optional string            messageName  = 1;
-    repeated Data_GraphDetails graphDetails = 2;
+    optional string            critthash    = 2;
+    repeated Data_GraphDetails graphDetails = 3;
 }
