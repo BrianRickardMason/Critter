@@ -119,7 +119,7 @@ message LoadWorkDetailsResponse
 }
 
 //
-// An election.
+// Election.
 //
 
 //
@@ -144,7 +144,7 @@ message Command_Election_Res
 }
 
 //
-// A graph execution.
+// Graph execution.
 //
 
 //
@@ -265,4 +265,35 @@ message Command_DetermineWorkCycle_Res
     optional string workExecutionCritthash  = 5;
     optional string workName                = 6;
     optional uint32 workCycle               = 7;
+}
+
+//
+// Data setup.
+//
+
+message Data_GraphDetails
+{
+    optional string graphName   = 1;
+    optional uint32 softTimeout = 2;
+    optional uint32 hardTimeout = 3;
+}
+
+//
+// Criduler -> Cribrarian.
+//
+message Command_LoadGraphDetails_Req
+{
+    optional string messageName = 1;
+    optional uint32 softTimeout = 2;
+    optional uint32 hardTimeout = 3;
+    optional string critthash   = 4;
+}
+
+//
+// Cribrarian -> Criduler.
+//
+message Command_LoadGraphDetails_Res
+{
+    optional string            messageName  = 1;
+    repeated Data_GraphDetails graphDetails = 2;
 }
