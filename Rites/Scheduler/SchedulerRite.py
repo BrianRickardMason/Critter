@@ -22,6 +22,8 @@ class SchedulerRite(Rite):
         self.mSentReq['Command_ExecuteGraph_Req'] = {}
         self.mSentReq['Command_LoadGraphDetails_Req'] = {}
 
+        self.mGraphDetails = {}
+
     def run(self):
         messageName = 'Command_LoadGraphDetails_Req'
         softTimeout = 3 # [s].

@@ -34,4 +34,16 @@ class SchedulerCommand_Handle_Command_LoadGraphDetails_Res(object):
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
-        aCommandProcessor.mLogger.debug("TODO: Start from here.")
+        messageNameSentReq = 'Command_LoadGraphDetails_Req'
+        critthash = self.mMessage.critthash
+
+        if critthash in aCommandProcessor.mRite.mSentReq[messageNameSentReq]:
+            # Store graph details.
+            for graphDetail in self.mMessage.graphDetails:
+                aCommandProcessor.mRite.mGraphDetails[graphDetail.graphName] = {
+                    'graphName':   graphDetail.graphName,
+                    'softTimeout': graphDetail.softTimeout,
+                    'hardTimeout': graphDetail.hardTimeout
+                }
+
+        aCommandProcessor.mRite.deleteSentRequest(messageNameSentReq, critthash)
