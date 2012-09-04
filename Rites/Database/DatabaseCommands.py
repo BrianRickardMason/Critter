@@ -243,6 +243,7 @@ class DatabaseCommand_Handle_Command_Election_Req(object):
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
+        # TODO: Register the requests!
         try:
             connection = psycopg2.connect("host='localhost' dbname='critter' user='brian' password='brianpassword'")
             cursor = connection.cursor()
