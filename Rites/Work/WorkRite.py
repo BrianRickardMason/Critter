@@ -25,7 +25,7 @@ class WorkRite(Rite):
 
         self.mWorkDetails = {}
 
-        self.mSessions    = {}
+        self.mSessions = {}
 
     def run(self):
         # Request the load of the work details.
