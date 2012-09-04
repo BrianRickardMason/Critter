@@ -299,4 +299,36 @@ class DatabaseCommand_Handle_Command_LoadGraphDetails_Req(object):
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
-        aCommandProcessor.mLogger.debug("TODO: Start from here!")
+        critthash = self.mMessage.critthash
+        messageNameRecvReq = self.mMessage.messageName
+        aCommandProcessor.mRite.insertRecvRequest(messageNameRecvReq,
+                                                  critthash,
+                                                  self.mMessage,
+                                                  self.mMessage.softTimeout,
+                                                  self.mMessage.hardTimeout)
+
+        graphDetailsDictionaries = []
+
+        try:
+            connection = psycopg2.connect("host='localhost' dbname='critter' user='brian' password='brianpassword'")
+            cursor = connection.cursor()
+        except psycopg2.DatabaseError, e:
+            sys.exit(1)
+
+        cursor.execute("SELECT * FROM graphDetails")
+        rows = cursor.fetchall()
+        for row in rows:
+            graphDetailsDictionaries.append({'graphName':   row[0],
+                                             'softTimeout': row[1],
+                                             'hardTimeout': row[2]})
+
+        messageNameRecvRes = 'Command_LoadGraphDetails_Res'
+        envelope = aCommandProcessor.mRite.mPostOffice.encode(
+            messageNameRecvRes,
+            {'messageName':  messageNameRecvRes,
+             'critthash':    critthash,
+             'graphDetails': graphDetailsDictionaries}
+        )
+        aCommandProcessor.mRite.deleteRecvRequest(messageNameRecvReq, critthash)
+        aCommandProcessor.mLogger.debug("Sending the %s message." % messageNameRecvRes)
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
