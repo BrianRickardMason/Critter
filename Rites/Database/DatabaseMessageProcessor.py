@@ -5,6 +5,7 @@ from Rites.Database.DatabaseCommands import DatabaseCommandLoadWorkDetails
 from Rites.Database.DatabaseCommands import DatabaseCommand_Handle_Command_DetermineGraphCycle_Req
 from Rites.Database.DatabaseCommands import DatabaseCommand_Handle_Command_DetermineWorkCycle_Req
 from Rites.Database.DatabaseCommands import DatabaseCommand_Handle_Command_Election_Req
+from Rites.Database.DatabaseCommands import DatabaseCommand_Handle_Command_LoadGraphDetails_Req
 from Rites.MessageProcessor          import MessageProcessor
 
 class DatabaseMessageProcessor(MessageProcessor):
@@ -18,6 +19,7 @@ class DatabaseMessageProcessor(MessageProcessor):
         elif aMessage.messageName == 'Command_DetermineGraphCycle_Req': command = DatabaseCommand_Handle_Command_DetermineGraphCycle_Req(aMessage)
         elif aMessage.messageName == 'Command_DetermineWorkCycle_Req':  command = DatabaseCommand_Handle_Command_DetermineWorkCycle_Req(aMessage)
         elif aMessage.messageName == 'Command_Election_Req':            command = DatabaseCommand_Handle_Command_Election_Req(aMessage)
+        elif aMessage.messageName == 'Command_LoadGraphDetails_Req':    command = DatabaseCommand_Handle_Command_LoadGraphDetails_Req(aMessage)
         elif aMessage.messageName == 'LoadGraphAndWorkRequest':         command = DatabaseCommandLoadGraphsAndWorks(aMessage)
         elif aMessage.messageName == 'LoadWorkDetailsRequest':          command = DatabaseCommandLoadWorkDetails(aMessage)
 

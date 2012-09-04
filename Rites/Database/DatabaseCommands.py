@@ -292,3 +292,10 @@ class DatabaseCommand_Handle_Command_DetermineWorkCycle_Req(object):
         aCommandProcessor.mRite.deleteRecvRequest(messageNameRecvReq, workExecutionCritthash)
         aCommandProcessor.mLogger.debug("Sending the %s message." % messageNameRecvRes)
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
+class DatabaseCommand_Handle_Command_LoadGraphDetails_Req(object):
+    def __init__(self, aMessage):
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        aCommandProcessor.mLogger.debug("TODO: Start from here!")
