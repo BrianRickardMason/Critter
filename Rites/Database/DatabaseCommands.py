@@ -128,61 +128,6 @@ class DatabaseCommandLoadWorkDetails(object):
              'details':     workDetailsDictionaries})
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
-class DatabaseCommand_Handle_Command_Election_Req(object):
-    def __init__(self, aMessage):
-        self.mMessage = aMessage
-
-    def execute(self, aCommandProcessor):
-        try:
-            connection = psycopg2.connect("host='localhost' dbname='critter' user='brian' password='brianpassword'")
-            cursor = connection.cursor()
-        except psycopg2.DatabaseError, e:
-            sys.exit(1)
-
-        query = """
-                SELECT
-                    count(*)
-                FROM
-                    elections
-                WHERE
-                    critthash = '%s'
-                """ % (self.mMessage.critthash)
-        cursor.execute(query)
-
-        row = cursor.fetchone()
-
-        if row[0] == 0:
-            query = """
-                    INSERT INTO
-                        elections(critthash, crittnick)
-                    VALUES
-                        ('%s', '%s')
-                    """ % (self.mMessage.critthash, self.mMessage.crittnick)
-            cursor.execute(query)
-            winnerCrittnick = self.mMessage.crittnick
-        else:
-            query = """
-                    SELECT
-                        crittnick
-                    FROM
-                        elections
-                    WHERE
-                        critthash = '%s'
-                    """ % (self.mMessage.critthash)
-            cursor.execute(query)
-            row = cursor.fetchone()
-            winnerCrittnick = row[0]
-
-        connection.commit()
-
-        envelope = aCommandProcessor.mRite.mPostOffice.encode(
-            'Command_Election_Res',
-            {'messageName': 'Command_Election_Res',
-             'critthash':   self.mMessage.critthash,
-             'crittnick':   winnerCrittnick}
-        )
-        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
-
 class DatabaseCommand_Handle_Command_DetermineGraphCycle_Req(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
@@ -291,6 +236,61 @@ class DatabaseCommand_Handle_Command_DetermineWorkCycle_Req(object):
         )
         aCommandProcessor.mRite.deleteRecvRequest(messageNameRecvReq, workExecutionCritthash)
         aCommandProcessor.mLogger.debug("Sending the %s message." % messageNameRecvRes)
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
+class DatabaseCommand_Handle_Command_Election_Req(object):
+    def __init__(self, aMessage):
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        try:
+            connection = psycopg2.connect("host='localhost' dbname='critter' user='brian' password='brianpassword'")
+            cursor = connection.cursor()
+        except psycopg2.DatabaseError, e:
+            sys.exit(1)
+
+        query = """
+                SELECT
+                    count(*)
+                FROM
+                    elections
+                WHERE
+                    critthash = '%s'
+                """ % (self.mMessage.critthash)
+        cursor.execute(query)
+
+        row = cursor.fetchone()
+
+        if row[0] == 0:
+            query = """
+                    INSERT INTO
+                        elections(critthash, crittnick)
+                    VALUES
+                        ('%s', '%s')
+                    """ % (self.mMessage.critthash, self.mMessage.crittnick)
+            cursor.execute(query)
+            winnerCrittnick = self.mMessage.crittnick
+        else:
+            query = """
+                    SELECT
+                        crittnick
+                    FROM
+                        elections
+                    WHERE
+                        critthash = '%s'
+                    """ % (self.mMessage.critthash)
+            cursor.execute(query)
+            row = cursor.fetchone()
+            winnerCrittnick = row[0]
+
+        connection.commit()
+
+        envelope = aCommandProcessor.mRite.mPostOffice.encode(
+            'Command_Election_Res',
+            {'messageName': 'Command_Election_Res',
+             'critthash':   self.mMessage.critthash,
+             'crittnick':   winnerCrittnick}
+        )
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
 class DatabaseCommand_Handle_Command_LoadGraphDetails_Req(object):
