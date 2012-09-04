@@ -1,3 +1,4 @@
+import os
 import time
 
 import Rites.RiteCommon
@@ -19,8 +20,22 @@ class SchedulerRite(Rite):
         # A dictionary of sent commands.
         self.mSentReq = {}
         self.mSentReq['Command_ExecuteGraph_Req'] = {}
+        self.mSentReq['Command_LoadGraphDetails_Req'] = {}
 
     def run(self):
+        messageName = 'Command_LoadGraphDetails_Req'
+        softTimeout = 3 # [s].
+        hardTimeout = 5 # [s].
+        critthash = os.urandom(32).encode('hex')
+        envelope = self.mPostOffice.encode(
+            messageName,
+            {'messageName': messageName,
+             'softTimeout': softTimeout,
+             'hardTimeout': hardTimeout,
+             'critthash':   critthash}
+        )
+        self.insertSentRequest(messageName, critthash, envelope, softTimeout, hardTimeout)
+
         while True:
             self.mLogger.debug("Checking the schedule.")
             command = SchedulerCommandCheckSchedule()
