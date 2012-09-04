@@ -111,8 +111,10 @@ class DatabaseCommandLoadWorkDetails(object):
         cursor.execute("SELECT * FROM workDetails")
         rows = cursor.fetchall()
         for row in rows:
-            workDetailsDictionaries.append({'workName': row[0],
-                                            'dummy':    row[1]})
+            workDetailsDictionaries.append({'workName':    row[0],
+                                            'softTimeout': row[1],
+                                            'hardTimeout': row[2],
+                                            'dummy':       row[3]})
 
         receiverCritterData = CritterData(self.mMessage.sender.type, self.mMessage.sender.nick)
 

@@ -20,6 +20,15 @@ CREATE TABLE graphCycles
     UNIQUE(graphName, cycleSeq)
 );
 
+DROP TABLE IF EXISTS graphDetails CASCADE;
+CREATE TABLE graphDetails
+(
+    graphName VARCHAR(88) REFERENCES graphs(graphName) ON DELETE CASCADE,
+
+    softTimeout INTEGER NOT NULL CHECK(softTimeout >= 0),
+    hardTimeout INTEGER NOT NULL CHECK(hardTimeout >= softTimeout)
+);
+
 DROP TABLE IF EXISTS works CASCADE;
 CREATE TABLE works
 (
@@ -40,7 +49,10 @@ DROP TABLE IF EXISTS workDetails CASCADE;
 CREATE TABLE workDetails
 (
     workName VARCHAR(88) REFERENCES works(workName) ON DELETE CASCADE,
-    dummy    INTEGER NOT NULL CHECK(dummy > 0)
+
+    softTimeout INTEGER NOT NULL CHECK(softTimeout >= 0),
+    hardTimeout INTEGER NOT NULL CHECK(hardTimeout >= softTimeout),
+    dummy       INTEGER NOT NULL CHECK(dummy > 0)
 );
 
 DROP TABLE IF EXISTS workPredecessors CASCADE;
@@ -56,4 +68,4 @@ CREATE TABLE workPredecessors
     -- TODO: Check if both works have the same graphName.
 );
 
-GRANT ALL ON elections, graphs, graphCycles, works, workCycles, workDetails, workPredecessors TO brian;
+GRANT ALL ON elections, graphs, graphCycles, graphDetails, works, workCycles, workDetails, workPredecessors TO brian;

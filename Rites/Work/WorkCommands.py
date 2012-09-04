@@ -11,8 +11,10 @@ class WorkCommandLoadWorkDetails(object):
 
         # Store work details.
         for workDetail in self.mMessage.details:
-            aCommandProcessor.mRite.mWorkDetails[workDetail.workName] = {'workName': workDetail.workName,
-                                                                         'dummy':    workDetail.dummy}
+            aCommandProcessor.mRite.mWorkDetails[workDetail.workName] = {'workName':    workDetail.workName,
+                                                                         'softTimeout': workDetail.softTimeout,
+                                                                         'hardTimeout': workDetail.hardTimeout,
+                                                                         'dummy':       workDetail.dummy}
 
 class WorkCommand_Handle_Command_ExecuteWork_Req(object):
     def __init__(self, aMessage):
