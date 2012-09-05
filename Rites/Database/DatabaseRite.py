@@ -20,6 +20,7 @@ class DatabaseRite(Rite):
         self.mRecvReq['Command_DetermineGraphCycle_Req'] = {}
         self.mRecvReq['Command_DetermineWorkCycle_Req'] = {}
         self.mRecvReq['Command_LoadGraphDetails_Req'] = {}
+        self.mRecvReq['Command_LoadWorkDetails_Req'] = {}
 
     def run(self):
         while True:

@@ -332,3 +332,43 @@ class DatabaseCommand_Handle_Command_LoadGraphDetails_Req(object):
         aCommandProcessor.mRite.deleteRecvRequest(messageNameRecvReq, critthash)
         aCommandProcessor.mLogger.debug("Sending the %s message." % messageNameRecvRes)
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
+class DatabaseCommand_Handle_Command_LoadWorkDetails_Req(object):
+    def __init__(self, aMessage):
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        critthash = self.mMessage.critthash
+        messageNameRecvReq = self.mMessage.messageName
+        aCommandProcessor.mRite.insertRecvRequest(messageNameRecvReq,
+                                                  critthash,
+                                                  self.mMessage,
+                                                  self.mMessage.softTimeout,
+                                                  self.mMessage.hardTimeout)
+
+        workDetailsDictionaries = []
+
+        try:
+            connection = psycopg2.connect("host='localhost' dbname='critter' user='brian' password='brianpassword'")
+            cursor = connection.cursor()
+        except psycopg2.DatabaseError, e:
+            sys.exit(1)
+
+        cursor.execute("SELECT * FROM workDetails")
+        rows = cursor.fetchall()
+        for row in rows:
+            workDetailsDictionaries.append({'workName':    row[0],
+                                            'softTimeout': row[1],
+                                            'hardTimeout': row[2],
+                                            'dummy':       row[3]})
+
+        messageNameRecvRes = 'Command_LoadWorkDetails_Res'
+        envelope = aCommandProcessor.mRite.mPostOffice.encode(
+            messageNameRecvRes,
+            {'messageName':  messageNameRecvRes,
+             'critthash':    critthash,
+             'workDetails':  workDetailsDictionaries}
+        )
+        aCommandProcessor.mRite.deleteRecvRequest(messageNameRecvReq, critthash)
+        aCommandProcessor.mLogger.debug("Sending the %s message." % messageNameRecvRes)
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)

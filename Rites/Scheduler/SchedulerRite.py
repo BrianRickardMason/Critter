@@ -5,6 +5,7 @@ import Rites.RiteCommon
 from Rites.Rite                                import Rite
 from Rites.Scheduler.SchedulerCommands         import SchedulerCommand_Auto_CheckSchedule
 from Rites.Scheduler.SchedulerCommands         import SchedulerCommand_Auto_LoadGraphDetails
+from Rites.Scheduler.SchedulerCommands         import SchedulerCommand_Auto_LoadWorkDetails
 from Rites.Scheduler.SchedulerMessageProcessor import SchedulerMessageProcessor
 
 class SchedulerRite(Rite):
@@ -21,9 +22,13 @@ class SchedulerRite(Rite):
         self.mSentReq = {}
         self.mSentReq['Command_ExecuteGraph_Req'] = {}
         self.mSentReq['Command_LoadGraphDetails_Req'] = {}
+        self.mSentReq['Command_LoadWorkDetails_Req'] = {}
 
         # The dictionary of graph details.
         self.mGraphDetails = {}
+
+        # The dictionary of work details.
+        self.mWorkDetails = {}
 
         # The state of the rite.
         self.mState = Rites.RiteCommon.STATE_STARTING
