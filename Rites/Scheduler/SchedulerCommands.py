@@ -37,6 +37,38 @@ class SchedulerCommandCheckSchedule_Operable(object):
             )
             aCommandProcessor.mRite.insertSentRequest(messageName, graphExecutionCritthash, envelope)
 
+class SchedulerCommand_Auto_LoadGraphDetails(object):
+    def execute(self, aCommandProcessor):
+        if aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_STARTING:
+            executor = SchedulerCommand_Auto_LoadGraphDetails_Starting()
+        elif aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_OPERABLE:
+            executor = SchedulerCommand_Auto_LoadGraphDetails_Operable()
+        else:
+            assert False, "Invalid state detected."
+
+        executor.doExecute(self, aCommandProcessor)
+
+class SchedulerCommand_Auto_LoadGraphDetails_Starting(object):
+    def doExecute(self, aCommand, aCommandProcessor):
+        aCommandProcessor.mLogger.debug("The command: %s is handled in this state." % aCommand.__class__.__name__)
+
+        messageName = 'Command_LoadGraphDetails_Req'
+        softTimeout = 3 # [s].
+        hardTimeout = 5 # [s].
+        critthash = os.urandom(32).encode('hex')
+        envelope = aCommandProcessor.mRite.mPostOffice.encode(
+            messageName,
+            {'messageName': messageName,
+             'softTimeout': softTimeout,
+             'hardTimeout': hardTimeout,
+             'critthash':   critthash}
+        )
+        aCommandProcessor.mRite.insertSentRequest(messageName, critthash, envelope, softTimeout, hardTimeout)
+
+class SchedulerCommand_Auto_LoadGraphDetails_Operable(object):
+    def doExecute(self, aCommand, aCommandProcessor):
+        aCommandProcessor.mLogger.debug("The command: %s is not handled in this state." % aCommand.__class__.__name__)
+
 class SchedulerCommand_Handle_Command_ExecuteGraph_Res(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage

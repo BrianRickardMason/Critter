@@ -5,6 +5,7 @@ import Rites.RiteCommon
 
 from Rites.Rite                                import Rite
 from Rites.Scheduler.SchedulerCommands         import SchedulerCommandCheckSchedule
+from Rites.Scheduler.SchedulerCommands         import SchedulerCommand_Auto_LoadGraphDetails
 from Rites.Scheduler.SchedulerMessageProcessor import SchedulerMessageProcessor
 
 class SchedulerRite(Rite):
@@ -29,23 +30,14 @@ class SchedulerRite(Rite):
         self.mState = Rites.RiteCommon.STATE_STARTING
 
     def run(self):
-        messageName = 'Command_LoadGraphDetails_Req'
-        softTimeout = 3 # [s].
-        hardTimeout = 5 # [s].
-        critthash = os.urandom(32).encode('hex')
-        envelope = self.mPostOffice.encode(
-            messageName,
-            {'messageName': messageName,
-             'softTimeout': softTimeout,
-             'hardTimeout': hardTimeout,
-             'critthash':   critthash}
-        )
-        self.insertSentRequest(messageName, critthash, envelope, softTimeout, hardTimeout)
-
         while True:
+            self.mLogger.debug("Loading the graph details.")
+            command = SchedulerCommand_Auto_LoadGraphDetails()
+            self.mPostOffice.putCommand(Rites.RiteCommon.SCHEDULER, command)
+
             self.mLogger.debug("Checking the schedule.")
             command = SchedulerCommandCheckSchedule()
-            self.mPostOffice.putCommand('Scheduler', command)
+            self.mPostOffice.putCommand(Rites.RiteCommon.SCHEDULER, command)
 
             self.mLogger.debug("Sleeping for a heartbeat.")
             time.sleep(self.mSettings.get('heartbeat', 'period'))
