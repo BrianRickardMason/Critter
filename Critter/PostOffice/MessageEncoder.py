@@ -38,6 +38,8 @@ class MessageEncoder(object):
             elif aMessageName == 'Command_ExecuteGraph_Res':        return self.__encode(COMMAND_EXECUTE_GRAPH_RES, aData)
             elif aMessageName == 'Command_ExecuteWork_Req':         return self.__encode(COMMAND_EXECUTE_WORK_REQ, aData)
             elif aMessageName == 'Command_ExecuteWork_Res':         return self.__encode(COMMAND_EXECUTE_WORK_RES, aData)
+            elif aMessageName == 'Command_LoadGraphAndWork_Req':    return self.__encode(COMMAND_LOAD_GRAPH_AND_WORK_REQ, aData)
+            elif aMessageName == 'Command_LoadGraphAndWork_Res':    return self.__encode(COMMAND_LOAD_GRAPH_AND_WORK_RES, aData)
             elif aMessageName == 'Command_LoadGraphDetails_Req':    return self.__encode(COMMAND_LOAD_GRAPH_DETAILS_REQ, aData)
             elif aMessageName == 'Command_LoadGraphDetails_Res':    return self.__encode(COMMAND_LOAD_GRAPH_DETAILS_RES, aData)
             elif aMessageName == 'Command_LoadWorkDetails_Req':     return self.__encode(COMMAND_LOAD_WORK_DETAILS_REQ, aData)

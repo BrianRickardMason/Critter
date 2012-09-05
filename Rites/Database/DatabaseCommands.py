@@ -294,6 +294,57 @@ class DatabaseCommand_Handle_Command_Election_Req(object):
         )
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
+class DatabaseCommand_Handle_Command_LoadGraphAndWork_Req(object):
+    def __init__(self, aMessage):
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        critthash = self.mMessage.critthash
+        messageNameRecvReq = self.mMessage.messageName
+        aCommandProcessor.mRite.insertRecvRequest(messageNameRecvReq,
+                                                  critthash,
+                                                  self.mMessage,
+                                                  self.mMessage.softTimeout,
+                                                  self.mMessage.hardTimeout)
+
+        graphDictionaries           = []
+        workDictionaries            = []
+        workPredecessorDictionaries = []
+
+        try:
+            connection = psycopg2.connect("host='localhost' dbname='critter' user='brian' password='brianpassword'")
+            cursor = connection.cursor()
+        except psycopg2.DatabaseError, e:
+            sys.exit(1)
+
+        cursor.execute("SELECT * FROM graphs")
+        rows = cursor.fetchall()
+        for row in rows:
+            graphDictionaries.append({'graphName': row[0]})
+
+        cursor.execute("SELECT * FROM works")
+        rows = cursor.fetchall()
+        for row in rows:
+            workDictionaries.append({'graphName': row[0], 'workName': row[1]})
+
+        cursor.execute("SELECT * FROM workPredecessors")
+        rows = cursor.fetchall()
+        for row in rows:
+            workPredecessorDictionaries.append({'workName': row[0], 'predecessorWorkName': row[1]})
+
+        messageNameRecvRes = 'Command_LoadGraphAndWork_Res'
+        envelope = aCommandProcessor.mRite.mPostOffice.encode(
+            messageNameRecvRes,
+            {'messageName':      messageNameRecvRes,
+             'critthash':        critthash,
+             'graphs':           graphDictionaries,
+             'works':            workDictionaries,
+             'workPredecessors': workPredecessorDictionaries}
+        )
+        aCommandProcessor.mRite.deleteRecvRequest(messageNameRecvReq, critthash)
+        aCommandProcessor.mLogger.debug("Sending the %s message." % messageNameRecvRes)
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
 class DatabaseCommand_Handle_Command_LoadGraphDetails_Req(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage

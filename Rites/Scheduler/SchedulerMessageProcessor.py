@@ -1,6 +1,7 @@
 import Rites.RiteCommon
 
 from Rites.Scheduler.SchedulerCommands import SchedulerCommand_Handle_Command_ExecuteGraph_Res
+from Rites.Scheduler.SchedulerCommands import SchedulerCommand_Handle_Command_LoadGraphAndWork_Res
 from Rites.Scheduler.SchedulerCommands import SchedulerCommand_Handle_Command_LoadGraphDetails_Res
 from Rites.Scheduler.SchedulerCommands import SchedulerCommand_Handle_Command_LoadWorkDetails_Res
 from Rites.MessageProcessor            import MessageProcessor
@@ -14,6 +15,8 @@ class SchedulerMessageProcessor(MessageProcessor):
 
         if aMessage.messageName == 'Command_ExecuteGraph_Res':
             command = SchedulerCommand_Handle_Command_ExecuteGraph_Res(aMessage)
+        elif aMessage.messageName == 'Command_LoadGraphAndWork_Res':
+            command = SchedulerCommand_Handle_Command_LoadGraphAndWork_Res(aMessage)
         elif aMessage.messageName == 'Command_LoadGraphDetails_Res':
             command = SchedulerCommand_Handle_Command_LoadGraphDetails_Res(aMessage)
         elif aMessage.messageName == 'Command_LoadWorkDetails_Res':

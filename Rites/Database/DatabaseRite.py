@@ -15,12 +15,13 @@ class DatabaseRite(Rite):
                       Rites.RiteCommon.DATABASE,
                       DatabaseMessageProcessor)
 
-        # A dictionary of received requests.
+        # The dictionary of received requests.
         self.mRecvReq = {}
         self.mRecvReq['Command_DetermineGraphCycle_Req'] = {}
-        self.mRecvReq['Command_DetermineWorkCycle_Req'] = {}
-        self.mRecvReq['Command_LoadGraphDetails_Req'] = {}
-        self.mRecvReq['Command_LoadWorkDetails_Req'] = {}
+        self.mRecvReq['Command_DetermineWorkCycle_Req' ] = {}
+        self.mRecvReq['Command_LoadGraphAndWork_Req'   ] = {}
+        self.mRecvReq['Command_LoadGraphDetails_Req'   ] = {}
+        self.mRecvReq['Command_LoadWorkDetails_Req'    ] = {}
 
     def run(self):
         while True:

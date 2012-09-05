@@ -271,11 +271,22 @@ message Command_DetermineWorkCycle_Res
 // Data setup.
 //
 
+message Data_Graph
+{
+    optional string graphName = 1;
+}
+
 message Data_GraphDetails
 {
     optional string graphName   = 1;
     optional uint32 softTimeout = 2;
     optional uint32 hardTimeout = 3;
+}
+
+message Data_Work
+{
+    optional string graphName = 1;
+    optional string workName  = 2;
 }
 
 message Data_WorkDetails
@@ -285,6 +296,37 @@ message Data_WorkDetails
     optional uint32 hardTimeout = 3;
     optional uint32 dummy       = 4;
 }
+
+message Data_WorkPredecessor
+{
+    optional string workName            = 1;
+    optional string predecessorWorkName = 2;
+}
+
+//
+// Criduler -> Cribrarian.
+//
+// TODO: Consider splitting.
+message Command_LoadGraphAndWork_Req
+{
+    optional string messageName = 1;
+    optional uint32 softTimeout = 2;
+    optional uint32 hardTimeout = 3;
+    optional string critthash   = 4;
+}
+
+//
+// Cribrarian -> Criduler.
+//
+message Command_LoadGraphAndWork_Res
+{
+    optional string               messageName      = 1;
+    optional string               critthash        = 2;
+    repeated Data_Graph           graphs           = 3;
+    repeated Data_Work            works            = 4;
+    repeated Data_WorkPredecessor workPredecessors = 5;
+}
+
 
 //
 // Criduler -> Cribrarian.
