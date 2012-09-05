@@ -17,12 +17,16 @@ class SchedulerRite(Rite):
                       Rites.RiteCommon.SCHEDULER,
                       SchedulerMessageProcessor)
 
-        # A dictionary of sent commands.
+        # The dictionary of sent commands.
         self.mSentReq = {}
         self.mSentReq['Command_ExecuteGraph_Req'] = {}
         self.mSentReq['Command_LoadGraphDetails_Req'] = {}
 
+        # The dictionary of graph details.
         self.mGraphDetails = {}
+
+        # The state of the rite.
+        self.mState = Rites.RiteCommon.STATE_STARTING
 
     def run(self):
         messageName = 'Command_LoadGraphDetails_Req'
@@ -45,6 +49,9 @@ class SchedulerRite(Rite):
 
             self.mLogger.debug("Sleeping for a heartbeat.")
             time.sleep(self.mSettings.get('heartbeat', 'period'))
+
+    def setState(self, aState):
+        self.mState = aState
 
     def insertSentRequest(self, aMessageName, aCritthash, aEnvelope, aSoftTimeout=3, aHardTimeout=5):
         assert aCritthash not in self.mSentReq[aMessageName], "Not handled yet. Duplicated critthash."
