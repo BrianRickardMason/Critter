@@ -81,16 +81,20 @@ class SchedulerCommand_Handle_Command_ExecuteGraph_Res(object):
         else:
             assert False, "Invalid state detected."
 
-        executor.doExecute(aCommandProcessor)
+        executor.doExecute(self, aCommandProcessor, self.mMessage)
 
 class SchedulerCommand_Handle_Command_ExecuteGraph_Res_Starting(object):
-    def doExecute(self, aCommandProcessor, aMessage):
+    def doExecute(self, aCommand, aCommandProcessor, aMessage):
+        aCommandProcessor.mLogger.debug("The command: %s is handled in this state." % aCommand.__class__.__name__)
+
         graphExecutionCritthash = aMessage.graphExecutionCritthash
         messageNameSentReq = 'Command_ExecuteGraph_Req'
         aCommandProcessor.mRite.deleteSentRequest(messageNameSentReq, graphExecutionCritthash)
 
 class SchedulerCommand_Handle_Command_ExecuteGraph_Res_Operable(object):
-    def doExecute(self, aCommandProcessor, aMessage):
+    def doExecute(self, aCommand, aCommandProcessor, aMessage):
+        aCommandProcessor.mLogger.debug("The command: %s is handled in this state." % aCommand.__class__.__name__)
+
         graphExecutionCritthash = aMessage.graphExecutionCritthash
         messageNameSentReq = 'Command_ExecuteGraph_Req'
         aCommandProcessor.mRite.deleteSentRequest(messageNameSentReq, graphExecutionCritthash)
@@ -107,10 +111,12 @@ class SchedulerCommand_Handle_Command_LoadGraphDetails_Res(object):
         else:
             assert False, "Invalid state detected."
 
-        executor.doExecute(aCommandProcessor, self.mMessage)
+        executor.doExecute(self, aCommandProcessor, self.mMessage)
 
 class SchedulerCommand_Handle_Command_LoadGraphDetails_Res_Starting(object):
-    def doExecute(self, aCommandProcessor, aMessage):
+    def doExecute(self, aCommand, aCommandProcessor, aMessage):
+        aCommandProcessor.mLogger.debug("The command: %s is handled in this state." % aCommand.__class__.__name__)
+
         messageNameSentReq = 'Command_LoadGraphDetails_Req'
         critthash = aMessage.critthash
 
@@ -127,5 +133,5 @@ class SchedulerCommand_Handle_Command_LoadGraphDetails_Res_Starting(object):
         aCommandProcessor.mRite.setState(Rites.RiteCommon.STATE_OPERABLE)
 
 class SchedulerCommand_Handle_Command_LoadGraphDetails_Res_Operable(object):
-    def doExecute(self, aCommandProcessor, aMessage):
-        aCommandProcessor.mLogger.debug("The message: %s is not handled in this state." % aMessage.messageName)
+    def doExecute(self, aCommand, aCommandProcessor, aMessage):
+        aCommandProcessor.mLogger.debug("The command: %s is not handled in this state." % aCommand.__class__.__name__)
