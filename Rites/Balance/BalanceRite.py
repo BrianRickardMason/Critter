@@ -36,7 +36,7 @@ class BalanceRite(Rite):
 
     def insertSentRequest(self, aMessageName, aCritthash, aEnvelope, aSoftTimeout=3, aHardTimeout=5):
         assert aCritthash not in self.mSentReq[aMessageName], "Not handled yet. Duplicated critthash."
-        self.mLogger.info("Insert(ing) the sent request: [%s][%s]." % (aMessageName, aCritthash))
+        self.mLogger.debug("Insert(ing) the sent request: [%s][%s]." % (aMessageName, aCritthash))
         self.mSentReq[aMessageName][aCritthash] = {
             'envelope':    aEnvelope,
             'softTimeout': aSoftTimeout,
