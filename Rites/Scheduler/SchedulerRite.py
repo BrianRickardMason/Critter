@@ -31,6 +31,8 @@ class SchedulerRite(Rite):
 
     def run(self):
         while True:
+            # TODO: Check the messages that timed out.
+
             self.mLogger.debug("Loading the graph details.")
             command = SchedulerCommand_Auto_LoadGraphDetails()
             self.mPostOffice.putCommand(Rites.RiteCommon.SCHEDULER, command)
