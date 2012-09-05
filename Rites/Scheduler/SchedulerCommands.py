@@ -3,22 +3,22 @@ import random
 
 import Rites.RiteCommon
 
-class SchedulerCommandCheckSchedule(object):
+class SchedulerCommand_Auto_CheckSchedule(object):
     def execute(self, aCommandProcessor):
         if aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_STARTING:
-            executor = SchedulerCommandCheckSchedule_Starting()
+            executor = SchedulerCommand_Auto_CheckSchedule_Starting()
         elif aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_OPERABLE:
-            executor = SchedulerCommandCheckSchedule_Operable()
+            executor = SchedulerCommand_Auto_CheckSchedule_Operable()
         else:
             assert False, "Invalid state detected."
 
         executor.doExecute(aCommandProcessor)
 
-class SchedulerCommandCheckSchedule_Starting(object):
+class SchedulerCommand_Auto_CheckSchedule_Starting(object):
     def doExecute(self, aCommandProcessor):
         aCommandProcessor.mLogger.debug("The command is not handled in this state.")
 
-class SchedulerCommandCheckSchedule_Operable(object):
+class SchedulerCommand_Auto_CheckSchedule_Operable(object):
     def doExecute(self, aCommandProcessor):
         # FIXME: This simulates the need of graph execution.
         if random.randint(1, 100) > 50:

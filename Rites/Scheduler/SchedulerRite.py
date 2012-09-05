@@ -4,7 +4,7 @@ import time
 import Rites.RiteCommon
 
 from Rites.Rite                                import Rite
-from Rites.Scheduler.SchedulerCommands         import SchedulerCommandCheckSchedule
+from Rites.Scheduler.SchedulerCommands         import SchedulerCommand_Auto_CheckSchedule
 from Rites.Scheduler.SchedulerCommands         import SchedulerCommand_Auto_LoadGraphDetails
 from Rites.Scheduler.SchedulerMessageProcessor import SchedulerMessageProcessor
 
@@ -36,7 +36,7 @@ class SchedulerRite(Rite):
             self.mPostOffice.putCommand(Rites.RiteCommon.SCHEDULER, command)
 
             self.mLogger.debug("Checking the schedule.")
-            command = SchedulerCommandCheckSchedule()
+            command = SchedulerCommand_Auto_CheckSchedule()
             self.mPostOffice.putCommand(Rites.RiteCommon.SCHEDULER, command)
 
             self.mLogger.debug("Sleeping for a heartbeat.")
