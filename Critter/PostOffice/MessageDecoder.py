@@ -36,6 +36,8 @@ class MessageDecoder(object):
         elif envelope.header.id == COMMAND_EXECUTE_WORK_RES:           message = Messages_pb2.Command_ExecuteWork_Res()
         elif envelope.header.id == COMMAND_LOAD_GRAPH_DETAILS_REQ:     message = Messages_pb2.Command_LoadGraphDetails_Req()
         elif envelope.header.id == COMMAND_LOAD_GRAPH_DETAILS_RES:     message = Messages_pb2.Command_LoadGraphDetails_Res()
+        elif envelope.header.id == COMMAND_LOAD_WORK_DETAILS_REQ:      message = Messages_pb2.Command_LoadWorkDetails_Req()
+        elif envelope.header.id == COMMAND_LOAD_WORK_DETAILS_RES:      message = Messages_pb2.Command_LoadWorkDetails_Res()
         elif envelope.header.id == COMMAND_ORDER_WORK_EXECUTION_REQ:   message = Messages_pb2.Command_OrderWorkExecution_Req()
         elif envelope.header.id == COMMAND_ORDER_WORK_EXECUTION_RES:   message = Messages_pb2.Command_OrderWorkExecution_Res()
         elif envelope.header.id == HEARTBEAT_ANNOUNCEMENT:             message = Messages_pb2.HeartbeatAnnouncement()

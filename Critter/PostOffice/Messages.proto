@@ -278,6 +278,14 @@ message Data_GraphDetails
     optional uint32 hardTimeout = 3;
 }
 
+message Data_WorkDetails
+{
+    optional string workName    = 1;
+    optional uint32 softTimeout = 2;
+    optional uint32 hardTimeout = 3;
+    optional uint32 dummy       = 4;
+}
+
 //
 // Criduler -> Cribrarian.
 //
@@ -297,4 +305,25 @@ message Command_LoadGraphDetails_Res
     optional string            messageName  = 1;
     optional string            critthash    = 2;
     repeated Data_GraphDetails graphDetails = 3;
+}
+
+//
+// Criduler -> Cribrarian.
+//
+message Command_LoadWorkDetails_Req
+{
+    optional string messageName = 1;
+    optional uint32 softTimeout = 2;
+    optional uint32 hardTimeout = 3;
+    optional string critthash   = 4;
+}
+
+//
+// Cribrarian -> Criduler.
+//
+message Command_LoadWorkDetails_Res
+{
+    optional string           messageName  = 1;
+    optional string           critthash    = 2;
+    repeated Data_WorkDetails workDetails  = 3;
 }
