@@ -28,6 +28,8 @@ class GraphRite(Rite):
         self.mSentReq['Command_DetermineGraphCycle_Req'] = {}
         self.mSentReq['Command_Election_Req'           ] = {}
         self.mSentReq['Command_LoadGraphAndWork_Req'   ] = {}
+        self.mSentReq['Command_LoadGraphDetails_Req'   ] = {}
+        self.mSentReq['Command_LoadWorkDetails_Req'    ] = {}
         self.mSentReq['Command_OrderWorkExecution_Req' ] = {}
 
         # The dictionary of elections.

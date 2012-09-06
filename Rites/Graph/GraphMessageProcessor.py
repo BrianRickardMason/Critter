@@ -4,6 +4,8 @@ from Rites.Graph.GraphCommands import GraphCommand_Handle_Command_DetermineGraph
 from Rites.Graph.GraphCommands import GraphCommand_Handle_Command_Election_Res
 from Rites.Graph.GraphCommands import GraphCommand_Handle_Command_ExecuteGraph_Req
 from Rites.Graph.GraphCommands import GraphCommand_Handle_Command_LoadGraphAndWork_Res
+from Rites.Graph.GraphCommands import GraphCommand_Handle_Command_LoadGraphDetails_Res
+from Rites.Graph.GraphCommands import GraphCommand_Handle_Command_LoadWorkDetails_Res
 from Rites.Graph.GraphCommands import GraphCommand_Handle_Command_OrderWorkExecution_Res
 from Rites.MessageProcessor    import MessageProcessor
 
@@ -22,6 +24,10 @@ class GraphMessageProcessor(MessageProcessor):
             command = GraphCommand_Handle_Command_ExecuteGraph_Req(aMessage)
         elif aMessage.messageName == 'Command_LoadGraphAndWork_Res':
             command = GraphCommand_Handle_Command_LoadGraphAndWork_Res(aMessage)
+        elif aMessage.messageName == 'Command_LoadGraphDetails_Res':
+            command = GraphCommand_Handle_Command_LoadGraphDetails_Res(aMessage)
+        elif aMessage.messageName == 'Command_LoadWorkDetails_Res':
+            command = GraphCommand_Handle_Command_LoadWorkDetails_Res(aMessage)
         elif aMessage.messageName == 'Command_OrderWorkExecution_Res':
             command = GraphCommand_Handle_Command_OrderWorkExecution_Res(aMessage)
 

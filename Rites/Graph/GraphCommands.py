@@ -36,6 +36,70 @@ class GraphCommand_Auto_LoadGraphAndWork_Starting(object):
         )
         aCommandProcessor.mRite.insertSentRequest(messageName, critthash, envelope, softTimeout, hardTimeout)
 
+class GraphCommand_Auto_LoadGraphDetails(object):
+    def execute(self, aCommandProcessor):
+        if aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_OPERABLE:
+            executor = GraphCommand_Auto_LoadGraphDetails_Operable()
+        elif aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_STARTING:
+            executor = GraphCommand_Auto_LoadGraphDetails_Starting()
+        else:
+            assert False, "Invalid state detected."
+
+        executor.doExecute(self, aCommandProcessor)
+
+class GraphCommand_Auto_LoadGraphDetails_Operable(object):
+    def doExecute(self, aCommand, aCommandProcessor):
+        aCommandProcessor.mLogger.debug("The command: %s is not handled in this state." % aCommand.__class__.__name__)
+
+class GraphCommand_Auto_LoadGraphDetails_Starting(object):
+    def doExecute(self, aCommand, aCommandProcessor):
+        aCommandProcessor.mLogger.debug("The command: %s is handled in this state." % aCommand.__class__.__name__)
+
+        messageName = 'Command_LoadGraphDetails_Req'
+        softTimeout = 3 # [s].
+        hardTimeout = 5 # [s].
+        critthash = os.urandom(32).encode('hex')
+        envelope = aCommandProcessor.mRite.mPostOffice.encode(
+            messageName,
+            {'messageName': messageName,
+             'softTimeout': softTimeout,
+             'hardTimeout': hardTimeout,
+             'critthash':   critthash}
+        )
+        aCommandProcessor.mRite.insertSentRequest(messageName, critthash, envelope, softTimeout, hardTimeout)
+
+class GraphCommand_Auto_LoadWorkDetails(object):
+    def execute(self, aCommandProcessor):
+        if aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_OPERABLE:
+            executor = GraphCommand_Auto_LoadWorkDetails_Operable()
+        elif aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_STARTING:
+            executor = GraphCommand_Auto_LoadWorkDetails_Starting()
+        else:
+            assert False, "Invalid state detected."
+
+        executor.doExecute(self, aCommandProcessor)
+
+class GraphCommand_Auto_LoadWorkDetails_Operable(object):
+    def doExecute(self, aCommand, aCommandProcessor):
+        aCommandProcessor.mLogger.debug("The command: %s is not handled in this state." % aCommand.__class__.__name__)
+
+class GraphCommand_Auto_LoadWorkDetails_Starting(object):
+    def doExecute(self, aCommand, aCommandProcessor):
+        aCommandProcessor.mLogger.debug("The command: %s is handled in this state." % aCommand.__class__.__name__)
+
+        messageName = 'Command_LoadWorkDetails_Req'
+        softTimeout = 3 # [s].
+        hardTimeout = 5 # [s].
+        critthash = os.urandom(32).encode('hex')
+        envelope = aCommandProcessor.mRite.mPostOffice.encode(
+            messageName,
+            {'messageName': messageName,
+             'softTimeout': softTimeout,
+             'hardTimeout': hardTimeout,
+             'critthash':   critthash}
+        )
+        aCommandProcessor.mRite.insertSentRequest(messageName, critthash, envelope, softTimeout, hardTimeout)
+
 class GraphCommand_Handle_Command_ExecuteGraph_Req(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
@@ -174,6 +238,87 @@ class GraphCommand_Handle_Command_LoadGraphAndWork_Res_Starting(object):
                     aCommandProcessor.mRite.mWorkPredecessors[predecessor.workName] = []
 
                 aCommandProcessor.mRite.mWorkPredecessors[predecessor.workName].append(predecessor.predecessorWorkName)
+
+        command = GraphCommand_Auto_LoadGraphDetails()
+        aCommandProcessor.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
+
+        aCommandProcessor.mRite.deleteSentRequest(messageNameSentReq, critthash)
+
+class GraphCommand_Handle_Command_LoadGraphDetails_Res(object):
+    def __init__(self, aMessage):
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        if aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_OPERABLE:
+            executor = GraphCommand_Handle_Command_LoadGraphDetails_Res_Operable()
+        elif aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_STARTING:
+            executor = GraphCommand_Handle_Command_LoadGraphDetails_Res_Starting()
+        else:
+            assert False, "Invalid state detected."
+
+        executor.doExecute(self, aCommandProcessor, self.mMessage)
+
+class GraphCommand_Handle_Command_LoadGraphDetails_Res_Operable(object):
+    def doExecute(self, aCommand, aCommandProcessor, aMessage):
+        # TODO: Should we always try to remove the sent request?
+        aCommandProcessor.mLogger.debug("The command: %s is not handled in this state." % aCommand.__class__.__name__)
+
+class GraphCommand_Handle_Command_LoadGraphDetails_Res_Starting(object):
+    def doExecute(self, aCommand, aCommandProcessor, aMessage):
+        aCommandProcessor.mLogger.debug("The command: %s is handled in this state." % aCommand.__class__.__name__)
+
+        messageNameSentReq = 'Command_LoadGraphDetails_Req'
+        critthash = aMessage.critthash
+
+        if critthash in aCommandProcessor.mRite.mSentReq[messageNameSentReq]:
+            # Store graph details.
+            for graphDetail in aMessage.graphDetails:
+                aCommandProcessor.mRite.mGraphDetails[graphDetail.graphName] = {
+                    'graphName':   graphDetail.graphName,
+                    'softTimeout': graphDetail.softTimeout,
+                    'hardTimeout': graphDetail.hardTimeout
+                }
+
+        command = GraphCommand_Auto_LoadWorkDetails()
+        aCommandProcessor.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
+
+        aCommandProcessor.mRite.deleteSentRequest(messageNameSentReq, critthash)
+
+class GraphCommand_Handle_Command_LoadWorkDetails_Res(object):
+    def __init__(self, aMessage):
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        if aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_OPERABLE:
+            executor = GraphCommand_Handle_Command_LoadWorkDetails_Res_Operable()
+        elif aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_STARTING:
+            executor = GraphCommand_Handle_Command_LoadWorkDetails_Res_Starting()
+        else:
+            assert False, "Invalid state detected."
+
+        executor.doExecute(self, aCommandProcessor, self.mMessage)
+
+class GraphCommand_Handle_Command_LoadWorkDetails_Res_Operable(object):
+    def doExecute(self, aCommand, aCommandProcessor, aMessage):
+        # TODO: Should we always try to remove the sent request?
+        aCommandProcessor.mLogger.debug("The command: %s is not handled in this state." % aCommand.__class__.__name__)
+
+class GraphCommand_Handle_Command_LoadWorkDetails_Res_Starting(object):
+    def doExecute(self, aCommand, aCommandProcessor, aMessage):
+        aCommandProcessor.mLogger.debug("The command: %s is handled in this state." % aCommand.__class__.__name__)
+
+        messageNameSentReq = 'Command_LoadWorkDetails_Req'
+        critthash = aMessage.critthash
+
+        if critthash in aCommandProcessor.mRite.mSentReq[messageNameSentReq]:
+            # Store work details.
+            for workDetail in aMessage.workDetails:
+                aCommandProcessor.mRite.mWorkDetails[workDetail.workName] = {
+                    'workName':    workDetail.workName,
+                    'softTimeout': workDetail.softTimeout,
+                    'hardTimeout': workDetail.hardTimeout,
+                    'dummy':       workDetail.dummy
+                }
 
         aCommandProcessor.mRite.setState(Rites.RiteCommon.STATE_OPERABLE)
 
