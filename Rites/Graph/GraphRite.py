@@ -46,14 +46,6 @@ class GraphRite(Rite):
         self.mSessions = {}
 
     def run(self):
-        # Ask for the configuration of graphs and works.
-        envelope = self.mPostOffice.encode(
-            'LoadGraphAndWorkRequest',
-            {'messageName': 'LoadGraphAndWorkRequest',
-             'sender':      {'type': self.mCritterData.mType,
-                             'nick': self.mCritterData.mNick}})
-        self.mPostOffice.putOutgoingAnnouncement(envelope)
-
         while True:
             # TODO: Check the messages that timed out.
 
