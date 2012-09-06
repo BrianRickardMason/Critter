@@ -5,8 +5,6 @@ import Rites.RiteCommon
 from Rites.Balance.BalanceMessageProcessor import BalanceMessageProcessor
 from Rites.Rite                            import Rite
 
-# TODO: A generic mechanism to store sent and received messages (the information about them)!
-
 class BalanceRite(Rite):
     def __init__(self, aCritter, aCritterData, aSettings, aPostOffice):
         Rite.__init__(self,
