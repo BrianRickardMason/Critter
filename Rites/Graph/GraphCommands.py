@@ -1,6 +1,40 @@
+import os
+
 import Rites.RiteCommon
 
 from GraphRiteSession import GraphRiteSession
+
+class GraphCommand_Auto_LoadGraphAndWork(object):
+    def execute(self, aCommandProcessor):
+        if aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_OPERABLE:
+            executor = GraphCommand_Auto_LoadGraphAndWork_Operable()
+        elif aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_STARTING:
+            executor = GraphCommand_Auto_LoadGraphAndWork_Starting()
+        else:
+            assert False, "Invalid state detected."
+
+        executor.doExecute(self, aCommandProcessor)
+
+class GraphCommand_Auto_LoadGraphAndWork_Operable(object):
+    def doExecute(self, aCommand, aCommandProcessor):
+        aCommandProcessor.mLogger.debug("The command: %s is not handled in this state." % aCommand.__class__.__name__)
+
+class GraphCommand_Auto_LoadGraphAndWork_Starting(object):
+    def doExecute(self, aCommand, aCommandProcessor):
+        aCommandProcessor.mLogger.debug("The command: %s is handled in this state." % aCommand.__class__.__name__)
+
+        messageName = 'Command_LoadGraphAndWork_Req'
+        softTimeout = 3 # [s].
+        hardTimeout = 5 # [s].
+        critthash = os.urandom(32).encode('hex')
+        envelope = aCommandProcessor.mRite.mPostOffice.encode(
+            messageName,
+            {'messageName': messageName,
+             'softTimeout': softTimeout,
+             'hardTimeout': hardTimeout,
+             'critthash':   critthash}
+        )
+        aCommandProcessor.mRite.insertSentRequest(messageName, critthash, envelope, softTimeout, hardTimeout)
 
 class GraphCommand_Handle_Command_ExecuteGraph_Req(object):
     def __init__(self, aMessage):
@@ -12,7 +46,8 @@ class GraphCommand_Handle_Command_ExecuteGraph_Req(object):
         messageName = self.mMessage.messageName
         aCommandProcessor.mRite.insertRecvRequest(messageName, graphExecutionCritthash, self.mMessage)
 
-        assert graphExecutionCritthash not in aCommandProcessor.mRite.mElections, "Not handled yet. Duplicated critthash."
+        assert graphExecutionCritthash not in aCommandProcessor.mRite.mElections, \
+               "Not handled yet. Duplicated critthash."
         aCommandProcessor.mLogger.debug("Insert(ing) the election: [%s]." % graphExecutionCritthash)
         aCommandProcessor.mRite.mElections[graphExecutionCritthash] = {'message': self.mMessage}
 
@@ -95,6 +130,55 @@ class GraphCommand_Handle_Command_Election_Res(object):
                     command = GraphCommand_Handle_Command_ExecuteGraph_ElectionFinished_Req(message)
                     aCommandProcessor.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
 
+class GraphCommand_Handle_Command_LoadGraphAndWork_Res(object):
+    def __init__(self, aMessage):
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        if aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_OPERABLE:
+            executor = GraphCommand_Handle_Command_LoadGraphAndWork_Res_Operable()
+        elif aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_STARTING:
+            executor = GraphCommand_Handle_Command_LoadGraphAndWork_Res_Starting()
+        else:
+            assert False, "Invalid state detected."
+
+        executor.doExecute(self, aCommandProcessor, self.mMessage)
+
+class GraphCommand_Handle_Command_LoadGraphAndWork_Res_Operable(object):
+    def doExecute(self, aCommand, aCommandProcessor, aMessage):
+        # TODO: Should we always try to remove the sent request?
+        aCommandProcessor.mLogger.debug("The command: %s is not handled in this state." % aCommand.__class__.__name__)
+
+class GraphCommand_Handle_Command_LoadGraphAndWork_Res_Starting(object):
+    def doExecute(self, aCommand, aCommandProcessor, aMessage):
+        aCommandProcessor.mLogger.debug("The command: %s is handled in this state." % aCommand.__class__.__name__)
+
+        messageNameSentReq = 'Command_LoadGraphAndWork_Req'
+        critthash = aMessage.critthash
+
+        if critthash in aCommandProcessor.mRite.mSentReq[messageNameSentReq]:
+            # Store graphs.
+            for graph in aMessage.graphs:
+                aCommandProcessor.mRite.mGraphs.append(graph.graphName)
+
+            # Store works.
+            for work in aMessage.works:
+                if work.graphName not in aCommandProcessor.mRite.mWorks:
+                    aCommandProcessor.mRite.mWorks[work.graphName] = []
+
+                aCommandProcessor.mRite.mWorks[work.graphName].append(work.workName)
+
+            # Store predecessors.
+            for predecessor in aMessage.workPredecessors:
+                if predecessor.workName not in aCommandProcessor.mRite.mWorkPredecessors:
+                    aCommandProcessor.mRite.mWorkPredecessors[predecessor.workName] = []
+
+                aCommandProcessor.mRite.mWorkPredecessors[predecessor.workName].append(predecessor.predecessorWorkName)
+
+        aCommandProcessor.mRite.setState(Rites.RiteCommon.STATE_OPERABLE)
+
+        aCommandProcessor.mRite.deleteSentRequest(messageNameSentReq, critthash)
+
 class GraphCommand_Handle_Command_OrderWorkExecution_Res(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
@@ -117,30 +201,3 @@ class GraphCommand_Handle_Command_OrderWorkExecution_Res(object):
             aCommandProcessor.mRite.mSessions[graphName][graphCycle].mWorkStates[workName] = state
         except KeyError, e:
             pass
-
-class GraphCommand_Handle_LoadGraphAndWorkResponse(object):
-    def __init__(self, aMessage):
-        self.mMessage = aMessage
-
-    def execute(self, aCommandProcessor):
-        if self.mMessage.receiver.type == aCommandProcessor.mRite.mCritter.mCritterData.mType and \
-           self.mMessage.receiver.nick == aCommandProcessor.mRite.mCritter.mCritterData.mNick     :
-            # Store graphs.
-            for graph in self.mMessage.graphs:
-                aCommandProcessor.mRite.mGraphs.append(graph.graphName)
-
-            # Store works.
-            for work in self.mMessage.works:
-                if work.graphName not in aCommandProcessor.mRite.mWorks:
-                    aCommandProcessor.mRite.mWorks[work.graphName] = []
-
-                aCommandProcessor.mRite.mWorks[work.graphName].append(work.workName)
-
-            # Store predecessors.
-            for predecessor in self.mMessage.workPredecessors:
-                if predecessor.workName not in aCommandProcessor.mRite.mWorkPredecessors:
-                    aCommandProcessor.mRite.mWorkPredecessors[predecessor.workName] = []
-
-                aCommandProcessor.mRite.mWorkPredecessors[predecessor.workName].append(predecessor.predecessorWorkName)
-        else:
-            aCommandProcessor.mLogger.debug("The message is not addressed to me.")
