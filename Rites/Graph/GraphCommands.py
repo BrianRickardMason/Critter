@@ -105,15 +105,28 @@ class GraphCommand_Handle_Command_ExecuteGraph_Req(object):
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
-        graphExecutionCritthash = self.mMessage.graphExecutionCritthash
+        if aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_OPERABLE:
+            executor = GraphCommand_Handle_Command_ExecuteGraph_Req_Operable()
+        elif aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_STARTING:
+            executor = GraphCommand_Handle_Command_ExecuteGraph_Req_Starting()
+        else:
+            assert False, "Invalid state detected."
 
-        messageName = self.mMessage.messageName
-        aCommandProcessor.mRite.insertRecvRequest(messageName, graphExecutionCritthash, self.mMessage)
+        executor.doExecute(self, aCommandProcessor, self.mMessage)
+
+class GraphCommand_Handle_Command_ExecuteGraph_Req_Operable(object):
+    def doExecute(self, aCommand, aCommandProcessor, aMessage):
+        aCommandProcessor.mLogger.debug("The command: %s is handled in this state." % aCommand.__class__.__name__)
+
+        graphExecutionCritthash = aMessage.graphExecutionCritthash
+
+        messageName = aMessage.messageName
+        aCommandProcessor.mRite.insertRecvRequest(messageName, graphExecutionCritthash, aMessage)
 
         assert graphExecutionCritthash not in aCommandProcessor.mRite.mElections, \
                "Not handled yet. Duplicated critthash."
         aCommandProcessor.mLogger.debug("Insert(ing) the election: [%s]." % graphExecutionCritthash)
-        aCommandProcessor.mRite.mElections[graphExecutionCritthash] = {'message': self.mMessage}
+        aCommandProcessor.mRite.mElections[graphExecutionCritthash] = {'message': aMessage}
 
         messageName = 'Command_Election_Req'
         envelope = aCommandProcessor.mRite.mPostOffice.encode(
@@ -124,12 +137,29 @@ class GraphCommand_Handle_Command_ExecuteGraph_Req(object):
         )
         aCommandProcessor.mRite.insertSentRequest(messageName, graphExecutionCritthash, envelope)
 
+class GraphCommand_Handle_Command_ExecuteGraph_Req_Starting(object):
+    def doExecute(self, aCommand, aCommandProcessor, aMessage):
+        aCommandProcessor.mLogger.debug("The command: %s is not handled in this state." % aCommand.__class__.__name__)
+
 class GraphCommand_Handle_Command_ExecuteGraph_ElectionFinished_Req(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
-        graphExecutionCritthash = self.mMessage.graphExecutionCritthash
+        if aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_OPERABLE:
+            executor = GraphCommand_Handle_Command_ExecuteGraph_ElectionFinished_Req_Operable()
+        elif aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_STARTING:
+            executor = GraphCommand_Handle_Command_ExecuteGraph_ElectionFinished_Req_Starting()
+        else:
+            assert False, "Invalid state detected."
+
+        executor.doExecute(self, aCommandProcessor, self.mMessage)
+
+class GraphCommand_Handle_Command_ExecuteGraph_ElectionFinished_Req_Operable(object):
+    def doExecute(self, aCommand, aCommandProcessor, aMessage):
+        aCommandProcessor.mLogger.debug("The command: %s is handled in this state." % aCommand.__class__.__name__)
+
+        graphExecutionCritthash = aMessage.graphExecutionCritthash
 
         if    aCommandProcessor.mRite.mCritter.mCritterData.mNick \
            == aCommandProcessor.mRite.mElections[graphExecutionCritthash]['crittnick']:
@@ -141,22 +171,39 @@ class GraphCommand_Handle_Command_ExecuteGraph_ElectionFinished_Req(object):
                 messageName,
                 {'messageName':             messageName,
                  'graphExecutionCritthash': graphExecutionCritthash,
-                 'graphName':               self.mMessage.graphName}
+                 'graphName':               aMessage.graphName}
             )
             aCommandProcessor.mRite.insertSentRequest(messageName, graphExecutionCritthash, envelope)
+
+class GraphCommand_Handle_Command_ExecuteGraph_ElectionFinished_Req_Starting(object):
+    def doExecute(self, aCommand, aCommandProcessor, aMessage):
+        aCommandProcessor.mLogger.debug("The command: %s is not handled in this state." % aCommand.__class__.__name__)
 
 class GraphCommand_Handle_Command_DetermineGraphCycle_Res(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
-        graphExecutionCritthash = self.mMessage.graphExecutionCritthash
+        if aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_OPERABLE:
+            executor = GraphCommand_Handle_Command_DetermineGraphCycle_Res_Operable()
+        elif aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_STARTING:
+            executor = GraphCommand_Handle_Command_DetermineGraphCycle_Res_Starting()
+        else:
+            assert False, "Invalid state detected."
+
+        executor.doExecute(self, aCommandProcessor, self.mMessage)
+
+class GraphCommand_Handle_Command_DetermineGraphCycle_Res_Operable(object):
+    def doExecute(self, aCommand, aCommandProcessor, aMessage):
+        aCommandProcessor.mLogger.debug("The command: %s is handled in this state." % aCommand.__class__.__name__)
+
+        graphExecutionCritthash = aMessage.graphExecutionCritthash
 
         messageNameSentReq = 'Command_DetermineGraphCycle_Req'
         aCommandProcessor.mRite.deleteSentRequest(messageNameSentReq, graphExecutionCritthash)
 
-        graphName  = self.mMessage.graphName
-        graphCycle = self.mMessage.graphCycle
+        graphName  = aMessage.graphName
+        graphCycle = aMessage.graphCycle
 
         assert graphCycle > 0, "Invalid graphCycle value determined."
 
@@ -171,12 +218,29 @@ class GraphCommand_Handle_Command_DetermineGraphCycle_Res(object):
         aCommandProcessor.mRite.mSessions[graphName][graphCycle].setDaemon(True)
         aCommandProcessor.mRite.mSessions[graphName][graphCycle].start()
 
+class GraphCommand_Handle_Command_DetermineGraphCycle_Res_Starting(object):
+    def doExecute(self, aCommand, aCommandProcessor, aMessage):
+        aCommandProcessor.mLogger.debug("The command: %s is not handled in this state." % aCommand.__class__.__name__)
+
 class GraphCommand_Handle_Command_Election_Res(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
-        critthash = self.mMessage.critthash
+        if aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_OPERABLE:
+            executor = GraphCommand_Handle_Command_Election_Res_Operable()
+        elif aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_STARTING:
+            executor = GraphCommand_Handle_Command_Election_Res_Starting()
+        else:
+            assert False, "Invalid state detected."
+
+        executor.doExecute(self, aCommandProcessor, self.mMessage)
+
+class GraphCommand_Handle_Command_Election_Res_Operable(object):
+    def doExecute(self, aCommand, aCommandProcessor, aMessage):
+        aCommandProcessor.mLogger.debug("The command: %s is handled in this state." % aCommand.__class__.__name__)
+
+        critthash = aMessage.critthash
 
         messageNameSentReq = 'Command_Election_Req'
         if critthash in aCommandProcessor.mRite.mSentReq[messageNameSentReq]:
@@ -184,7 +248,7 @@ class GraphCommand_Handle_Command_Election_Res(object):
 
             if critthash in aCommandProcessor.mRite.mElections:
                 aCommandProcessor.mLogger.debug("Update(ing) the election entry: [%s]." % critthash)
-                aCommandProcessor.mRite.mElections[critthash]['crittnick'] = self.mMessage.crittnick
+                aCommandProcessor.mRite.mElections[critthash]['crittnick'] = aMessage.crittnick
 
                 assert 'message' in aCommandProcessor.mRite.mElections[critthash], "There's no information about the message."
                 message = aCommandProcessor.mRite.mElections[critthash]['message']
@@ -193,6 +257,11 @@ class GraphCommand_Handle_Command_Election_Res(object):
                 if message.messageName == 'Command_ExecuteGraph_Req':
                     command = GraphCommand_Handle_Command_ExecuteGraph_ElectionFinished_Req(message)
                     aCommandProcessor.mRite.mPostOffice.putCommand(Rites.RiteCommon.GRAPH, command)
+
+
+class GraphCommand_Handle_Command_Election_Res_Starting(object):
+    def doExecute(self, aCommand, aCommandProcessor, aMessage):
+        aCommandProcessor.mLogger.debug("The command: %s is not handled in this state." % aCommand.__class__.__name__)
 
 class GraphCommand_Handle_Command_LoadGraphAndWork_Res(object):
     def __init__(self, aMessage):
@@ -329,16 +398,29 @@ class GraphCommand_Handle_Command_OrderWorkExecution_Res(object):
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
-        workExecutionCritthash = self.mMessage.workExecutionCritthash
+        if aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_OPERABLE:
+            executor = GraphCommand_Handle_Command_OrderWorkExecution_Res_Operable()
+        elif aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_STARTING:
+            executor = GraphCommand_Handle_Command_OrderWorkExecution_Res_Starting()
+        else:
+            assert False, "Invalid state detected."
+
+        executor.doExecute(self, aCommandProcessor, self.mMessage)
+
+class GraphCommand_Handle_Command_OrderWorkExecution_Res_Operable(object):
+    def doExecute(self, aCommand, aCommandProcessor, aMessage):
+        aCommandProcessor.mLogger.debug("The command: %s is handled in this state." % aCommand.__class__.__name__)
+
+        workExecutionCritthash = aMessage.workExecutionCritthash
 
         messageNameSentReq = 'Command_OrderWorkExecution_Req'
         aCommandProcessor.mRite.deleteSentRequest(messageNameSentReq, workExecutionCritthash)
 
         state = GraphRiteSession.STATE_SUCCEED
 
-        graphName  = self.mMessage.graphName
-        graphCycle = self.mMessage.graphCycle
-        workName   = self.mMessage.workName
+        graphName  = aMessage.graphName
+        graphCycle = aMessage.graphCycle
+        workName   = aMessage.workName
 
         # TODO: Please, do it nicer. Consider holding exceptional cases as well.
         # REMARK: It is possible not to hit the [graphName][graphCycle] entry (e.g. due to a timeout).
@@ -346,3 +428,7 @@ class GraphCommand_Handle_Command_OrderWorkExecution_Res(object):
             aCommandProcessor.mRite.mSessions[graphName][graphCycle].mWorkStates[workName] = state
         except KeyError, e:
             pass
+
+class GraphCommand_Handle_Command_OrderWorkExecution_Res_Starting(object):
+    def doExecute(self, aCommand, aCommandProcessor, aMessage):
+        aCommandProcessor.mLogger.debug("The command: %s is not handled in this state." % aCommand.__class__.__name__)
