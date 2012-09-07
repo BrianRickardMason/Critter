@@ -1,5 +1,3 @@
-"""The heartbeat rite."""
-
 import time
 
 import Rites.RiteCommon
@@ -44,6 +42,15 @@ class HeartbeatRite(Rite):
                  'sender':      {'type': self.mCritterData.mType,
                                  'nick': self.mCritterData.mNick},
                  'timestamp':   time.time()})
+            self.mPostOffice.putOutgoingAnnouncement(envelope)
+
+            messageName = 'Announcement_Heartbeat'
+            envelope = self.mPostOffice.encode(
+                messageName,
+                {'messageName': messageName,
+                 'crittnick':   self.mCritter.mCritterData.mNick,
+                 'timestamp':   time.time()}
+            )
             self.mPostOffice.putOutgoingAnnouncement(envelope)
 
             self.mLogger.debug("Sleeping for a heartbeat.")
