@@ -27,6 +27,7 @@ class MessageEncoder(object):
         """
         try:
             if False: pass
+            elif aMessageName == 'Announcement_Heartbeat':          return self.__encode(ANNOUNCEMENT_HEARTBEAT, aData)
             elif aMessageName == 'CantExecuteWorkNowAnnouncement':  return self.__encode(CANT_EXECUTE_WORK_NOW_ANNOUNCEMENT, aData)
             elif aMessageName == 'Command_DetermineGraphCycle_Req': return self.__encode(COMMAND_DETERMINE_GRAPH_CYCLE_REQ, aData)
             elif aMessageName == 'Command_DetermineGraphCycle_Res': return self.__encode(COMMAND_DETERMINE_GRAPH_CYCLE_RES, aData)
@@ -46,6 +47,8 @@ class MessageEncoder(object):
             elif aMessageName == 'Command_LoadWorkDetails_Res':     return self.__encode(COMMAND_LOAD_WORK_DETAILS_RES, aData)
             elif aMessageName == 'Command_OrderWorkExecution_Req':  return self.__encode(COMMAND_ORDER_WORK_EXECUTION_REQ, aData)
             elif aMessageName == 'Command_OrderWorkExecution_Res':  return self.__encode(COMMAND_ORDER_WORK_EXECUTION_RES, aData)
+            elif aMessageName == 'Command_PresentYourself_Req':     return self.__encode(COMMAND_PRESENT_YOURSELF_REQ, aData)
+            elif aMessageName == 'Command_PresentYourself_Res':     return self.__encode(COMMAND_PRESENT_YOURSELF_RES, aData)
             elif aMessageName == 'HeartbeatAnnouncement':           return self.__encode(HEARTBEAT_ANNOUNCEMENT, aData)
             elif aMessageName == 'PokeAnnouncement':                return self.__encode(POKE_ANNOUNCEMENT, aData)
             elif aMessageName == 'PresentYourselfRequest':          return self.__encode(PRESENT_YOURSELF_REQUEST, aData)

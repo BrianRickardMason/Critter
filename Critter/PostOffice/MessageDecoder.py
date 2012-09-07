@@ -23,6 +23,7 @@ class MessageDecoder(object):
         # TODO: Clean me up fast!
 
         if False: pass
+        elif envelope.header.id == ANNOUNCEMENT_HEARTBEAT:             message = Messages_pb2.Announcement_Heartbeat()
         elif envelope.header.id == CANT_EXECUTE_WORK_NOW_ANNOUNCEMENT: message = Messages_pb2.CantExecuteWorkNowAnnouncement()
         elif envelope.header.id == COMMAND_DETERMINE_GRAPH_CYCLE_REQ:  message = Messages_pb2.Command_DetermineGraphCycle_Req()
         elif envelope.header.id == COMMAND_DETERMINE_GRAPH_CYCLE_RES:  message = Messages_pb2.Command_DetermineGraphCycle_Res()
@@ -42,6 +43,8 @@ class MessageDecoder(object):
         elif envelope.header.id == COMMAND_LOAD_WORK_DETAILS_RES:      message = Messages_pb2.Command_LoadWorkDetails_Res()
         elif envelope.header.id == COMMAND_ORDER_WORK_EXECUTION_REQ:   message = Messages_pb2.Command_OrderWorkExecution_Req()
         elif envelope.header.id == COMMAND_ORDER_WORK_EXECUTION_RES:   message = Messages_pb2.Command_OrderWorkExecution_Res()
+        elif envelope.header.id == COMMAND_PRESENT_YOURSELF_REQ:       message = Messages_pb2.Command_PresentYourself_Req()
+        elif envelope.header.id == COMMAND_PRESENT_YOURSELF_RES:       message = Messages_pb2.Command_PresentYourself_Res()
         elif envelope.header.id == HEARTBEAT_ANNOUNCEMENT:             message = Messages_pb2.HeartbeatAnnouncement()
         elif envelope.header.id == POKE_ANNOUNCEMENT:                  message = Messages_pb2.PokeAnnouncement()
         elif envelope.header.id == PRESENT_YOURSELF_REQUEST:           message = Messages_pb2.PresentYourselfRequest()

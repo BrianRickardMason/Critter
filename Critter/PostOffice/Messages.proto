@@ -310,3 +310,28 @@ message Command_LoadWorkDetails_Res
     optional string           critthash    = 2;
     repeated Data_WorkDetails workDetails  = 3;
 }
+
+//
+// Crittwork registration.
+//
+message Announcement_Heartbeat
+{
+    optional string messageName = 1;
+    optional string crittnick   = 2;
+    optional double timestamp   = 3;
+}
+
+message Command_PresentYourself_Req
+{
+    optional string messageName = 1;
+    optional uint32 softTimeout = 2;
+    optional uint32 hardTimeout = 3;
+    optional string critthash   = 4;
+}
+
+message Command_PresentYourself_Res
+{
+    optional string messageName = 1;
+    optional string critthash   = 2;
+    optional string crittnick   = 3;
+}
