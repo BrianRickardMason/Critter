@@ -43,8 +43,6 @@ class MessageDecoder(object):
         elif envelope.header.id == COMMAND_ORDER_WORK_EXECUTION_REQ:   message = Messages_pb2.Command_OrderWorkExecution_Req()
         elif envelope.header.id == COMMAND_ORDER_WORK_EXECUTION_RES:   message = Messages_pb2.Command_OrderWorkExecution_Res()
         elif envelope.header.id == HEARTBEAT_ANNOUNCEMENT:             message = Messages_pb2.HeartbeatAnnouncement()
-        elif envelope.header.id == LOAD_GRAPH_AND_WORK_REQUEST:        message = Messages_pb2.LoadGraphAndWorkRequest()
-        elif envelope.header.id == LOAD_GRAPH_AND_WORK_RESPONSE:       message = Messages_pb2.LoadGraphAndWorkResponse()
         elif envelope.header.id == LOAD_WORK_DETAILS_REQUEST:          message = Messages_pb2.LoadWorkDetailsRequest()
         elif envelope.header.id == LOAD_WORK_DETAILS_RESPONSE:         message = Messages_pb2.LoadWorkDetailsResponse()
         elif envelope.header.id == POKE_ANNOUNCEMENT:                  message = Messages_pb2.PokeAnnouncement()

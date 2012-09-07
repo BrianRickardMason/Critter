@@ -47,8 +47,6 @@ class MessageEncoder(object):
             elif aMessageName == 'Command_OrderWorkExecution_Req':  return self.__encode(COMMAND_ORDER_WORK_EXECUTION_REQ, aData)
             elif aMessageName == 'Command_OrderWorkExecution_Res':  return self.__encode(COMMAND_ORDER_WORK_EXECUTION_RES, aData)
             elif aMessageName == 'HeartbeatAnnouncement':           return self.__encode(HEARTBEAT_ANNOUNCEMENT, aData)
-            elif aMessageName == 'LoadGraphAndWorkRequest':         return self.__encode(LOAD_GRAPH_AND_WORK_REQUEST, aData)
-            elif aMessageName == 'LoadGraphAndWorkResponse':        return self.__encode(LOAD_GRAPH_AND_WORK_RESPONSE, aData)
             elif aMessageName == 'LoadWorkDetailsRequest':          return self.__encode(LOAD_WORK_DETAILS_REQUEST, aData)
             elif aMessageName == 'LoadWorkDetailsResponse':         return self.__encode(LOAD_WORK_DETAILS_RESPONSE, aData)
             elif aMessageName == 'PokeAnnouncement':                return self.__encode(POKE_ANNOUNCEMENT, aData)
