@@ -59,30 +59,6 @@ message CantExecuteWorkNowAnnouncement
     optional string      workName    = 6;
 }
 
-// LoadWorkDetailsRequest/Response: Worker -> Cribrarian -> Worker.
-
-message WorkDetailsData
-{
-    optional string workName    = 1;
-    optional uint32 softTimeout = 2;
-    optional uint32 hardTimeout = 3;
-    optional uint32 dummy       = 4;
-}
-
-message LoadWorkDetailsRequest
-{
-    optional string      messageName = 1;
-    optional CritterData sender      = 2;
-}
-
-message LoadWorkDetailsResponse
-{
-    optional string          messageName = 1;
-    optional CritterData     sender      = 2;
-    optional CritterData     receiver    = 3;
-    repeated WorkDetailsData details     = 4;
-}
-
 //
 // Election.
 //

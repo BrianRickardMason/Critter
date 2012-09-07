@@ -1,6 +1,5 @@
 import Rites.RiteCommon
 
-from Rites.Database.DatabaseCommands import DatabaseCommandLoadWorkDetails
 from Rites.Database.DatabaseCommands import DatabaseCommand_Handle_Command_DetermineGraphCycle_Req
 from Rites.Database.DatabaseCommands import DatabaseCommand_Handle_Command_DetermineWorkCycle_Req
 from Rites.Database.DatabaseCommands import DatabaseCommand_Handle_Command_Election_Req
@@ -23,7 +22,6 @@ class DatabaseMessageProcessor(MessageProcessor):
         elif aMessage.messageName == 'Command_LoadGraphAndWork_Req':    command = DatabaseCommand_Handle_Command_LoadGraphAndWork_Req(aMessage)
         elif aMessage.messageName == 'Command_LoadGraphDetails_Req':    command = DatabaseCommand_Handle_Command_LoadGraphDetails_Req(aMessage)
         elif aMessage.messageName == 'Command_LoadWorkDetails_Req':     command = DatabaseCommand_Handle_Command_LoadWorkDetails_Req(aMessage)
-        elif aMessage.messageName == 'LoadWorkDetailsRequest':          command = DatabaseCommandLoadWorkDetails(aMessage)
 
         if command:
             self.mRite.mPostOffice.putCommand(Rites.RiteCommon.DATABASE, command)

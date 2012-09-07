@@ -1,65 +1,7 @@
-"""Database rite commands."""
-
 import psycopg2
 import sys
 
 from Critter.CritterData import CritterData
-
-class DatabaseCommandLoadWorkDetails(object):
-    """LoadWorkDetails command.
-
-    Attributes:
-        mMessage: The LoadWorkDetailsRequest.
-
-    """
-
-    def __init__(self, aMessage):
-        """Initializes the command.
-
-        Arguments:
-            aMessage: LoadWorkDetailsRequest.
-
-        """
-        self.mMessage = aMessage
-
-    def execute(self, aCommandProcessor):
-        """Executes the command.
-
-        Arguments:
-            aCommandProcessor: The command processor to be visited.
-
-        """
-        if aCommandProcessor.mRite.mCritter.mCritterData.mType == self.mMessage.sender.type and \
-           aCommandProcessor.mRite.mCritter.mCritterData.mNick == self.mMessage.sender.nick     :
-            return
-
-        workDetailsDictionaries = []
-
-        try:
-            connection = psycopg2.connect("host='localhost' dbname='critter' user='brian' password='brianpassword'")
-            cursor = connection.cursor()
-        except psycopg2.DatabaseError, e:
-            sys.exit(1)
-
-        cursor.execute("SELECT * FROM workDetails")
-        rows = cursor.fetchall()
-        for row in rows:
-            workDetailsDictionaries.append({'workName':    row[0],
-                                            'softTimeout': row[1],
-                                            'hardTimeout': row[2],
-                                            'dummy':       row[3]})
-
-        receiverCritterData = CritterData(self.mMessage.sender.type, self.mMessage.sender.nick)
-
-        envelope = aCommandProcessor.mRite.mPostOffice.encode(
-            'LoadWorkDetailsResponse',
-            {'messageName': 'LoadWorkDetailsResponse',
-             'sender':      {'type': aCommandProcessor.mRite.mCritterData.mType,
-                             'nick': aCommandProcessor.mRite.mCritterData.mNick},
-             'receiver':    {'type': receiverCritterData.mType,
-                             'nick': receiverCritterData.mNick},
-             'details':     workDetailsDictionaries})
-        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
 
 class DatabaseCommand_Handle_Command_DetermineGraphCycle_Req(object):
     def __init__(self, aMessage):
