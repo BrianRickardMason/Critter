@@ -327,6 +327,7 @@ message Command_PresentYourself_Req
     optional uint32 softTimeout = 2;
     optional uint32 hardTimeout = 3;
     optional string critthash   = 4;
+    optional string crittnick   = 5;
 }
 
 message Command_PresentYourself_Res
