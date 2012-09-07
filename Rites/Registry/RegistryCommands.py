@@ -1,5 +1,4 @@
-"""Registry rite commands."""
-
+import os
 import time
 
 from Critter.CritterData import CritterData
@@ -206,3 +205,73 @@ class RegistryCommandUnregisterCritter(object):
             del aCommandProcessor.mRite.mKnownCrittersHeartbeats[nick]
         else:
             aCommandProcessor.mLogger.warn("Unknown nick in the table of known critters' heartbeats.")
+
+class RegistryCommand_Handle_Announcement_Heartbeat(object):
+    def __init__(self, aMessage):
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        if aCommandProcessor.mRite.mCritter.mCritterData.mNick == self.mMessage.crittnick:
+            return
+
+        crittnick = self.mMessage.crittnick
+
+        if not crittnick in aCommandProcessor.mRite.mKnownCrittnicks:
+            aCommandProcessor.mLogger.debug("Critter: %s. I don't know you yet." % crittnick)
+
+            messageName = 'Command_PresentYourself_Req'
+            softTimeout = 3 # [s].
+            hardTimeout = 5 # [s].
+            critthash = os.urandom(32).encode('hex')
+            envelope = aCommandProcessor.mRite.mPostOffice.encode(
+                messageName,
+                {'messageName': messageName,
+                 'softTimeout': softTimeout,
+                 'hardTimeout': hardTimeout,
+                 'critthash':   critthash,
+                 'crittnick':   self.mMessage.crittnick}
+            )
+            aCommandProcessor.mRite.insertSentRequest(messageName, critthash, envelope, softTimeout, hardTimeout)
+        else:
+            aCommandProcessor.mLogger.debug("Critter: %s. Storing the heartbeat's timestamp." % crittnick)
+            aCommandProcessor.mRite.mKnownHeartbeats[crittnick] = self.mMessage.timestamp
+
+class RegistryCommand_Handle_Command_PresentYourself_Req(object):
+    def __init__(self, aMessage):
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        if aCommandProcessor.mRite.mCritter.mCritterData.mNick == self.mMessage.crittnick:
+            messageNameRecvReq = self.mMessage.messageName
+            critthash = self.mMessage.critthash
+            aCommandProcessor.mRite.insertRecvRequest(messageNameRecvReq, critthash, self.mMessage)
+
+            messageNameRecvRes = 'Command_PresentYourself_Res'
+            envelope = aCommandProcessor.mRite.mPostOffice.encode(
+                messageNameRecvRes,
+                {'messageName': messageNameRecvRes,
+                 'critthash':   critthash,
+                 'crittnick':   self.mMessage.crittnick}
+            )
+            aCommandProcessor.mLogger.debug("Sending the %s message." % messageNameRecvRes)
+            aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+
+            aCommandProcessor.mRite.deleteRecvRequest(messageNameRecvReq, critthash)
+
+class RegistryCommand_Handle_Command_PresentYourself_Res(object):
+    def __init__(self, aMessage):
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        messageNameSentReq = 'Command_PresentYourself_Req'
+        critthash = self.mMessage.critthash
+        crittnick = self.mMessage.crittnick
+        if critthash in aCommandProcessor.mRite.mSentReq[messageNameSentReq]:
+            if not crittnick in aCommandProcessor.mRite.mKnownCrittnicks:
+                aCommandProcessor.mLogger.debug("Critter: %s is not known." % crittnick)
+                aCommandProcessor.mLogger.debug("Critter: %s. Registering." % crittnick)
+                aCommandProcessor.mRite.mKnownCrittnicks[crittnick] = crittnick
+            else:
+                aCommandProcessor.mLogger.warn("Critter: %s is known." % crittnick)
+
+            aCommandProcessor.mRite.deleteSentRequest(messageNameSentReq, critthash)
