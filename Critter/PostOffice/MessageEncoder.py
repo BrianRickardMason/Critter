@@ -49,10 +49,7 @@ class MessageEncoder(object):
             elif aMessageName == 'Command_OrderWorkExecution_Res':  return self.__encode(COMMAND_ORDER_WORK_EXECUTION_RES, aData)
             elif aMessageName == 'Command_PresentYourself_Req':     return self.__encode(COMMAND_PRESENT_YOURSELF_REQ, aData)
             elif aMessageName == 'Command_PresentYourself_Res':     return self.__encode(COMMAND_PRESENT_YOURSELF_RES, aData)
-            elif aMessageName == 'HeartbeatAnnouncement':           return self.__encode(HEARTBEAT_ANNOUNCEMENT, aData)
             elif aMessageName == 'PokeAnnouncement':                return self.__encode(POKE_ANNOUNCEMENT, aData)
-            elif aMessageName == 'PresentYourselfRequest':          return self.__encode(PRESENT_YOURSELF_REQUEST, aData)
-            elif aMessageName == 'PresentYourselfResponse':         return self.__encode(PRESENT_YOURSELF_RESPONSE, aData)
             else:
                 # TODO: Handle this more gracefully
                 print "Invalid message."
