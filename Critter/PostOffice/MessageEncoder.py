@@ -50,7 +50,6 @@ class MessageEncoder(object):
             elif aMessageName == 'Command_OrderWorkExecution_Res':  return self.__encode(COMMAND_ORDER_WORK_EXECUTION_RES, aData)
             elif aMessageName == 'Command_PresentYourself_Req':     return self.__encode(COMMAND_PRESENT_YOURSELF_REQ, aData)
             elif aMessageName == 'Command_PresentYourself_Res':     return self.__encode(COMMAND_PRESENT_YOURSELF_RES, aData)
-            elif aMessageName == 'PokeAnnouncement':                return self.__encode(POKE_ANNOUNCEMENT, aData)
             else:
                 # TODO: Handle this more gracefully
                 print "Invalid message."

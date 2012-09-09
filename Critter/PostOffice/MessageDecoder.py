@@ -46,7 +46,6 @@ class MessageDecoder(object):
         elif envelope.header.id == COMMAND_ORDER_WORK_EXECUTION_RES:   message = Messages_pb2.Command_OrderWorkExecution_Res()
         elif envelope.header.id == COMMAND_PRESENT_YOURSELF_REQ:       message = Messages_pb2.Command_PresentYourself_Req()
         elif envelope.header.id == COMMAND_PRESENT_YOURSELF_RES:       message = Messages_pb2.Command_PresentYourself_Res()
-        elif envelope.header.id == POKE_ANNOUNCEMENT:                  message = Messages_pb2.PokeAnnouncement()
         else:                                                          return None
 
         message.ParseFromString(envelope.payload.payload)
