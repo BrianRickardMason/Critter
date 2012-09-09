@@ -18,23 +18,22 @@ class RegistryCommandCheckHeartbeats(object):
 
         # Check if other critters are alive.
         # TODO: Check values vs. itervalues.
-        for critterData in aCommandProcessor.mRite.mKnownCritters.values():
-            nick = critterData.mNick
-
-            if not nick in aCommandProcessor.mRite.mKnownCrittersHeartbeats:
-                aCommandProcessor.mLogger.debug("Critter: %s. There is not any heartbeat from this critter yet." % nick)
+        for crittnick in aCommandProcessor.mRite.mKnownCrittnicks.values():
+            if not crittnick in aCommandProcessor.mRite.mKnownHeartbeats:
+                aCommandProcessor.mLogger.debug("Critter: %s. There is not any heartbeat from this critter yet."
+                                                % crittnick)
             else:
                 # Calculate the delta between heartbeat's.
-                heartbeatDelta = time.time() - aCommandProcessor.mRite.mKnownCrittersHeartbeats[nick]
-                aCommandProcessor.mLogger.debug("Critter: %s. Heartbeat's delta is %f." % (nick, heartbeatDelta))
+                heartbeatDelta = time.time() - aCommandProcessor.mRite.mKnownHeartbeats[crittnick]
+                aCommandProcessor.mLogger.debug("Critter: %s. Heartbeat's delta is %f." % (crittnick, heartbeatDelta))
 
                 if heartbeatDelta > maxDelta:
-                    aCommandProcessor.mLogger.warn("Critter: %s. Suspicious behavior." % nick)
-                    aCommandProcessor.mLogger.warn("Critter: %s. Removing." % nick)
-                    command = RegistryCommandUnregisterCritter(critterData)
+                    aCommandProcessor.mLogger.warn("Critter: %s. Suspicious behavior." % crittnick)
+                    aCommandProcessor.mLogger.warn("Critter: %s. Removing." % crittnick)
+                    command = RegistryCommandUnregisterCritter(crittnick)
                     aCommandProcessor.put(command)
                 else:
-                    aCommandProcessor.mLogger.debug("Critter: %s. Alive and kicking." % nick)
+                    aCommandProcessor.mLogger.debug("Critter: %s. Alive and kicking." % crittnick)
 
 class RegistryCommandPresentYourself(object):
     """PresentYourself command.
@@ -168,41 +167,21 @@ class RegistryCommandStoreHeartbeat(object):
             aCommandProcessor.mRite.mKnownCrittersHeartbeats[nick] = self.mMessage.timestamp
 
 class RegistryCommandUnregisterCritter(object):
-    """UnregisterCritter command.
-
-    Attributes:
-        mCritterData: The critter's data.
-
-    """
-
-    def __init__(self, aCritterData):
-        """Initializes the command.
-
-        Arguments:
-            aCritterData The critter's data
-
-        """
-        self.mCritterData = aCritterData
+    def __init__(self, aCrittnick):
+        self.mCrittnick = aCrittnick
 
     def execute(self, aCommandProcessor):
-        """Executes the command.
-
-        Arguments:
-            aCommandProcessor: The command processor to be visited.
-
-        """
-        aCommandProcessor.mLogger.debug("Critter: %s. Unregistering." % self.mCritterData.mNick)
+        aCommandProcessor.mLogger.debug("Critter: %s. Unregistering." % self.mCrittnick)
         # TODO: Verify how del behaves.
-        nick = self.mCritterData.mNick
 
         # TODO: Check whether this check is needed at all!
-        if nick in aCommandProcessor.mRite.mKnownCritters:
-            del aCommandProcessor.mRite.mKnownCritters[nick]
+        if self.mCrittnick in aCommandProcessor.mRite.mKnownCrittnicks:
+            del aCommandProcessor.mRite.mKnownCrittnicks[self.mCrittnick]
         else:
-            aCommandProcessor.mLogger.warn("Unknown nick in the table of known critters.")
+            aCommandProcessor.mLogger.warn("Unknown crittnick in the table of known critters.")
 
-        if nick in aCommandProcessor.mRite.mKnownCrittersHeartbeats:
-            del aCommandProcessor.mRite.mKnownCrittersHeartbeats[nick]
+        if self.mCrittnick in aCommandProcessor.mRite.mKnownHeartbeats:
+            del aCommandProcessor.mRite.mKnownHeartbeats[self.mCrittnick]
         else:
             aCommandProcessor.mLogger.warn("Unknown nick in the table of known critters' heartbeats.")
 
