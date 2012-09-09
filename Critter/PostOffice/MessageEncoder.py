@@ -28,6 +28,7 @@ class MessageEncoder(object):
         try:
             if False: pass
             elif aMessageName == 'Announcement_Heartbeat':          return self.__encode(ANNOUNCEMENT_HEARTBEAT, aData)
+            elif aMessageName == 'Announcement_Poke':               return self.__encode(ANNOUNCEMENT_POKE, aData)
             elif aMessageName == 'CantExecuteWorkNowAnnouncement':  return self.__encode(CANT_EXECUTE_WORK_NOW_ANNOUNCEMENT, aData)
             elif aMessageName == 'Command_DetermineGraphCycle_Req': return self.__encode(COMMAND_DETERMINE_GRAPH_CYCLE_REQ, aData)
             elif aMessageName == 'Command_DetermineGraphCycle_Res': return self.__encode(COMMAND_DETERMINE_GRAPH_CYCLE_RES, aData)

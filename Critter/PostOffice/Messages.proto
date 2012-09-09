@@ -300,6 +300,9 @@ message Announcement_Heartbeat
     optional double timestamp   = 3;
 }
 
+//
+// Any -> Any.
+//
 message Command_PresentYourself_Req
 {
     optional string messageName = 1;
@@ -309,9 +312,21 @@ message Command_PresentYourself_Req
     optional string crittnick   = 5;
 }
 
+//
+// Any -> Any.
+//
 message Command_PresentYourself_Res
 {
     optional string messageName = 1;
     optional string critthash   = 2;
     optional string crittnick   = 3;
+}
+
+//
+// Poking.
+//
+message Announcement_Poke
+{
+    optional string messageName = 1;
+    optional string crittnick   = 2;
 }
