@@ -30,9 +30,6 @@ class RegistryRite(Rite):
         """
         self.mSettings = aSettings
 
-        self.mKnownCritters           = {}
-        self.mKnownCrittersHeartbeats = {}
-
         Rite.__init__(self,
                       aCritter,
                       aCritterData,
@@ -98,7 +95,7 @@ class RegistryRite(Rite):
         Returns:
             The copy of the dictionary of known critters.
         """
-        return copy.deepcopy(self.mKnownCritters)
+        return copy.deepcopy(self.mKnownCrittnicks)
 
     def getNumberOfKnownCritters(self):
         """Returns the number of known critters.
@@ -106,4 +103,4 @@ class RegistryRite(Rite):
         Returns The number of known critters.
 
         """
-        return len(self.mKnownCritters)
+        return len(self.mKnownCrittnicks)
