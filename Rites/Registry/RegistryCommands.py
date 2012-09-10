@@ -94,12 +94,17 @@ class RegistryCommand_Handle_Command_PresentYourself_Req(object):
             critthash = self.mMessage.critthash
             aCommandProcessor.mRite.insertRecvRequest(messageNameRecvReq, critthash, self.mMessage)
 
+            rites = []
+            for riteName in aCommandProcessor.mRite.mCritter.mRites.keys():
+                rites.append({'riteName': riteName})
+
             messageNameRecvRes = 'Command_PresentYourself_Res'
             envelope = aCommandProcessor.mRite.mPostOffice.encode(
                 messageNameRecvRes,
                 {'messageName': messageNameRecvRes,
                  'critthash':   critthash,
-                 'crittnick':   self.mMessage.crittnick}
+                 'crittnick':   self.mMessage.crittnick,
+                 'rites':       rites}
             )
             aCommandProcessor.mLogger.debug("Sending the %s message." % messageNameRecvRes)
             aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
@@ -119,6 +124,11 @@ class RegistryCommand_Handle_Command_PresentYourself_Res(object):
                 aCommandProcessor.mLogger.debug("Critter: %s is not known." % crittnick)
                 aCommandProcessor.mLogger.debug("Critter: %s. Registering." % crittnick)
                 aCommandProcessor.mRite.mKnownCrittnicks[crittnick] = crittnick
+
+                rites = []
+                for rite in self.mMessage.rites:
+                    rites.append(rite.riteName)
+                aCommandProcessor.mRite.mKnownRites[crittnick] = rites
             else:
                 aCommandProcessor.mLogger.warn("Critter: %s is known." % crittnick)
 

@@ -53,6 +53,9 @@ class RegistryRite(Rite):
         # The dictionary of known heartbeats.
         self.mKnownHeartbeats = {}
 
+        # The dictionary of known rites.
+        self.mKnownRites = {}
+
     def run(self):
         """Starts the main loop of the rite."""
         while True:

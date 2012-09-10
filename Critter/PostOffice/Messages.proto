@@ -287,6 +287,12 @@ message Command_LoadWorkDetails_Res
 //
 // Crittwork registration.
 //
+
+message Data_Rite
+{
+    optional string riteName = 1;
+}
+
 message Announcement_Heartbeat
 {
     optional string messageName = 1;
@@ -311,9 +317,10 @@ message Command_PresentYourself_Req
 //
 message Command_PresentYourself_Res
 {
-    optional string messageName = 1;
-    optional string critthash   = 2;
-    optional string crittnick   = 3;
+    optional string    messageName = 1;
+    optional string    critthash   = 2;
+    optional string    crittnick   = 3;
+    repeated Data_Rite rites       = 4;
 }
 
 //
