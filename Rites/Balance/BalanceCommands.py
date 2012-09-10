@@ -338,13 +338,15 @@ class BalanceCommand_Handle_Command_OrderWorkExecution_ElectionFinished_Req_Oper
 
             aCommandProcessor.mLogger.debug("I am the winner.")
 
+            # FIXME: Synchronous, argh!
             knownCritters = aCommandProcessor.mRite.mCritter.mRites[Rites.RiteCommon.REGISTRY].getKnownCritters()
 
             # Filter workers.
             availableWorkers = []
-            for critterData in knownCritters.values():
-                if critterData.mType == 'Worker':
-                    availableWorkers.append(critterData.mNick)
+            for key in knownCritters[2]:
+                for rites in knownCritters[2][key]:
+                    if Rites.RiteCommon.WORK in rites:
+                        availableWorkers.append(key)
 
             # Balance the load.
             # FIXME: What happens when there are not any workers?

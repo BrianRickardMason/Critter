@@ -98,7 +98,11 @@ class RegistryRite(Rite):
         Returns:
             The copy of the dictionary of known critters.
         """
-        return copy.deepcopy(self.mKnownCrittnicks)
+        return (
+            copy.deepcopy(self.mKnownCrittnicks),
+            copy.deepcopy(self.mKnownHeartbeats),
+            copy.deepcopy(self.mKnownRites)
+        )
 
     def getNumberOfKnownCritters(self):
         """Returns the number of known critters.
