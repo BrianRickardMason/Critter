@@ -1,8 +1,6 @@
 import os
 import time
 
-from Critter.CritterData import CritterData
-
 class RegistryCommandCheckHeartbeats(object):
     # TODO: If "there is not any heartbeat" twice and a critter is running, obviously something fishy is going on.
     def execute(self, aCommandProcessor):

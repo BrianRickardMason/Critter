@@ -7,10 +7,9 @@ from Rites.Balance.BalanceMessageProcessor import BalanceMessageProcessor
 from Rites.Rite                            import Rite
 
 class BalanceRite(Rite):
-    def __init__(self, aCritter, aCritterData, aSettings, aPostOffice):
+    def __init__(self, aCritter, aSettings, aPostOffice):
         Rite.__init__(self,
                       aCritter,
-                      aCritterData,
                       aSettings,
                       aPostOffice,
                       Rites.RiteCommon.BALANCE,

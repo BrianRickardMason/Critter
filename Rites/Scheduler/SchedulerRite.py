@@ -8,10 +8,9 @@ from Rites.Scheduler.SchedulerCommands         import SchedulerCommand_Auto_Load
 from Rites.Scheduler.SchedulerMessageProcessor import SchedulerMessageProcessor
 
 class SchedulerRite(Rite):
-    def __init__(self, aCritter, aCritterData, aSettings, aPostOffice):
+    def __init__(self, aCritter, aSettings, aPostOffice):
         Rite.__init__(self,
                       aCritter,
-                      aCritterData,
                       aSettings,
                       aPostOffice,
                       Rites.RiteCommon.SCHEDULER,

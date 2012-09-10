@@ -80,7 +80,7 @@ class PostOffice(object):
         # Spawning the message router.
         # FIXME: Jealous class.
         self.mLogger.debug("Spawning the message router.")
-        self.mMessageRouter = MessageRouter(self.mCritter.mCritterData, self)
+        self.mMessageRouter = MessageRouter(self)
         self.mMessageRouter.setDaemon(True)
 
     def start(self):

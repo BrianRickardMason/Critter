@@ -6,8 +6,8 @@ from Rites.Poke.PokeMessageProcessor import PokeMessageProcessor
 from Rites.Rite                      import Rite
 
 class PokeRite(Rite):
-    def __init__(self, aCritter, aCritterData, aSettings, aPostOffice):
-        Rite.__init__(self, aCritter, aCritterData, aSettings, aPostOffice, Rites.RiteCommon.POKE, PokeMessageProcessor)
+    def __init__(self, aCritter, aSettings, aPostOffice):
+        Rite.__init__(self, aCritter, aSettings, aPostOffice, Rites.RiteCommon.POKE, PokeMessageProcessor)
 
     def run(self):
         while True:

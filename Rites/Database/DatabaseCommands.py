@@ -1,8 +1,6 @@
 import psycopg2
 import sys
 
-from Critter.CritterData import CritterData
-
 class DatabaseCommand_Handle_Command_DetermineGraphCycle_Req(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage

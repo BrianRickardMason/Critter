@@ -6,10 +6,9 @@ from Rites.Database.DatabaseMessageProcessor import DatabaseMessageProcessor
 from Rites.Rite                              import Rite
 
 class DatabaseRite(Rite):
-    def __init__(self, aCritter, aCritterData, aSettings, aPostOffice):
+    def __init__(self, aCritter, aSettings, aPostOffice):
         Rite.__init__(self,
                       aCritter,
-                      aCritterData,
                       aSettings,
                       aPostOffice,
                       Rites.RiteCommon.DATABASE,

@@ -7,7 +7,6 @@ import time
 import Rites.RiteCommon
 
 from CritterBehavior       import CritterBehavior
-from CritterData           import CritterData
 from PostOffice.PostOffice import PostOffice
 from Rites.RiteFactory     import createRite
 from Settings              import Settings
@@ -21,12 +20,12 @@ class Critter(object):
 
     Attributes:
         mBehavior:         The behavior.
-        mCritterData:      The critter data.
         mGracefulShutdown: Defines whether the graceful shutdown was not started.
         mLogger:           The logger.
         mPostOffice:       The post office that handles all communication.
-        mRites:         The dictionary of rites.
+        mRites:            The dictionary of rites.
         mSettings:         The settings read from the manifest.
+        mCrittnick:        The crittnick.
 
     """
 
@@ -43,8 +42,6 @@ class Critter(object):
 
         self.mLogger = logging.getLogger(aType)
         self.mLogger.setLevel(self.mSettings.get('logging', 'level'))
-
-        self.mCritterData = CritterData(aType, aNick)
 
         self.mCrittnick = aNick
 
@@ -90,15 +87,6 @@ class Critter(object):
             time.sleep(self.mSettings.get('heartbeat', 'period'))
 
         self.mLogger.debug("Goodbye, cruel world...")
-
-    def getCritterData(self):
-        """Gets the critter's essential data.
-
-        Returns:
-            The critter's essential data.
-
-        """
-        return self.mCritterData
 
     def getPostOffice(self):
         """Gets the post office that handles all communication.
