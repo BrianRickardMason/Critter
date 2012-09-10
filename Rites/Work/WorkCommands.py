@@ -167,7 +167,7 @@ class WorkCommand_Handle_Command_ExecuteWork_Req_Operable(object):
     def doExecute(self, aCommand, aCommandProcessor, aMessage):
         aCommandProcessor.mLogger.debug("The command: %s is handled in this state." % aCommand.__class__.__name__)
 
-        if aCommandProcessor.mRite.mCritter.mCritterData.mNick == aMessage.receiverCrittnick:
+        if aCommandProcessor.mRite.mCritter.mCrittnick == aMessage.receiverCrittnick:
             aCommandProcessor.mLogger.debug("I have been selected.")
 
             workExecutionCritthash = aMessage.workExecutionCritthash

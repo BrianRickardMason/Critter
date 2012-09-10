@@ -92,8 +92,7 @@ class GraphRiteSession(threading.Thread):
 
         messageName = 'Command_OrderWorkExecution_Req'
 
-        if    self.mRite.mCritter.mCritterData.mNick \
-           == self.mRite.mElections[self.mGraphExecutionCritthash]['crittnick']:
+        if self.mRite.mCritter.mCrittnick == self.mRite.mElections[self.mGraphExecutionCritthash]['crittnick']:
             workExecutionCritthash = os.urandom(32).encode('hex')
 
             envelope = self.mRite.mPostOffice.encode(

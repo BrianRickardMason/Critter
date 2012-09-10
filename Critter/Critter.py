@@ -46,6 +46,8 @@ class Critter(object):
 
         self.mCritterData = CritterData(aType, aNick)
 
+        self.mCrittnick = aNick
+
         # TODO: Implement sequential starting (in order of dependencies).
         #       This is a matter of performing full startup procedure properly.
         self.mRites = {}

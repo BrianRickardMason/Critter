@@ -5,7 +5,6 @@ class CritterData(object):
 
     Attributes:
         mType The type.
-        mNick The nick.
 
     """
 
@@ -14,8 +13,6 @@ class CritterData(object):
 
         Arguments:
             aType The type of the critter.
-            aNick The nick of the critter.
 
         """
         self.mType = aType
-        self.mNick = aNick

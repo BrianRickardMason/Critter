@@ -133,7 +133,7 @@ class GraphCommand_Handle_Command_ExecuteGraph_Req_Operable(object):
             messageName,
             {'messageName': messageName,
              'critthash':   graphExecutionCritthash,
-             'crittnick':   aCommandProcessor.mRite.mCritter.mCritterData.mNick}
+             'crittnick':   aCommandProcessor.mRite.mCritter.mCrittnick}
         )
         aCommandProcessor.mRite.insertSentRequest(messageName, graphExecutionCritthash, envelope)
 
@@ -161,7 +161,7 @@ class GraphCommand_Handle_Command_ExecuteGraph_ElectionFinished_Req_Operable(obj
 
         graphExecutionCritthash = aMessage.graphExecutionCritthash
 
-        if    aCommandProcessor.mRite.mCritter.mCritterData.mNick \
+        if    aCommandProcessor.mRite.mCritter.mCrittnick \
            == aCommandProcessor.mRite.mElections[graphExecutionCritthash]['crittnick']:
 
             aCommandProcessor.mLogger.debug("I am the winner.")

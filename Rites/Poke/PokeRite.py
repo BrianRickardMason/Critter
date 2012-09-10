@@ -16,7 +16,7 @@ class PokeRite(Rite):
             envelope = self.mPostOffice.encode(
                 messageName,
                 {'messageName': messageName,
-                 'crittnick':   self.mCritter.mCritterData.mNick}
+                 'crittnick':   self.mCritter.mCrittnick}
             )
             self.mPostOffice.putOutgoingAnnouncement(envelope)
 

@@ -40,7 +40,7 @@ class HeartbeatRite(Rite):
             envelope = self.mPostOffice.encode(
                 messageName,
                 {'messageName': messageName,
-                 'crittnick':   self.mCritter.mCritterData.mNick,
+                 'crittnick':   self.mCritter.mCrittnick,
                  'timestamp':   time.time()}
             )
             self.mPostOffice.putOutgoingAnnouncement(envelope)

@@ -59,7 +59,7 @@ class RegistryCommand_Handle_Announcement_Heartbeat(object):
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
-        if aCommandProcessor.mRite.mCritter.mCritterData.mNick == self.mMessage.crittnick:
+        if aCommandProcessor.mRite.mCritter.mCrittnick == self.mMessage.crittnick:
             return
 
         crittnick = self.mMessage.crittnick
@@ -89,7 +89,7 @@ class RegistryCommand_Handle_Command_PresentYourself_Req(object):
         self.mMessage = aMessage
 
     def execute(self, aCommandProcessor):
-        if aCommandProcessor.mRite.mCritter.mCritterData.mNick == self.mMessage.crittnick:
+        if aCommandProcessor.mRite.mCritter.mCrittnick == self.mMessage.crittnick:
             messageNameRecvReq = self.mMessage.messageName
             critthash = self.mMessage.critthash
             aCommandProcessor.mRite.insertRecvRequest(messageNameRecvReq, critthash, self.mMessage)

@@ -333,7 +333,7 @@ class BalanceCommand_Handle_Command_OrderWorkExecution_ElectionFinished_Req_Oper
 
         workExecutionCritthash = aMessage.workExecutionCritthash
 
-        if    aCommandProcessor.mRite.mCritter.mCritterData.mNick \
+        if    aCommandProcessor.mRite.mCritter.mCrittnick \
            == aCommandProcessor.mRite.mElections[workExecutionCritthash]['crittnick']:
 
             aCommandProcessor.mLogger.debug("I am the winner.")
@@ -403,7 +403,7 @@ class BalanceCommand_Handle_Command_OrderWorkExecution_Req_Operable(object):
             messageName,
             {'messageName': messageName,
              'critthash':   workExecutionCritthash,
-             'crittnick':   aCommandProcessor.mRite.mCritter.mCritterData.mNick}
+             'crittnick':   aCommandProcessor.mRite.mCritter.mCrittnick}
         )
         aCommandProcessor.mRite.insertSentRequest(messageName, workExecutionCritthash, envelope)
 
