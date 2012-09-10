@@ -55,29 +55,3 @@ class BalanceRite(Rite):
 
     def setState(self, aState):
         self.mState = aState
-
-    def insertRecvRequest(self, aMessageName, aCritthash, aMessage, aSoftTimeout=3, aHardTimeout=5):
-        assert aCritthash not in self.mRecvReq[aMessageName], "Not handled yet. Duplicated critthash."
-        self.mLogger.debug("Insert(ing) the recv request: [%s][%s]." % (aMessageName, aCritthash))
-        self.mRecvReq[aMessageName][aCritthash] = aMessage
-
-    def deleteRecvRequest(self, aMessageName, aCritthash):
-        if aCritthash in self.mRecvReq[aMessageName]:
-            self.mLogger.debug("Delete(ing) the recv request: [%s][%s]." % (aMessageName, aCritthash))
-            del self.mRecvReq[aMessageName][aCritthash]
-
-    def insertSentRequest(self, aMessageName, aCritthash, aEnvelope, aSoftTimeout=3, aHardTimeout=5):
-        assert aCritthash not in self.mSentReq[aMessageName], "Not handled yet. Duplicated critthash."
-        self.mLogger.debug("Insert(ing) the sent request: [%s][%s]." % (aMessageName, aCritthash))
-        self.mSentReq[aMessageName][aCritthash] = {
-            'envelope':    aEnvelope,
-            'softTimeout': aSoftTimeout,
-            'hardTimeout': aHardTimeout
-        }
-        self.mLogger.debug("Sending the %s message." % aMessageName)
-        self.mPostOffice.putOutgoingAnnouncement(aEnvelope)
-
-    def deleteSentRequest(self, aMessageName, aCritthash):
-        if aCritthash in self.mSentReq[aMessageName]:
-            self.mLogger.debug("Delete(ing) the sent request: [%s][%s]." % (aMessageName, aCritthash))
-            del self.mSentReq[aMessageName][aCritthash]
