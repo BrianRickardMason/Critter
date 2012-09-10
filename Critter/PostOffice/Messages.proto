@@ -14,24 +14,6 @@ message Envelope
     optional Payload payload = 2;
 }
 
-message CritterData
-{
-    optional string type = 1;
-    optional string nick = 2;
-}
-
-// CantExecuteWorkNow: Worker -> Balancer.
-
-message CantExecuteWorkNowAnnouncement
-{
-    optional string      messageName = 1;
-    optional CritterData sender      = 2;
-    optional CritterData receiver    = 3;
-    optional string      graphName   = 4;
-    optional uint32      cycle       = 5;
-    optional string      workName    = 6;
-}
-
 //
 // Election.
 //
