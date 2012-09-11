@@ -35,13 +35,12 @@ class HeartbeatRite(Rite):
         while True:
             self.mLogger.debug("My heart beats.")
             messageName = 'Announcement_Heartbeat'
-            envelope = self.mPostOffice.encode(
-                messageName,
+            message = self.mPostOffice.encode(
                 {'messageName': messageName,
                  'crittnick':   self.mCritter.mCrittnick,
                  'timestamp':   time.time()}
             )
-            self.mPostOffice.putOutgoingAnnouncement(envelope)
+            self.mPostOffice.putOutgoingAnnouncement(message)
 
             self.mLogger.debug("Sleeping for a heartbeat.")
             time.sleep(self.mSettings.get('heartbeat', 'period'))

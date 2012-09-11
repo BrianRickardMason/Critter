@@ -36,8 +36,7 @@ class WorkRiteSession(threading.Thread):
 
         messageNameReq = 'Command_ExecuteWork_Req'
         messageNameRes = 'Command_ExecuteWork_Res'
-        envelope = self.mRite.mPostOffice.encode(
-            messageNameRes,
+        message = self.mRite.mPostOffice.encode(
             {'messageName':             messageNameRes,
              'graphExecutionCritthash': self.mGraphExecutionCritthash,
              'graphName':               self.mGraphName,
@@ -47,7 +46,7 @@ class WorkRiteSession(threading.Thread):
         )
         self.mRite.deleteRecvRequest(messageNameReq, self.mWorkExecutionCritthash)
         self.mLogger.debug("Sending the %s message." % messageNameRes)
-        self.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+        self.mRite.mPostOffice.putOutgoingAnnouncement(message)
 
         # Delete myself from sessions.
         del self.mRite.mSessions[self.mWorkName][self.mWorkCycle]

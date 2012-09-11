@@ -69,15 +69,14 @@ class RegistryCommand_Handle_Announcement_Heartbeat(object):
             softTimeout = 3 # [s].
             hardTimeout = 5 # [s].
             critthash = os.urandom(32).encode('hex')
-            envelope = aCommandProcessor.mRite.mPostOffice.encode(
-                messageName,
+            message = aCommandProcessor.mRite.mPostOffice.encode(
                 {'messageName': messageName,
                  'softTimeout': softTimeout,
                  'hardTimeout': hardTimeout,
                  'critthash':   critthash,
                  'crittnick':   self.mMessage.crittnick}
             )
-            aCommandProcessor.mRite.insertSentRequest(messageName, critthash, envelope, softTimeout, hardTimeout)
+            aCommandProcessor.mRite.insertSentRequest(messageName, critthash, message, softTimeout, hardTimeout)
         else:
             aCommandProcessor.mLogger.debug("Critter: %s. Storing the heartbeat's timestamp." % crittnick)
             aCommandProcessor.mRite.mKnownHeartbeats[crittnick] = self.mMessage.timestamp
@@ -97,15 +96,14 @@ class RegistryCommand_Handle_Command_PresentYourself_Req(object):
                 rites.append({'riteName': riteName})
 
             messageNameRecvRes = 'Command_PresentYourself_Res'
-            envelope = aCommandProcessor.mRite.mPostOffice.encode(
-                messageNameRecvRes,
+            message = aCommandProcessor.mRite.mPostOffice.encode(
                 {'messageName': messageNameRecvRes,
                  'critthash':   critthash,
                  'crittnick':   self.mMessage.crittnick,
                  'rites':       rites}
             )
             aCommandProcessor.mLogger.debug("Sending the %s message." % messageNameRecvRes)
-            aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+            aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(message)
 
             aCommandProcessor.mRite.deleteRecvRequest(messageNameRecvReq, critthash)
 

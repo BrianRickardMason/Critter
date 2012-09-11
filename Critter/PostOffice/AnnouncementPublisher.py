@@ -37,7 +37,9 @@ class AnnouncementPublisher(threading.Thread):
 
         """
         while True:
-            envelope = self.mPostOffice.getOutgoingAnnouncement()
+            internalMessage = self.mPostOffice.getOutgoingAnnouncement()
+
+            envelope = self.mPostOffice.putIntoAnEnvelope(internalMessage)
 
             message = envelope.SerializeToString()
 

@@ -44,15 +44,14 @@ class DatabaseCommand_Handle_Command_DetermineGraphCycle_Req(object):
         connection.commit()
 
         messageNameRecvRes = 'Command_DetermineGraphCycle_Res'
-        envelope = aCommandProcessor.mRite.mPostOffice.encode(
-            messageNameRecvRes,
+        message = aCommandProcessor.mRite.mPostOffice.encode(
             {'messageName':             messageNameRecvRes,
              'graphExecutionCritthash': graphExecutionCritthash,
              'graphName':               self.mMessage.graphName,
              'graphCycle':              cycle})
         aCommandProcessor.mRite.deleteRecvRequest(messageNameRecvReq, graphExecutionCritthash)
         aCommandProcessor.mLogger.debug("Sending the %s message." % messageNameRecvRes)
-        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(message)
 
 class DatabaseCommand_Handle_Command_DetermineWorkCycle_Req(object):
     def __init__(self, aMessage):
@@ -97,8 +96,7 @@ class DatabaseCommand_Handle_Command_DetermineWorkCycle_Req(object):
         connection.commit()
 
         messageNameRecvRes = 'Command_DetermineWorkCycle_Res'
-        envelope = aCommandProcessor.mRite.mPostOffice.encode(
-            messageNameRecvRes,
+        message = aCommandProcessor.mRite.mPostOffice.encode(
             {'messageName':             messageNameRecvRes,
              'graphExecutionCritthash': self.mMessage.graphExecutionCritthash,
              'graphName':               self.mMessage.graphName,
@@ -109,7 +107,7 @@ class DatabaseCommand_Handle_Command_DetermineWorkCycle_Req(object):
         )
         aCommandProcessor.mRite.deleteRecvRequest(messageNameRecvReq, workExecutionCritthash)
         aCommandProcessor.mLogger.debug("Sending the %s message." % messageNameRecvRes)
-        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(message)
 
 class DatabaseCommand_Handle_Command_Election_Req(object):
     def __init__(self, aMessage):
@@ -159,13 +157,12 @@ class DatabaseCommand_Handle_Command_Election_Req(object):
 
         connection.commit()
 
-        envelope = aCommandProcessor.mRite.mPostOffice.encode(
-            'Command_Election_Res',
+        message = aCommandProcessor.mRite.mPostOffice.encode(
             {'messageName': 'Command_Election_Res',
              'critthash':   self.mMessage.critthash,
              'crittnick':   winnerCrittnick}
         )
-        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(message)
 
 class DatabaseCommand_Handle_Command_LoadGraphAndWork_Req(object):
     def __init__(self, aMessage):
@@ -206,8 +203,7 @@ class DatabaseCommand_Handle_Command_LoadGraphAndWork_Req(object):
             workPredecessorDictionaries.append({'workName': row[0], 'predecessorWorkName': row[1]})
 
         messageNameRecvRes = 'Command_LoadGraphAndWork_Res'
-        envelope = aCommandProcessor.mRite.mPostOffice.encode(
-            messageNameRecvRes,
+        message = aCommandProcessor.mRite.mPostOffice.encode(
             {'messageName':      messageNameRecvRes,
              'critthash':        critthash,
              'graphs':           graphDictionaries,
@@ -216,7 +212,7 @@ class DatabaseCommand_Handle_Command_LoadGraphAndWork_Req(object):
         )
         aCommandProcessor.mRite.deleteRecvRequest(messageNameRecvReq, critthash)
         aCommandProcessor.mLogger.debug("Sending the %s message." % messageNameRecvRes)
-        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(message)
 
 class DatabaseCommand_Handle_Command_LoadGraphDetails_Req(object):
     def __init__(self, aMessage):
@@ -247,15 +243,14 @@ class DatabaseCommand_Handle_Command_LoadGraphDetails_Req(object):
                                              'hardTimeout': row[2]})
 
         messageNameRecvRes = 'Command_LoadGraphDetails_Res'
-        envelope = aCommandProcessor.mRite.mPostOffice.encode(
-            messageNameRecvRes,
+        message = aCommandProcessor.mRite.mPostOffice.encode(
             {'messageName':  messageNameRecvRes,
              'critthash':    critthash,
              'graphDetails': graphDetailsDictionaries}
         )
         aCommandProcessor.mRite.deleteRecvRequest(messageNameRecvReq, critthash)
         aCommandProcessor.mLogger.debug("Sending the %s message." % messageNameRecvRes)
-        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(message)
 
 class DatabaseCommand_Handle_Command_LoadWorkDetails_Req(object):
     def __init__(self, aMessage):
@@ -287,12 +282,11 @@ class DatabaseCommand_Handle_Command_LoadWorkDetails_Req(object):
                                             'dummy':       row[3]})
 
         messageNameRecvRes = 'Command_LoadWorkDetails_Res'
-        envelope = aCommandProcessor.mRite.mPostOffice.encode(
-            messageNameRecvRes,
+        message = aCommandProcessor.mRite.mPostOffice.encode(
             {'messageName':  messageNameRecvRes,
              'critthash':    critthash,
              'workDetails':  workDetailsDictionaries}
         )
         aCommandProcessor.mRite.deleteRecvRequest(messageNameRecvReq, critthash)
         aCommandProcessor.mLogger.debug("Sending the %s message." % messageNameRecvRes)
-        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(message)

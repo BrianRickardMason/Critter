@@ -14,41 +14,55 @@ class MessageEncoder(object):
 
     """
 
-    def encode(self, aMessageName, aData):
+    def encode(self, aMessage):
+        """Encodes a message based upon the dictionary.
+
+        Arguments:
+            aMessage: The data.
+
+        Returns:
+            A message.
+
+        """
+        classToBeInstantiated = getattr(Messages_pb2, aMessage['messageName'])
+        message = classToBeInstantiated()
+        self.__setMessageField(message, aMessage)
+        return message
+
+    def putIntoAnEnvelope(self, aMessage):
         """A method needed to have one interface for creating messages everywhere.
 
         Arguments:
-            aMessageName: The name of the message.
-            aData:        The dictionary of parameters.
+            aMessage: The message.
 
         Returns:
-            A message in envelope.
+            The message in an envelope.
 
         """
         try:
             if False: pass
-            elif aMessageName == 'Announcement_Heartbeat':          return self.__encode(ANNOUNCEMENT_HEARTBEAT, aData)
-            elif aMessageName == 'Announcement_Poke':               return self.__encode(ANNOUNCEMENT_POKE, aData)
-            elif aMessageName == 'Command_DetermineGraphCycle_Req': return self.__encode(COMMAND_DETERMINE_GRAPH_CYCLE_REQ, aData)
-            elif aMessageName == 'Command_DetermineGraphCycle_Res': return self.__encode(COMMAND_DETERMINE_GRAPH_CYCLE_RES, aData)
-            elif aMessageName == 'Command_DetermineWorkCycle_Req':  return self.__encode(COMMAND_DETERMINE_WORK_CYCLE_REQ, aData)
-            elif aMessageName == 'Command_DetermineWorkCycle_Res':  return self.__encode(COMMAND_DETERMINE_WORK_CYCLE_RES, aData)
-            elif aMessageName == 'Command_Election_Req':            return self.__encode(COMMAND_ELECTION_REQ, aData)
-            elif aMessageName == 'Command_Election_Res':            return self.__encode(COMMAND_ELECTION_RES, aData)
-            elif aMessageName == 'Command_ExecuteGraph_Req':        return self.__encode(COMMAND_EXECUTE_GRAPH_REQ, aData)
-            elif aMessageName == 'Command_ExecuteGraph_Res':        return self.__encode(COMMAND_EXECUTE_GRAPH_RES, aData)
-            elif aMessageName == 'Command_ExecuteWork_Req':         return self.__encode(COMMAND_EXECUTE_WORK_REQ, aData)
-            elif aMessageName == 'Command_ExecuteWork_Res':         return self.__encode(COMMAND_EXECUTE_WORK_RES, aData)
-            elif aMessageName == 'Command_LoadGraphAndWork_Req':    return self.__encode(COMMAND_LOAD_GRAPH_AND_WORK_REQ, aData)
-            elif aMessageName == 'Command_LoadGraphAndWork_Res':    return self.__encode(COMMAND_LOAD_GRAPH_AND_WORK_RES, aData)
-            elif aMessageName == 'Command_LoadGraphDetails_Req':    return self.__encode(COMMAND_LOAD_GRAPH_DETAILS_REQ, aData)
-            elif aMessageName == 'Command_LoadGraphDetails_Res':    return self.__encode(COMMAND_LOAD_GRAPH_DETAILS_RES, aData)
-            elif aMessageName == 'Command_LoadWorkDetails_Req':     return self.__encode(COMMAND_LOAD_WORK_DETAILS_REQ, aData)
-            elif aMessageName == 'Command_LoadWorkDetails_Res':     return self.__encode(COMMAND_LOAD_WORK_DETAILS_RES, aData)
-            elif aMessageName == 'Command_OrderWorkExecution_Req':  return self.__encode(COMMAND_ORDER_WORK_EXECUTION_REQ, aData)
-            elif aMessageName == 'Command_OrderWorkExecution_Res':  return self.__encode(COMMAND_ORDER_WORK_EXECUTION_RES, aData)
-            elif aMessageName == 'Command_PresentYourself_Req':     return self.__encode(COMMAND_PRESENT_YOURSELF_REQ, aData)
-            elif aMessageName == 'Command_PresentYourself_Res':     return self.__encode(COMMAND_PRESENT_YOURSELF_RES, aData)
+            elif aMessage.messageName == 'Announcement_Heartbeat':          return self.__putIntoAnEnvelope(ANNOUNCEMENT_HEARTBEAT, aMessage)
+            elif aMessage.messageName == 'Announcement_Poke':               return self.__putIntoAnEnvelope(ANNOUNCEMENT_POKE, aMessage)
+            elif aMessage.messageName == 'Command_DetermineGraphCycle_Req': return self.__putIntoAnEnvelope(COMMAND_DETERMINE_GRAPH_CYCLE_REQ, aMessage)
+            elif aMessage.messageName == 'Command_DetermineGraphCycle_Res': return self.__putIntoAnEnvelope(COMMAND_DETERMINE_GRAPH_CYCLE_RES, aMessage)
+            elif aMessage.messageName == 'Command_DetermineWorkCycle_Req':  return self.__putIntoAnEnvelope(COMMAND_DETERMINE_WORK_CYCLE_REQ, aMessage)
+            elif aMessage.messageName == 'Command_DetermineWorkCycle_Res':  return self.__putIntoAnEnvelope(COMMAND_DETERMINE_WORK_CYCLE_RES, aMessage)
+            elif aMessage.messageName == 'Command_Election_Req':            return self.__putIntoAnEnvelope(COMMAND_ELECTION_REQ, aMessage)
+            elif aMessage.messageName == 'Command_Election_Res':            return self.__putIntoAnEnvelope(COMMAND_ELECTION_RES, aMessage)
+            elif aMessage.messageName == 'Command_ExecuteGraph_Req':        return self.__putIntoAnEnvelope(COMMAND_EXECUTE_GRAPH_REQ, aMessage)
+            elif aMessage.messageName == 'Command_ExecuteGraph_Res':        return self.__putIntoAnEnvelope(COMMAND_EXECUTE_GRAPH_RES, aMessage)
+            elif aMessage.messageName == 'Command_ExecuteWork_Req':         return self.__putIntoAnEnvelope(COMMAND_EXECUTE_WORK_REQ, aMessage)
+            elif aMessage.messageName == 'Command_ExecuteWork_Res':         return self.__putIntoAnEnvelope(COMMAND_EXECUTE_WORK_RES, aMessage)
+            elif aMessage.messageName == 'Command_LoadGraphAndWork_Req':    return self.__putIntoAnEnvelope(COMMAND_LOAD_GRAPH_AND_WORK_REQ, aMessage)
+            elif aMessage.messageName == 'Command_LoadGraphAndWork_Res':    return self.__putIntoAnEnvelope(COMMAND_LOAD_GRAPH_AND_WORK_RES, aMessage)
+            elif aMessage.messageName == 'Command_LoadGraphDetails_Req':    return self.__putIntoAnEnvelope(COMMAND_LOAD_GRAPH_DETAILS_REQ, aMessage)
+            elif aMessage.messageName == 'Command_LoadGraphDetails_Res':    return self.__putIntoAnEnvelope(COMMAND_LOAD_GRAPH_DETAILS_RES, aMessage)
+            elif aMessage.messageName == 'Command_LoadWorkDetails_Req':     return self.__putIntoAnEnvelope(COMMAND_LOAD_WORK_DETAILS_REQ, aMessage)
+            elif aMessage.messageName == 'Command_LoadWorkDetails_Res':     return self.__putIntoAnEnvelope(COMMAND_LOAD_WORK_DETAILS_RES, aMessage)
+            elif aMessage.messageName == 'Command_OrderWorkExecution_Req':  return self.__putIntoAnEnvelope(COMMAND_ORDER_WORK_EXECUTION_REQ, aMessage)
+            elif aMessage.messageName == 'Command_OrderWorkExecution_Res':  return self.__putIntoAnEnvelope(COMMAND_ORDER_WORK_EXECUTION_RES, aMessage)
+            elif aMessage.messageName == 'Command_PresentYourself_Req':     return self.__putIntoAnEnvelope(COMMAND_PRESENT_YOURSELF_REQ, aMessage)
+            elif aMessage.messageName == 'Command_PresentYourself_Res':     return self.__putIntoAnEnvelope(COMMAND_PRESENT_YOURSELF_RES, aMessage)
             else:
                 # TODO: Handle this more gracefully
                 print "Invalid message."
@@ -58,21 +72,6 @@ class MessageEncoder(object):
             # TODO: Handle this more gracefully
             print e
             sys.exit(1)
-
-    def __encode(self, aHeaderId, aData):
-        """Encodes a message based upon the dictionary.
-
-        Arguments:
-            aData: The data.
-
-        Returns:
-            An envelope.
-
-        """
-        classToBeInstantiated = getattr(Messages_pb2, aData['messageName'])
-        payload = classToBeInstantiated()
-        self.__setMessageField(payload, aData)
-        return self.__putIntoAnEnvelope(aHeaderId, payload)
 
     def __setMessageField(self, aPayload, aDictionary):
         """Recursively sets a message field.

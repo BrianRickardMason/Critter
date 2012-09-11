@@ -51,16 +51,16 @@ class Rite(threading.Thread):
             self.mLogger.debug("Delete(ing) the recv request: [%s][%s]." % (aMessageName, aCritthash))
             del self.mRecvReq[aMessageName][aCritthash]
 
-    def insertSentRequest(self, aMessageName, aCritthash, aEnvelope, aSoftTimeout=3, aHardTimeout=5):
+    def insertSentRequest(self, aMessageName, aCritthash, aMessage, aSoftTimeout=3, aHardTimeout=5):
         assert aCritthash not in self.mSentReq[aMessageName], "Not handled yet. Duplicated critthash."
         self.mLogger.debug("Insert(ing) the sent request: [%s][%s]." % (aMessageName, aCritthash))
         self.mSentReq[aMessageName][aCritthash] = {
-            'envelope':    aEnvelope,
+            'message':     aMessage,
             'softTimeout': aSoftTimeout,
             'hardTimeout': aHardTimeout
         }
         self.mLogger.debug("Sending the %s message." % aMessageName)
-        self.mPostOffice.putOutgoingAnnouncement(aEnvelope)
+        self.mPostOffice.putOutgoingAnnouncement(aMessage)
 
     def deleteSentRequest(self, aMessageName, aCritthash):
         if aCritthash in self.mSentReq[aMessageName]:

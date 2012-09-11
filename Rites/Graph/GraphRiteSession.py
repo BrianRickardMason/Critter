@@ -66,14 +66,13 @@ class GraphRiteSession(threading.Thread):
 
         messageNameReq = 'Command_ExecuteGraph_Req'
         messageNameRes = 'Command_ExecuteGraph_Res'
-        envelope = self.mRite.mPostOffice.encode(
-            messageNameRes,
+        message = self.mRite.mPostOffice.encode(
             {'messageName':             messageNameRes,
              'graphExecutionCritthash': self.mGraphExecutionCritthash}
         )
         self.mRite.deleteRecvRequest(messageNameReq, self.mGraphExecutionCritthash)
         self.mLogger.debug("Sending the %s message." % messageNameRes)
-        self.mRite.mPostOffice.putOutgoingAnnouncement(envelope)
+        self.mRite.mPostOffice.putOutgoingAnnouncement(message)
 
         if self.mGraphExecutionCritthash in self.mRite.mElections:
             self.mLogger.debug("Delete(ing) the election: [%s]." % (self.mGraphExecutionCritthash))
@@ -95,8 +94,7 @@ class GraphRiteSession(threading.Thread):
         if self.mRite.mCritter.mCrittnick == self.mRite.mElections[self.mGraphExecutionCritthash]['crittnick']:
             workExecutionCritthash = os.urandom(32).encode('hex')
 
-            envelope = self.mRite.mPostOffice.encode(
-                messageName,
+            message = self.mRite.mPostOffice.encode(
                 {'messageName':             messageName,
                  'graphExecutionCritthash': self.mGraphExecutionCritthash,
                  'graphName':               self.mGraphName,
@@ -104,7 +102,7 @@ class GraphRiteSession(threading.Thread):
                  'workExecutionCritthash':  workExecutionCritthash,
                  'workName':                aWorkName}
             )
-            self.mRite.insertSentRequest(messageName, workExecutionCritthash, envelope)
+            self.mRite.insertSentRequest(messageName, workExecutionCritthash, message)
         else:
             self.mLogger.debug("Not sending the %s message." % messageName)
 

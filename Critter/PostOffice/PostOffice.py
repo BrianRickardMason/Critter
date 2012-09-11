@@ -89,18 +89,20 @@ class PostOffice(object):
         self.mAnnouncementSubscriber.start()
         self.mMessageRouter.start()
 
-    def encode(self, aMessageName, aData):
+    def encode(self, aData):
         """A facade method to hide message encoder from clients.
 
         Arguments:
-            aMessageName: The name of the message.
-            aData:        The dictionary of parameters.
+            aData: The dictionary of parameters.
 
         Returns:
-            A message in envelope.
+            A message.
 
         """
-        return self.mMessageEncoder.encode(aMessageName, aData)
+        return self.mMessageEncoder.encode(aData)
+
+    def putIntoAnEnvelope(self, aMessage):
+        return self.mMessageEncoder.putIntoAnEnvelope(aMessage)
 
     def putIncomingAnnouncement(self, aMessage):
         """Puts an incoming announcement (in the form of a message class) into the queue.
@@ -111,14 +113,14 @@ class PostOffice(object):
         """
         self.mIncomingAnnouncementsQueue.put(aMessage)
 
-    def putOutgoingAnnouncement(self, aEnvelope):
-        """Puts an outgoing announcement (in the form of an envelope) into the queue.
+    def putOutgoingAnnouncement(self, aMessage):
+        """Puts an outgoing announcement (in the form of a message class) into the queue.
 
         Arguments:
-            aEnvelope The envelope to be sent.
+            aMessage The message to be sent.
 
         """
-        self.mOutgoingAnnouncementsQueue.put(aEnvelope)
+        self.mOutgoingAnnouncementsQueue.put(aMessage)
 
     def getIncomingAnnouncement(self):
         """Gets an incoming announcement (in the form of a message class) from the queue.
@@ -129,9 +131,9 @@ class PostOffice(object):
         return self.mIncomingAnnouncementsQueue.get()
 
     def getOutgoingAnnouncement(self):
-        """Gets an outgoing announcement (in the form of an envelope) from the queue.
+        """Gets an outgoing announcement (in the form of a message class) from the queue.
 
-        Returns The envelope to be sent.
+        Returns The message to be sent.
 
         """
         return self.mOutgoingAnnouncementsQueue.get()
