@@ -1,5 +1,6 @@
 import logging
 import threading
+import time
 
 from Rites.CommandProcessor import CommandProcessor
 
@@ -44,7 +45,12 @@ class Rite(threading.Thread):
     def insertRecvRequest(self, aMessageName, aCritthash, aMessage, aSoftTimeout=3, aHardTimeout=5):
         assert aCritthash not in self.mRecvReq[aMessageName], "Not handled yet. Duplicated critthash."
         self.mLogger.debug("Insert(ing) the recv request: [%s][%s]." % (aMessageName, aCritthash))
-        self.mRecvReq[aMessageName][aCritthash] = aMessage
+        self.mRecvReq[aMessageName][aCritthash] = {
+            'message':     aMessage,
+            'timestamp':   time.time(),
+            'softTimeout': aSoftTimeout,
+            'hardTimeout': aHardTimeout
+        }
 
     def deleteRecvRequest(self, aMessageName, aCritthash):
         if aCritthash in self.mRecvReq[aMessageName]:
@@ -56,6 +62,7 @@ class Rite(threading.Thread):
         self.mLogger.debug("Insert(ing) the sent request: [%s][%s]." % (aMessageName, aCritthash))
         self.mSentReq[aMessageName][aCritthash] = {
             'message':     aMessage,
+            'timestamp':   time.time(),
             'softTimeout': aSoftTimeout,
             'hardTimeout': aHardTimeout
         }
