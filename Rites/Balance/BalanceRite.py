@@ -44,7 +44,7 @@ class BalanceRite(Rite):
 
     def run(self):
         while True:
-            # TODO: Check the messages that timed out.
+            self.checkTimeouts()
 
             self.mLogger.debug("Loading the data.")
             command = BalanceCommand_Auto_LoadGraphAndWork()
@@ -55,3 +55,21 @@ class BalanceRite(Rite):
 
     def setState(self, aState):
         self.mState = aState
+
+    def checkTimeouts(self):
+        timestamp = time.time()
+        # TODO: Define what should be the order of checking?
+        self.checkTimeoutsForSpecificMessages(self.mRecvReq, timestamp)
+        self.checkTimeoutsForSpecificMessages(self.mSentReq, timestamp)
+
+    def checkTimeoutsForSpecificMessages(self, aMessages, aTimestamp):
+        for requestName in aMessages:
+            for critthash in aMessages[requestName]:
+                if aTimestamp - aMessages[requestName][critthash]['timestamp'] > \
+                   aMessages[requestName][critthash]['hardTimeout']:
+                    # TODO: Implement me!
+                    pass
+                elif aTimestamp - aMessages[requestName][critthash]['timestamp'] > \
+                     aMessages[requestName][critthash]['softTimeout']:
+                    # TODO: Implement me!
+                    pass
