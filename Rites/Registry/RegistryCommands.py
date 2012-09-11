@@ -29,7 +29,7 @@ class RegistryCommandCheckHeartbeats(object):
                     aCommandProcessor.mLogger.warn("Critter: %s. Suspicious behavior." % crittnick)
                     aCommandProcessor.mLogger.warn("Critter: %s. Removing." % crittnick)
                     command = RegistryCommandUnregisterCritter(crittnick)
-                    aCommandProcessor.put(command)
+                    aCommandProcessor.mRite.putCommand(command)
                 else:
                     aCommandProcessor.mLogger.debug("Critter: %s. Alive and kicking." % crittnick)
 
