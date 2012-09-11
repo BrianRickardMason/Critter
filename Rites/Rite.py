@@ -13,9 +13,9 @@ class Rite(threading.Thread):
         self.mLogger = logging.getLogger(aRiteName + 'Rite')
         self.mLogger.setLevel(self.mSettings.get('logging', 'level'))
 
-        self.mCritter     = aCritter
-        self.mPostOffice  = aPostOffice
-        self.mRiteName    = aRiteName
+        self.mCritter    = aCritter
+        self.mPostOffice = aPostOffice
+        self.mRiteName   = aRiteName
 
         self.mLogger.info("Spawning the command processor.")
         self.__mCommandProcessor = CommandProcessor(self)
