@@ -27,12 +27,12 @@ class GraphCommand_Auto_LoadGraphAndWork_Starting(object):
         softTimeout = 3 # [s].
         hardTimeout = 5 # [s].
         critthash = os.urandom(32).encode('hex')
-        message = aCommandProcessor.mRite.mPostOffice.encode(
-            {'messageName': messageName,
-             'softTimeout': softTimeout,
-             'hardTimeout': hardTimeout,
-             'critthash':   critthash}
-        )
+        message = aCommandProcessor.mRite.mPostOffice.encode({
+            'messageName': messageName,
+            'softTimeout': softTimeout,
+            'hardTimeout': hardTimeout,
+            'critthash':   critthash
+        })
         aCommandProcessor.mRite.insertSentRequest(messageName, critthash, message, softTimeout, hardTimeout)
 
 class GraphCommand_Auto_LoadGraphDetails(object):
@@ -58,12 +58,12 @@ class GraphCommand_Auto_LoadGraphDetails_Starting(object):
         softTimeout = 3 # [s].
         hardTimeout = 5 # [s].
         critthash = os.urandom(32).encode('hex')
-        message = aCommandProcessor.mRite.mPostOffice.encode(
-            {'messageName': messageName,
-             'softTimeout': softTimeout,
-             'hardTimeout': hardTimeout,
-             'critthash':   critthash}
-        )
+        message = aCommandProcessor.mRite.mPostOffice.encode({
+            'messageName': messageName,
+            'softTimeout': softTimeout,
+            'hardTimeout': hardTimeout,
+            'critthash':   critthash
+        })
         aCommandProcessor.mRite.insertSentRequest(messageName, critthash, message, softTimeout, hardTimeout)
 
 class GraphCommand_Auto_LoadWorkDetails(object):
@@ -89,12 +89,12 @@ class GraphCommand_Auto_LoadWorkDetails_Starting(object):
         softTimeout = 3 # [s].
         hardTimeout = 5 # [s].
         critthash = os.urandom(32).encode('hex')
-        message = aCommandProcessor.mRite.mPostOffice.encode(
-            {'messageName': messageName,
-             'softTimeout': softTimeout,
-             'hardTimeout': hardTimeout,
-             'critthash':   critthash}
-        )
+        message = aCommandProcessor.mRite.mPostOffice.encode({
+            'messageName': messageName,
+            'softTimeout': softTimeout,
+            'hardTimeout': hardTimeout,
+            'critthash':   critthash
+        })
         aCommandProcessor.mRite.insertSentRequest(messageName, critthash, message, softTimeout, hardTimeout)
 
 class GraphCommand_Handle_Command_ExecuteGraph_Req(object):
@@ -126,11 +126,11 @@ class GraphCommand_Handle_Command_ExecuteGraph_Req_Operable(object):
         aCommandProcessor.mRite.mElections[graphExecutionCritthash] = {'message': aMessage}
 
         messageName = 'Command_Election_Req'
-        message = aCommandProcessor.mRite.mPostOffice.encode(
-            {'messageName': messageName,
-             'critthash':   graphExecutionCritthash,
-             'crittnick':   aCommandProcessor.mRite.mCritter.mCrittnick}
-        )
+        message = aCommandProcessor.mRite.mPostOffice.encode({
+            'messageName': messageName,
+            'critthash':   graphExecutionCritthash,
+            'crittnick':   aCommandProcessor.mRite.mCritter.mCrittnick
+        })
         aCommandProcessor.mRite.insertSentRequest(messageName, graphExecutionCritthash, message)
 
 class GraphCommand_Handle_Command_ExecuteGraph_Req_Starting(object):
@@ -163,11 +163,11 @@ class GraphCommand_Handle_Command_ExecuteGraph_ElectionFinished_Req_Operable(obj
             aCommandProcessor.mLogger.debug("I am the winner.")
 
             messageName = 'Command_DetermineGraphCycle_Req'
-            message = aCommandProcessor.mRite.mPostOffice.encode(
-                {'messageName':             messageName,
-                 'graphExecutionCritthash': graphExecutionCritthash,
-                 'graphName':               aMessage.graphName}
-            )
+            message = aCommandProcessor.mRite.mPostOffice.encode({
+                'messageName':             messageName,
+                'graphExecutionCritthash': graphExecutionCritthash,
+                'graphName':               aMessage.graphName
+            })
             aCommandProcessor.mRite.insertSentRequest(messageName, graphExecutionCritthash, message)
 
 class GraphCommand_Handle_Command_ExecuteGraph_ElectionFinished_Req_Starting(object):

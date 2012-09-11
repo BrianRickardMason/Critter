@@ -27,12 +27,12 @@ class BalanceCommand_Auto_LoadGraphAndWork_Starting(object):
         softTimeout = 3 # [s].
         hardTimeout = 5 # [s].
         critthash = os.urandom(32).encode('hex')
-        message = aCommandProcessor.mRite.mPostOffice.encode(
-            {'messageName': messageName,
-             'softTimeout': softTimeout,
-             'hardTimeout': hardTimeout,
-             'critthash':   critthash}
-        )
+        message = aCommandProcessor.mRite.mPostOffice.encode({
+            'messageName': messageName,
+            'softTimeout': softTimeout,
+            'hardTimeout': hardTimeout,
+            'critthash':   critthash
+        })
         aCommandProcessor.mRite.insertSentRequest(messageName, critthash, message, softTimeout, hardTimeout)
 
 class BalanceCommand_Auto_LoadGraphDetails(object):
@@ -58,12 +58,12 @@ class BalanceCommand_Auto_LoadGraphDetails_Starting(object):
         softTimeout = 3 # [s].
         hardTimeout = 5 # [s].
         critthash = os.urandom(32).encode('hex')
-        message = aCommandProcessor.mRite.mPostOffice.encode(
-            {'messageName': messageName,
-             'softTimeout': softTimeout,
-             'hardTimeout': hardTimeout,
-             'critthash':   critthash}
-        )
+        message = aCommandProcessor.mRite.mPostOffice.encode({
+            'messageName': messageName,
+            'softTimeout': softTimeout,
+            'hardTimeout': hardTimeout,
+            'critthash':   critthash
+        })
         aCommandProcessor.mRite.insertSentRequest(messageName, critthash, message, softTimeout, hardTimeout)
 
 class BalanceCommand_Auto_LoadWorkDetails(object):
@@ -89,12 +89,12 @@ class BalanceCommand_Auto_LoadWorkDetails_Starting(object):
         softTimeout = 3 # [s].
         hardTimeout = 5 # [s].
         critthash = os.urandom(32).encode('hex')
-        message = aCommandProcessor.mRite.mPostOffice.encode(
-            {'messageName': messageName,
-             'softTimeout': softTimeout,
-             'hardTimeout': hardTimeout,
-             'critthash':   critthash}
-        )
+        message = aCommandProcessor.mRite.mPostOffice.encode({
+            'messageName': messageName,
+            'softTimeout': softTimeout,
+            'hardTimeout': hardTimeout,
+            'critthash':   critthash
+        })
         aCommandProcessor.mRite.insertSentRequest(messageName, critthash, message, softTimeout, hardTimeout)
 
 class BalanceCommand_Handle_Command_Election_Res(object):
@@ -163,14 +163,14 @@ class BalanceCommand_Handle_Command_ExecuteWork_Res_Operable(object):
 
         messageNameRecvReq = 'Command_OrderWorkExecution_Req'
         messageNameRecvRes = 'Command_OrderWorkExecution_Res'
-        message = aCommandProcessor.mRite.mPostOffice.encode(
-            {'messageName':             messageNameRecvRes,
-             'graphExecutionCritthash': aMessage.graphExecutionCritthash,
-             'graphName':               aMessage.graphName,
-             'graphCycle':              aMessage.graphCycle,
-             'workExecutionCritthash':  aMessage.workExecutionCritthash,
-             'workName':                aMessage.workName}
-        )
+        message = aCommandProcessor.mRite.mPostOffice.encode({
+            'messageName':             messageNameRecvRes,
+            'graphExecutionCritthash': aMessage.graphExecutionCritthash,
+            'graphName':               aMessage.graphName,
+            'graphCycle':              aMessage.graphCycle,
+            'workExecutionCritthash':  aMessage.workExecutionCritthash,
+            'workName':                aMessage.workName
+        })
         aCommandProcessor.mRite.deleteRecvRequest(messageNameRecvReq, workExecutionCritthash)
         aCommandProcessor.mLogger.debug("Sending the %s message." % messageNameRecvRes)
         aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(message)
@@ -349,15 +349,15 @@ class BalanceCommand_Handle_Command_OrderWorkExecution_ElectionFinished_Req_Oper
             receiverCrittnick = choice(availableWorkers)
 
             messageName = 'Command_ExecuteWork_Req'
-            message = aCommandProcessor.mRite.mPostOffice.encode(
-                {'messageName':             messageName,
-                 'receiverCrittnick':       receiverCrittnick,
-                 'graphExecutionCritthash': aMessage.graphExecutionCritthash,
-                 'graphName':               aMessage.graphName,
-                 'graphCycle':              aMessage.graphCycle,
-                 'workExecutionCritthash':  aMessage.workExecutionCritthash,
-                 'workName':                aMessage.workName}
-            )
+            message = aCommandProcessor.mRite.mPostOffice.encode({
+                'messageName':             messageName,
+                'receiverCrittnick':       receiverCrittnick,
+                'graphExecutionCritthash': aMessage.graphExecutionCritthash,
+                'graphName':               aMessage.graphName,
+                'graphCycle':              aMessage.graphCycle,
+                'workExecutionCritthash':  aMessage.workExecutionCritthash,
+                'workName':                aMessage.workName
+            })
             aCommandProcessor.mRite.insertSentRequest(messageName, workExecutionCritthash, message)
 
         if workExecutionCritthash in aCommandProcessor.mRite.mElections:
@@ -396,11 +396,11 @@ class BalanceCommand_Handle_Command_OrderWorkExecution_Req_Operable(object):
         aCommandProcessor.mRite.mElections[workExecutionCritthash] = {'message': aMessage}
 
         messageName = 'Command_Election_Req'
-        message = aCommandProcessor.mRite.mPostOffice.encode(
-            {'messageName': messageName,
-             'critthash':   workExecutionCritthash,
-             'crittnick':   aCommandProcessor.mRite.mCritter.mCrittnick}
-        )
+        message = aCommandProcessor.mRite.mPostOffice.encode({
+            'messageName': messageName,
+            'critthash':   workExecutionCritthash,
+            'crittnick':   aCommandProcessor.mRite.mCritter.mCrittnick
+        })
         aCommandProcessor.mRite.insertSentRequest(messageName, workExecutionCritthash, message)
 
 class BalanceCommand_Handle_Command_OrderWorkExecution_Req_Starting(object):

@@ -13,10 +13,10 @@ class PokeRite(Rite):
         while True:
             self.mLogger.debug("Poking other critters.")
             messageName = 'Announcement_Poke'
-            message = self.mPostOffice.encode(
-                {'messageName': messageName,
-                 'crittnick':   self.mCritter.mCrittnick}
-            )
+            message = self.mPostOffice.encode({
+                'messageName': messageName,
+                'crittnick':   self.mCritter.mCrittnick
+            })
             self.mPostOffice.putOutgoingAnnouncement(message)
 
             self.mLogger.debug("Sleeping for a heartbeat.")

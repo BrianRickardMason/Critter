@@ -25,11 +25,11 @@ class SchedulerCommand_Auto_CheckSchedule_Operable(object):
             graphExecutionCritthash = os.urandom(32).encode('hex')
             messageName = 'Command_ExecuteGraph_Req'
 
-            message = aCommandProcessor.mRite.mPostOffice.encode(
-                {'messageName':             messageName,
-                 'graphExecutionCritthash': graphExecutionCritthash,
-                 'graphName':               random.choice(graphNames)}
-            )
+            message = aCommandProcessor.mRite.mPostOffice.encode({
+                'messageName':             messageName,
+                'graphExecutionCritthash': graphExecutionCritthash,
+                'graphName':               random.choice(graphNames)
+            })
             aCommandProcessor.mRite.insertSentRequest(messageName, graphExecutionCritthash, message)
 
 class SchedulerCommand_Auto_CheckSchedule_Starting(object):
@@ -59,12 +59,12 @@ class SchedulerCommand_Auto_LoadGraphAndWork_Starting(object):
         softTimeout = 3 # [s].
         hardTimeout = 5 # [s].
         critthash = os.urandom(32).encode('hex')
-        message = aCommandProcessor.mRite.mPostOffice.encode(
-            {'messageName': messageName,
-             'softTimeout': softTimeout,
-             'hardTimeout': hardTimeout,
-             'critthash':   critthash}
-        )
+        message = aCommandProcessor.mRite.mPostOffice.encode({
+            'messageName': messageName,
+            'softTimeout': softTimeout,
+            'hardTimeout': hardTimeout,
+            'critthash':   critthash
+        })
         aCommandProcessor.mRite.insertSentRequest(messageName, critthash, message, softTimeout, hardTimeout)
 
 class SchedulerCommand_Auto_LoadGraphDetails(object):
@@ -90,12 +90,12 @@ class SchedulerCommand_Auto_LoadGraphDetails_Starting(object):
         softTimeout = 3 # [s].
         hardTimeout = 5 # [s].
         critthash = os.urandom(32).encode('hex')
-        message = aCommandProcessor.mRite.mPostOffice.encode(
-            {'messageName': messageName,
-             'softTimeout': softTimeout,
-             'hardTimeout': hardTimeout,
-             'critthash':   critthash}
-        )
+        message = aCommandProcessor.mRite.mPostOffice.encode({
+            'messageName': messageName,
+            'softTimeout': softTimeout,
+            'hardTimeout': hardTimeout,
+            'critthash':   critthash
+        })
         aCommandProcessor.mRite.insertSentRequest(messageName, critthash, message, softTimeout, hardTimeout)
 
 class SchedulerCommand_Auto_LoadWorkDetails(object):
@@ -121,12 +121,12 @@ class SchedulerCommand_Auto_LoadWorkDetails_Starting(object):
         softTimeout = 3 # [s].
         hardTimeout = 5 # [s].
         critthash = os.urandom(32).encode('hex')
-        message = aCommandProcessor.mRite.mPostOffice.encode(
-            {'messageName': messageName,
-             'softTimeout': softTimeout,
-             'hardTimeout': hardTimeout,
-             'critthash':   critthash}
-        )
+        message = aCommandProcessor.mRite.mPostOffice.encode({
+            'messageName': messageName,
+            'softTimeout': softTimeout,
+            'hardTimeout': hardTimeout,
+            'critthash':   critthash
+        })
         aCommandProcessor.mRite.insertSentRequest(messageName, critthash, message, softTimeout, hardTimeout)
 
 class SchedulerCommand_Handle_Command_ExecuteGraph_Res(object):

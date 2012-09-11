@@ -27,12 +27,12 @@ class WorkCommand_Auto_LoadGraphAndWork_Starting(object):
         softTimeout = 3 # [s].
         hardTimeout = 5 # [s].
         critthash = os.urandom(32).encode('hex')
-        message = aCommandProcessor.mRite.mPostOffice.encode(
-            {'messageName': messageName,
-             'softTimeout': softTimeout,
-             'hardTimeout': hardTimeout,
-             'critthash':   critthash}
-        )
+        message = aCommandProcessor.mRite.mPostOffice.encode({
+            'messageName': messageName,
+            'softTimeout': softTimeout,
+            'hardTimeout': hardTimeout,
+            'critthash':   critthash
+        })
         aCommandProcessor.mRite.insertSentRequest(messageName, critthash, message, softTimeout, hardTimeout)
 
 class WorkCommand_Auto_LoadGraphDetails(object):
@@ -58,12 +58,12 @@ class WorkCommand_Auto_LoadGraphDetails_Starting(object):
         softTimeout = 3 # [s].
         hardTimeout = 5 # [s].
         critthash = os.urandom(32).encode('hex')
-        message = aCommandProcessor.mRite.mPostOffice.encode(
-            {'messageName': messageName,
-             'softTimeout': softTimeout,
-             'hardTimeout': hardTimeout,
-             'critthash':   critthash}
-        )
+        message = aCommandProcessor.mRite.mPostOffice.encode({
+            'messageName': messageName,
+            'softTimeout': softTimeout,
+            'hardTimeout': hardTimeout,
+            'critthash':   critthash
+        })
         aCommandProcessor.mRite.insertSentRequest(messageName, critthash, message, softTimeout, hardTimeout)
 
 class WorkCommand_Auto_LoadWorkDetails(object):
@@ -89,12 +89,12 @@ class WorkCommand_Auto_LoadWorkDetails_Starting(object):
         softTimeout = 3 # [s].
         hardTimeout = 5 # [s].
         critthash = os.urandom(32).encode('hex')
-        message = aCommandProcessor.mRite.mPostOffice.encode(
-            {'messageName': messageName,
-             'softTimeout': softTimeout,
-             'hardTimeout': hardTimeout,
-             'critthash':   critthash}
-        )
+        message = aCommandProcessor.mRite.mPostOffice.encode({
+            'messageName': messageName,
+            'softTimeout': softTimeout,
+            'hardTimeout': hardTimeout,
+            'critthash':   critthash
+        })
         aCommandProcessor.mRite.insertSentRequest(messageName, critthash, message, softTimeout, hardTimeout)
 
 class WorkCommand_Handle_Command_DetermineWorkCycle_Res(object):
@@ -173,14 +173,14 @@ class WorkCommand_Handle_Command_ExecuteWork_Req_Operable(object):
             aCommandProcessor.mRite.insertRecvRequest(messageName, workExecutionCritthash, aMessage)
 
             messageName = 'Command_DetermineWorkCycle_Req'
-            message = aCommandProcessor.mRite.mPostOffice.encode(
-                {'messageName':             messageName,
-                 'graphExecutionCritthash': aMessage.graphExecutionCritthash,
-                 'graphName':               aMessage.graphName,
-                 'graphCycle':              aMessage.graphCycle,
-                 'workExecutionCritthash':  aMessage.workExecutionCritthash,
-                 'workName':                aMessage.workName}
-            )
+            message = aCommandProcessor.mRite.mPostOffice.encode({
+                'messageName':             messageName,
+                'graphExecutionCritthash': aMessage.graphExecutionCritthash,
+                'graphName':               aMessage.graphName,
+                'graphCycle':              aMessage.graphCycle,
+                'workExecutionCritthash':  aMessage.workExecutionCritthash,
+                'workName':                aMessage.workName
+            })
             aCommandProcessor.mRite.insertSentRequest(messageName, workExecutionCritthash, message)
 
 class WorkCommand_Handle_Command_ExecuteWork_Req_Starting(object):
