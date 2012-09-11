@@ -3,6 +3,8 @@ import time
 import Rites.RiteCommon
 
 from Rites.Balance.BalanceCommands         import BalanceCommand_Auto_LoadGraphAndWork
+from Rites.Balance.BalanceCommands         import BalanceCommand_Fault_HardTimeout
+from Rites.Balance.BalanceCommands         import BalanceCommand_Fault_SoftTimeout
 from Rites.Balance.BalanceMessageProcessor import BalanceMessageProcessor
 from Rites.Rite                            import Rite
 
@@ -48,6 +50,7 @@ class BalanceRite(Rite):
 
             self.mLogger.debug("Loading the data.")
             command = BalanceCommand_Auto_LoadGraphAndWork()
+            # FIXME: Use the prioritized interface.
             self.mPostOffice.putCommand(Rites.RiteCommon.BALANCE, command)
 
             self.mLogger.debug("Sleeping for a heartbeat.")
@@ -67,9 +70,13 @@ class BalanceRite(Rite):
             for critthash in aMessages[requestName]:
                 if aTimestamp - aMessages[requestName][critthash]['timestamp'] > \
                    aMessages[requestName][critthash]['hardTimeout']:
-                    # TODO: Implement me!
-                    pass
+                    command = BalanceCommand_Fault_HardTimeout(requestName, critthash)
+                    # FIXME: A magic number.
+                    # TODO: Define the priorities.
+                    self.putCommand(command, 50)
                 elif aTimestamp - aMessages[requestName][critthash]['timestamp'] > \
                      aMessages[requestName][critthash]['softTimeout']:
-                    # TODO: Implement me!
-                    pass
+                    command = BalanceCommand_Fault_SoftTimeout(requestName, critthash)
+                    # FIXME: A magic number.
+                    # TODO: Define the priorities.
+                    self.putCommand(command, 50)

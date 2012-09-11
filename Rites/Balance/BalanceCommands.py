@@ -97,6 +97,52 @@ class BalanceCommand_Auto_LoadWorkDetails_Starting(object):
         })
         aCommandProcessor.mRite.insertSentRequest(messageName, critthash, message, softTimeout, hardTimeout)
 
+class BalanceCommand_Fault_HardTimeout(object):
+    def __init__(self, aRequestName, aCritthash):
+        self.mRequestName = aRequestName
+        self.mCritthash   = aCritthash
+
+    def execute(self, aCommandProcessor):
+        if aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_OPERABLE:
+            executor = BalanceCommand_Fault_HardTimeout_Operable()
+        elif aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_STARTING:
+            executor = BalanceCommand_Fault_HardTimeout_Starting()
+        else:
+            assert False, "Invalid state detected."
+
+        executor.doExecute(self, aCommandProcessor)
+
+class BalanceCommand_Fault_HardTimeout_Operable(object):
+    def doExecute(self, aCommand, aCommandProcessor):
+        aCommandProcessor.mLogger.debug("The command: %s is handled in this state." % aCommand.__class__.__name__)
+
+class BalanceCommand_Fault_HardTimeout_Starting(object):
+    def doExecute(self, aCommand, aCommandProcessor):
+        aCommandProcessor.mLogger.debug("The command: %s is not handled in this state." % aCommand.__class__.__name__)
+
+class BalanceCommand_Fault_SoftTimeout(object):
+    def __init__(self, aRequestName, aCritthash):
+        self.mRequestName = aRequestName
+        self.mCritthash   = aCritthash
+
+    def execute(self, aCommandProcessor):
+        if aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_OPERABLE:
+            executor = BalanceCommand_Fault_SoftTimeout_Operable()
+        elif aCommandProcessor.mRite.mState == Rites.RiteCommon.STATE_STARTING:
+            executor = BalanceCommand_Fault_SoftTimeout_Starting()
+        else:
+            assert False, "Invalid state detected."
+
+        executor.doExecute(self, aCommandProcessor)
+
+class BalanceCommand_Fault_SoftTimeout_Operable(object):
+    def doExecute(self, aCommand, aCommandProcessor):
+        aCommandProcessor.mLogger.debug("The command: %s is handled in this state." % aCommand.__class__.__name__)
+
+class BalanceCommand_Fault_SoftTimeout_Starting(object):
+    def doExecute(self, aCommand, aCommandProcessor):
+        aCommandProcessor.mLogger.debug("The command: %s is not handled in this state." % aCommand.__class__.__name__)
+
 class BalanceCommand_Handle_Command_Election_Res(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage
