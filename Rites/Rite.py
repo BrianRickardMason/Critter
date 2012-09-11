@@ -17,25 +17,29 @@ class Rite(threading.Thread):
         self.mRiteName    = aRiteName
 
         self.mLogger.info("Spawning the command processor.")
-        self.mCommandProcessor = CommandProcessor(self)
-        self.mCommandProcessor.setDaemon(True)
-        self.mCommandProcessor.start()
+        self.__mCommandProcessor = CommandProcessor(self)
+        self.__mCommandProcessor.setDaemon(True)
+        self.__mCommandProcessor.start()
 
         self.mLogger.info("Spawning the message processor.")
-        self.mMessageProcessor = aMessageProcessorType(self)
-        self.mMessageProcessor.setDaemon(True)
-        self.mMessageProcessor.start()
+        self.__mMessageProcessor = aMessageProcessorType(self)
+        self.__mMessageProcessor.setDaemon(True)
+        self.__mMessageProcessor.start()
 
         threading.Thread.__init__(self, name=aRiteName + 'Rite')
 
     def run(self):
         raise NotImplementedError
 
-    def putCommand(self, aCommand):
-        self.mCommandProcessor.put(aCommand)
+    # FIXME: A magic number.
+    # TODO: Define the priorities.
+    def putCommand(self, aCommand, aPriority=100):
+        self.__mCommandProcessor.put((aPriority, aCommand))
 
-    def putMessage(self, aMessage):
-        self.mMessageProcessor.put(aMessage)
+    # FIXME: A magic number.
+    # TODO: Define the priorities.
+    def putMessage(self, aMessage, aPriority=100):
+        self.__mMessageProcessor.put((aPriority, aMessage))
 
     def insertRecvRequest(self, aMessageName, aCritthash, aMessage, aSoftTimeout=3, aHardTimeout=5):
         assert aCritthash not in self.mRecvReq[aMessageName], "Not handled yet. Duplicated critthash."

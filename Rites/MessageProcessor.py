@@ -7,7 +7,7 @@ Receives messages from other parties and handles them in order of appearance.
 import logging
 import threading
 
-from Queue import Queue
+from Queue import PriorityQueue
 
 logging.basicConfig(format='[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
 
@@ -33,7 +33,7 @@ class MessageProcessor(threading.Thread):
 
         self.mRite = aRite
 
-        self.mQueue = Queue()
+        self.mQueue = PriorityQueue()
 
         threading.Thread.__init__(self, name=aRite.mRiteName + 'MessageProcessor')
 
@@ -45,7 +45,7 @@ class MessageProcessor(threading.Thread):
         """
         while True:
             self.mLogger.debug("Waiting for a message.")
-            message = self.mQueue.get()
+            message = self.mQueue.get()[1]
 
             self.mLogger.debug("Processing the message: %s." % message.messageName)
             self.processMessage(message)

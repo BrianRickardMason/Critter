@@ -7,7 +7,7 @@ Receives commands from other parties and executes them in order of appearance.
 import logging
 import threading
 
-from Queue import Queue
+from Queue import PriorityQueue
 
 logging.basicConfig(format='[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
 
@@ -33,7 +33,7 @@ class CommandProcessor(threading.Thread):
         self.mLogger = logging.getLogger(aRite.mRiteName + 'CommandProcessor')
         self.mLogger.setLevel(self.mRite.mSettings.get('logging', 'level'))
 
-        self.mQueue = Queue()
+        self.mQueue = PriorityQueue()
 
         threading.Thread.__init__(self, name=aRite.mRiteName + 'CommandProcessor')
 
@@ -45,7 +45,7 @@ class CommandProcessor(threading.Thread):
         """
         while True:
             self.mLogger.debug("Waiting for a command.")
-            command = self.mQueue.get()
+            command = self.mQueue.get()[1]
             self.mLogger.debug("Executing a command: %s." % command.__class__.__name__)
             command.execute(self)
 
