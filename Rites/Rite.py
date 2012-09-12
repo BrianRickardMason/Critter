@@ -2,6 +2,7 @@ import logging
 import threading
 import time
 
+from Critter.PostOffice     import RiteConnector
 from Rites.CommandProcessor import CommandProcessor
 
 logging.basicConfig(format='[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
@@ -32,10 +33,13 @@ class Rite(threading.Thread):
     def run(self):
         raise NotImplementedError
 
-    def putCommand(self, aCommand, aPriority):
+    def putCommand(self, aPutter, aCommand, aPriority):
+        # TODO: Implement an assertion that turns the Critter upside down.
+        assert isinstance(aPutter, RiteConnector.RiteConnector), "Invalid putter detected."
         self.__mCommandProcessor.put((aPriority, aCommand))
 
-    def putMessage(self, aMessage, aPriority):
+    def putMessage(self, aPutter, aMessage, aPriority):
+        assert isinstance(aPutter, RiteConnector.RiteConnector), "Invalid putter detected."
         self.__mMessageProcessor.put((aPriority, aMessage))
 
     def insertRecvRequest(self, aMessageName, aCritthash, aMessage, aSoftTimeout=3, aHardTimeout=5):

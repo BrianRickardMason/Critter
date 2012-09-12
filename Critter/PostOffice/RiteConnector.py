@@ -24,13 +24,13 @@ class RiteConnector(object):
     def putCommand(self, aRite, aCommand, aPriority):
         # TODO: Make sure the exceptions are handled!
         if aRite in self.mRites:
-            self.mRites[aRite].putCommand(aCommand, aPriority)
+            self.mRites[aRite].putCommand(self, aCommand, aPriority)
         else:
             raise ValueError("There is not such a rite.")
 
     def putMessage(self, aRite, aMessage, aPriority):
         # TODO: Make sure the exceptions are handled!
         if aRite in self.mRites:
-            self.mRites[aRite].putMessage(aMessage, aPriority)
+            self.mRites[aRite].putMessage(self, aMessage, aPriority)
         else:
             raise ValueError("There is not such a rite.")
