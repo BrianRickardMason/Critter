@@ -59,7 +59,7 @@ class RegistryRite(Rite):
         while True:
             self.mLogger.debug("Checking the heartbeats.")
             command = RegistryCommandCheckHeartbeats()
-            self.mPostOffice.putCommand('Registry', command)
+            self.mPostOffice.putCommand(Rites.RiteCommon.REGISTRY, command)
 
             self.mLogger.debug("Sleeping for a heartbeat.")
             time.sleep(self.mSettings.get('heartbeat', 'period'))

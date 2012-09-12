@@ -138,28 +138,12 @@ class PostOffice(object):
         """
         return self.mOutgoingAnnouncementsQueue.get()
 
-    def putCommand(self, aRite, aCommand):
-        """Puts a command to be processed by a rite.
+    # FIXME: A magic number.
+    # TODO: Define the priorities.
+    def putCommand(self, aRite, aCommand, aPriority=100):
+        self.mRiteConnector.putCommand(aRite, aCommand, aPriority)
 
-        Arguments:
-            aRite:    The name of the rite.
-            aCommand: The command to be processed by the rite.
-
-        Raises:
-            ValueError: if there is no rite of such a name.
-
-        """
-        self.mRiteConnector.putCommand(aRite, aCommand)
-
-    def putMessage(self, aRite, aMessage):
-        """Puts a message to be processed by a rite.
-
-        Arguments:
-            aRite:    The name of the rite.
-            aMessage: The message to be processed by the rite.
-
-        Raises:
-            ValueError: if there is no rite of such a name.
-
-        """
-        self.mRiteConnector.putMessage(aRite, aMessage)
+    # FIXME: A magic number.
+    # TODO: Define the priorities.
+    def putMessage(self, aRite, aMessage, aPriority=100):
+        self.mRiteConnector.putMessage(aRite, aMessage, aPriority)

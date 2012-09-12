@@ -32,14 +32,10 @@ class Rite(threading.Thread):
     def run(self):
         raise NotImplementedError
 
-    # FIXME: A magic number.
-    # TODO: Define the priorities.
-    def putCommand(self, aCommand, aPriority=100):
+    def putCommand(self, aCommand, aPriority):
         self.__mCommandProcessor.put((aPriority, aCommand))
 
-    # FIXME: A magic number.
-    # TODO: Define the priorities.
-    def putMessage(self, aMessage, aPriority=100):
+    def putMessage(self, aMessage, aPriority):
         self.__mMessageProcessor.put((aPriority, aMessage))
 
     def insertRecvRequest(self, aMessageName, aCritthash, aMessage, aSoftTimeout=3, aHardTimeout=5):

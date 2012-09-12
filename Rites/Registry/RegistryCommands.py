@@ -1,6 +1,8 @@
 import os
 import time
 
+import Rites.RiteCommon
+
 class RegistryCommandCheckHeartbeats(object):
     # TODO: If "there is not any heartbeat" twice and a critter is running, obviously something fishy is going on.
     def execute(self, aCommandProcessor):
@@ -29,7 +31,7 @@ class RegistryCommandCheckHeartbeats(object):
                     aCommandProcessor.mLogger.warn("Critter: %s. Suspicious behavior." % crittnick)
                     aCommandProcessor.mLogger.warn("Critter: %s. Removing." % crittnick)
                     command = RegistryCommandUnregisterCritter(crittnick)
-                    aCommandProcessor.mRite.putCommand(command)
+                    aCommandProcessor.mRite.mPostOffice.putCommand(Rites.RiteCommon.REGISTRY, command)
                 else:
                     aCommandProcessor.mLogger.debug("Critter: %s. Alive and kicking." % crittnick)
 

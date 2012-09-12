@@ -21,36 +21,16 @@ class RiteConnector(object):
         """
         self.mRites = aRites
 
-    def putCommand(self, aRite, aCommand):
-        """Puts a command to be processed by a rite.
-
-        Arguments:
-            aRite: The name of the rite.
-            aCommand: The command to be processed by the rite.
-
-        Raises:
-            ValueError: if there is no rite of such a name.
-
-        """
+    def putCommand(self, aRite, aCommand, aPriority):
         # TODO: Make sure the exceptions are handled!
         if aRite in self.mRites:
-            self.mRites[aRite].putCommand(aCommand)
+            self.mRites[aRite].putCommand(aCommand, aPriority)
         else:
             raise ValueError("There is not such a rite.")
 
-    def putMessage(self, aRite, aMessage):
-        """Puts a message to be processed by a rite.
-
-        Arguments:
-            aRite: The name of the rite.
-            aMessage: The message to be processed by the rite.
-
-        Raises:
-            ValueError: if there is no rite of such a name.
-
-        """
+    def putMessage(self, aRite, aMessage, aPriority):
         # TODO: Make sure the exceptions are handled!
         if aRite in self.mRites:
-            self.mRites[aRite].putMessage(aMessage)
+            self.mRites[aRite].putMessage(aMessage, aPriority)
         else:
             raise ValueError("There is not such a rite.")
