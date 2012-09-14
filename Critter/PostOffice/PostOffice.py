@@ -8,6 +8,7 @@ from AnnouncementPublisher  import AnnouncementPublisher
 from AnnouncementSubscriber import AnnouncementSubscriber
 from MessageEncoder         import MessageEncoder
 from MessageRouter          import MessageRouter
+from Priorities             import PRIORITY_DEFAULT
 from RiteConnector          import RiteConnector
 from Transport.TransportZMQ import TransportZMQ
 
@@ -138,12 +139,8 @@ class PostOffice(object):
         """
         return self.mOutgoingAnnouncementsQueue.get()
 
-    # FIXME: A magic number.
-    # TODO: Define the priorities.
-    def putCommand(self, aRite, aCommand, aPriority=100):
+    def putCommand(self, aRite, aCommand, aPriority=PRIORITY_DEFAULT):
         self.mRiteConnector.putCommand(aRite, aCommand, aPriority)
 
-    # FIXME: A magic number.
-    # TODO: Define the priorities.
-    def putMessage(self, aRite, aMessage, aPriority=100):
+    def putMessage(self, aRite, aMessage, aPriority=PRIORITY_DEFAULT):
         self.mRiteConnector.putMessage(aRite, aMessage, aPriority)

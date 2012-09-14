@@ -3,6 +3,9 @@ import time
 
 import Rites.RiteCommon
 
+from Critter.PostOffice.Priorities import PRIORITY_FAULT
+from Critter.PostOffice.Priorities import PRIORITY_RECOVERY
+
 class RegistryCommand_Auto_CheckHeartbeats(object):
     # TODO: If "there is not any heartbeat" twice and a critter is running, obviously something fishy is going on.
     def execute(self, aCommandProcessor):
@@ -25,9 +28,7 @@ class RegistryCommand_Auto_CheckHeartbeats(object):
                     aCommandProcessor.mLogger.warn("Critter: %s. Suspicious behavior." % crittnick)
                     aCommandProcessor.mLogger.warn("Critter: %s. Removing." % crittnick)
                     command = RegistryCommand_Fault_DeadCritter(crittnick)
-                    # FIXME: A magic number.
-                    # TODO: Define the priorities.
-                    aCommandProcessor.mRite.mPostOffice.putCommand(Rites.RiteCommon.REGISTRY, command, 50)
+                    aCommandProcessor.mRite.mPostOffice.putCommand(Rites.RiteCommon.REGISTRY, command, PRIORITY_FAULT)
                 else:
                     aCommandProcessor.mLogger.debug("Critter: %s. Alive and kicking." % crittnick)
 
@@ -37,9 +38,7 @@ class RegistryCommand_Fault_DeadCritter(object):
 
     def execute(self, aCommandProcessor):
         command = RegistryCommand_Recovery_UnregisterCritter(self.mCrittnick)
-        # FIXME: A magic number.
-        # TODO: Define the priorities.
-        aCommandProcessor.mRite.mPostOffice.putCommand(Rites.RiteCommon.REGISTRY, command, 20)
+        aCommandProcessor.mRite.mPostOffice.putCommand(Rites.RiteCommon.REGISTRY, command, PRIORITY_RECOVERY)
 
 class RegistryCommand_Handle_Announcement_Heartbeat(object):
     def __init__(self, aMessage):

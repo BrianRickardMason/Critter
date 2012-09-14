@@ -2,6 +2,8 @@ import time
 
 import Rites.RiteCommon
 
+from Critter.PostOffice.Priorities         import PRIORITY_FAULT
+from Critter.PostOffice.Priorities         import PRIORITY_RECOVERY
 from Rites.Balance.BalanceCommands         import BalanceCommand_Auto_LoadGraphAndWork
 from Rites.Balance.BalanceCommands         import BalanceCommand_Fault_HardTimeout
 from Rites.Balance.BalanceCommands         import BalanceCommand_Fault_SoftTimeout
@@ -71,12 +73,8 @@ class BalanceRite(Rite):
                 if aTimestamp - aMessages[requestName][critthash]['timestamp'] > \
                    aMessages[requestName][critthash]['hardTimeout']:
                     command = BalanceCommand_Fault_HardTimeout(requestName, critthash)
-                    # FIXME: A magic number.
-                    # TODO: Define the priorities.
-                    self.mPostOffice.putCommand(Rites.RiteCommon.BALANCE, command, 50)
+                    self.mPostOffice.putCommand(Rites.RiteCommon.BALANCE, command, PRIORITY_FAULT)
                 elif aTimestamp - aMessages[requestName][critthash]['timestamp'] > \
                      aMessages[requestName][critthash]['softTimeout']:
                     command = BalanceCommand_Fault_SoftTimeout(requestName, critthash)
-                    # FIXME: A magic number.
-                    # TODO: Define the priorities.
-                    self.mPostOffice.putCommand(Rites.RiteCommon.BALANCE, command, 50)
+                    self.mPostOffice.putCommand(Rites.RiteCommon.BALANCE, command, PRIORITY_FAULT)
