@@ -3,25 +3,6 @@ import time
 
 import Rites.RiteCommon
 
-class RegistryCommandUnregisterCritter(object):
-    def __init__(self, aCrittnick):
-        self.mCrittnick = aCrittnick
-
-    def execute(self, aCommandProcessor):
-        aCommandProcessor.mLogger.debug("Critter: %s. Unregistering." % self.mCrittnick)
-        # TODO: Verify how del behaves.
-
-        # TODO: Check whether this check is needed at all!
-        if self.mCrittnick in aCommandProcessor.mRite.mKnownCrittnicks:
-            del aCommandProcessor.mRite.mKnownCrittnicks[self.mCrittnick]
-        else:
-            aCommandProcessor.mLogger.warn("Unknown crittnick in the table of known critters.")
-
-        if self.mCrittnick in aCommandProcessor.mRite.mKnownHeartbeats:
-            del aCommandProcessor.mRite.mKnownHeartbeats[self.mCrittnick]
-        else:
-            aCommandProcessor.mLogger.warn("Unknown nick in the table of known critters' heartbeats.")
-
 class RegistryCommand_Auto_CheckHeartbeats(object):
     # TODO: If "there is not any heartbeat" twice and a critter is running, obviously something fishy is going on.
     def execute(self, aCommandProcessor):
@@ -43,10 +24,10 @@ class RegistryCommand_Auto_CheckHeartbeats(object):
                 if heartbeatDelta > maxDelta:
                     aCommandProcessor.mLogger.warn("Critter: %s. Suspicious behavior." % crittnick)
                     aCommandProcessor.mLogger.warn("Critter: %s. Removing." % crittnick)
-                    command = RegistryCommandUnregisterCritter(crittnick)
-                    aCommandProcessor.mRite.mPostOffice.putCommand(Rites.RiteCommon.REGISTRY, command)
                     command = RegistryCommand_Fault_DeadCritter(crittnick)
-                    aCommandProcessor.mRite.mPostOffice.putCommand(Rites.RiteCommon.REGISTRY, command)
+                    # FIXME: A magic number.
+                    # TODO: Define the priorities.
+                    aCommandProcessor.mRite.mPostOffice.putCommand(Rites.RiteCommon.REGISTRY, command, 50)
                 else:
                     aCommandProcessor.mLogger.debug("Critter: %s. Alive and kicking." % crittnick)
 
@@ -55,7 +36,10 @@ class RegistryCommand_Fault_DeadCritter(object):
         self.mCrittnick = aCrittnick
 
     def execute(self, aCommandProcessor):
-        pass
+        command = RegistryCommand_Recovery_UnregisterCritter(self.mCrittnick)
+        # FIXME: A magic number.
+        # TODO: Define the priorities.
+        aCommandProcessor.mRite.mPostOffice.putCommand(Rites.RiteCommon.REGISTRY, command, 20)
 
 class RegistryCommand_Handle_Announcement_Heartbeat(object):
     def __init__(self, aMessage):
@@ -134,3 +118,22 @@ class RegistryCommand_Handle_Command_PresentYourself_Res(object):
                 aCommandProcessor.mLogger.warn("Critter: %s is known." % crittnick)
 
             aCommandProcessor.mRite.deleteSentRequest(messageNameSentReq, critthash)
+
+class RegistryCommand_Recovery_UnregisterCritter(object):
+    def __init__(self, aCrittnick):
+        self.mCrittnick = aCrittnick
+
+    def execute(self, aCommandProcessor):
+        aCommandProcessor.mLogger.debug("Critter: %s. Unregistering." % self.mCrittnick)
+        # TODO: Verify how del behaves.
+
+        # TODO: Check whether this check is needed at all!
+        if self.mCrittnick in aCommandProcessor.mRite.mKnownCrittnicks:
+            del aCommandProcessor.mRite.mKnownCrittnicks[self.mCrittnick]
+        else:
+            aCommandProcessor.mLogger.warn("Unknown crittnick in the table of known critters.")
+
+        if self.mCrittnick in aCommandProcessor.mRite.mKnownHeartbeats:
+            del aCommandProcessor.mRite.mKnownHeartbeats[self.mCrittnick]
+        else:
+            aCommandProcessor.mLogger.warn("Unknown nick in the table of known critters' heartbeats.")
