@@ -89,6 +89,25 @@ class Subscriber(threading.Thread):
             bytesRead = self.mSocket.recv()
             self.mBroadcastDaemon.mQueue.put(bytesRead)
 
+class Responder(threading.Thread):
+    def __init__(self, aBroadcastDaemon):
+        self.mLogger = logging.getLogger('Responder')
+        self.mLogger.setLevel(logging.DEBUG)
+
+        self.mBroadcastDaemon = aBroadcastDaemon
+
+        self.mSocket = aBroadcastDaemon.mCtx.socket(zmq.PAIR)
+        # FIXME: Remove the hardcoded value.
+        self.mSocket.bind('tcp://127.0.0.1:5555')
+
+        threading.Thread.__init__(self, name='Responder')
+
+    def run(self):
+        while True:
+            bytesRead = self.mSocket.recv()
+            self.mBroadcastDaemon.mQueue.put(bytesRead)
+            # TODO: Implement me!
+
 class BroadcastDaemon(object):
     """The broadcast daemon.
 
@@ -125,6 +144,12 @@ class BroadcastDaemon(object):
         self.mSubscriber = Subscriber(self)
         self.mSubscriber.setDaemon(True)
         self.mSubscriber.start()
+
+        # Spawning the responder.
+        self.mLogger.debug("Spawning the responder.")
+        self.mResponder = Responder(self)
+        self.mResponder.setDaemon(True)
+        self.mResponder.start()
 
     def run(self):
         while True:
