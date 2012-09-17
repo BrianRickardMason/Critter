@@ -18,6 +18,7 @@ class MessageDecoder(object):
 
         """
         envelope = Messages_pb2.Envelope()
+        # TODO: Protect if from the garbage.
         envelope.ParseFromString(aBytesRead)
 
         # TODO: Clean me up fast!
