@@ -29,6 +29,7 @@ class Critter(object):
 
     """
 
+    # TODO: Remove aType.
     def __init__(self, aType, aNick, aRites):
         """Initializes the critter.
 
