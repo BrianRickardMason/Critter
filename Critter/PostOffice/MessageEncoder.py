@@ -43,6 +43,8 @@ class MessageEncoder(object):
             if False: pass
             elif aMessage.messageName == 'Announcement_Heartbeat':          return self.__putIntoAnEnvelope(ANNOUNCEMENT_HEARTBEAT, aMessage)
             elif aMessage.messageName == 'Announcement_Poke':               return self.__putIntoAnEnvelope(ANNOUNCEMENT_POKE, aMessage)
+            elif aMessage.messageName == 'Command_DescribeCrittwork_Req':   return self.__putIntoAnEnvelope(COMMAND_DESCRIBE_CRITTWORK_REQ, aMessage)
+            elif aMessage.messageName == 'Command_DescribeCrittwork_Res':   return self.__putIntoAnEnvelope(COMMAND_DESCRIBE_CRITTWORK_RES, aMessage)
             elif aMessage.messageName == 'Command_DetermineGraphCycle_Req': return self.__putIntoAnEnvelope(COMMAND_DETERMINE_GRAPH_CYCLE_REQ, aMessage)
             elif aMessage.messageName == 'Command_DetermineGraphCycle_Res': return self.__putIntoAnEnvelope(COMMAND_DETERMINE_GRAPH_CYCLE_RES, aMessage)
             elif aMessage.messageName == 'Command_DetermineWorkCycle_Req':  return self.__putIntoAnEnvelope(COMMAND_DETERMINE_WORK_CYCLE_REQ, aMessage)

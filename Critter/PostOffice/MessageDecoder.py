@@ -26,6 +26,8 @@ class MessageDecoder(object):
         if False: pass
         elif envelope.header.id == ANNOUNCEMENT_HEARTBEAT:            message = Messages_pb2.Announcement_Heartbeat()
         elif envelope.header.id == ANNOUNCEMENT_POKE:                 message = Messages_pb2.Announcement_Poke()
+        elif envelope.header.id == COMMAND_DESCRIBE_CRITTWORK_REQ:    message = Messages_pb2.Command_DescribeCrittwork_Req()
+        elif envelope.header.id == COMMAND_DESCRIBE_CRITTWORK_RES:    message = Messages_pb2.Command_DescribeCrittwork_Res()
         elif envelope.header.id == COMMAND_DETERMINE_GRAPH_CYCLE_REQ: message = Messages_pb2.Command_DetermineGraphCycle_Req()
         elif envelope.header.id == COMMAND_DETERMINE_GRAPH_CYCLE_RES: message = Messages_pb2.Command_DetermineGraphCycle_Res()
         elif envelope.header.id == COMMAND_DETERMINE_WORK_CYCLE_REQ:  message = Messages_pb2.Command_DetermineWorkCycle_Req()
