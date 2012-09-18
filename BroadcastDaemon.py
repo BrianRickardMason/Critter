@@ -8,7 +8,8 @@ import threading
 import time
 import zmq
 
-from Queue import Queue
+from Critter.PostOffice import MessageDecoder
+from Queue              import Queue
 
 logging.basicConfig(format='[%(asctime)s][%(threadName)15s][%(levelname)8s] - %(message)s')
 
@@ -46,9 +47,22 @@ class Publisher(threading.Thread):
         Gets bytes from the queue sends it. Repeats forever.
 
         """
+        #
+        # A simple performance test on i7 4.2 GHz has shown that if each message were decoded 1000 times,
+        # then it would be too much for Crittwork of 5 elements and there would be delays. However, for now we will
+        # apply ostrich algorithm and the logic that stands behind message routing will be fully located in
+        # the BroadcastDaemon. This way the architecture of Crittwork stays untouched.
+        #
+        messageDecoder = MessageDecoder.MessageDecoder()
+
         while True:
             bytesRead = self.mBroadcastDaemon.mQueue.get()
             self.mSocket.send(bytesRead)
+
+            message = messageDecoder.decode(bytesRead)
+            # TODO: Implement me in a more beautiful way.
+            if message.messageName == 'Command_DescribeCrittwork_Res':
+                self.mBroadcastDaemon.mResponder.respond(bytesRead)
 
 class Subscriber(threading.Thread):
     """The subscriber of broadcast daemon.
@@ -104,9 +118,13 @@ class Responder(threading.Thread):
 
     def run(self):
         while True:
+            # TODO: Add registration of requests (so that you'd know whom to answer).
+            # TODO: Discuss the sequence of messages.
             bytesRead = self.mSocket.recv()
             self.mBroadcastDaemon.mQueue.put(bytesRead)
-            # TODO: Implement me!
+
+    def respond(self, aBytes):
+        self.mSocket.send(aBytes)
 
 class BroadcastDaemon(object):
     """The broadcast daemon.

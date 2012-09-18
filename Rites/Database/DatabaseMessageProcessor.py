@@ -1,5 +1,6 @@
 import Rites.RiteCommon
 
+from Rites.Database.DatabaseCommands import DatabaseCommand_Handle_Command_DescribeCrittwork_Req
 from Rites.Database.DatabaseCommands import DatabaseCommand_Handle_Command_DetermineGraphCycle_Req
 from Rites.Database.DatabaseCommands import DatabaseCommand_Handle_Command_DetermineWorkCycle_Req
 from Rites.Database.DatabaseCommands import DatabaseCommand_Handle_Command_Election_Req
@@ -16,6 +17,7 @@ class DatabaseMessageProcessor(MessageProcessor):
         command = None
 
         if False: pass
+        elif aMessage.messageName == 'Command_DescribeCrittwork_Req':   command = DatabaseCommand_Handle_Command_DescribeCrittwork_Req(aMessage)
         elif aMessage.messageName == 'Command_DetermineGraphCycle_Req': command = DatabaseCommand_Handle_Command_DetermineGraphCycle_Req(aMessage)
         elif aMessage.messageName == 'Command_DetermineWorkCycle_Req':  command = DatabaseCommand_Handle_Command_DetermineWorkCycle_Req(aMessage)
         elif aMessage.messageName == 'Command_Election_Req':            command = DatabaseCommand_Handle_Command_Election_Req(aMessage)

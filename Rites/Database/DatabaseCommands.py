@@ -1,6 +1,27 @@
 import psycopg2
 import sys
 
+# TODO: This command should be somewhere else.
+class DatabaseCommand_Handle_Command_DescribeCrittwork_Req(object):
+    def __init__(self, aMessage):
+        self.mMessage = aMessage
+
+    def execute(self, aCommandProcessor):
+        critthash = self.mMessage.critthash
+
+        messageNameRecvReq = self.mMessage.messageName
+        aCommandProcessor.mRite.insertRecvRequest(messageNameRecvReq, critthash, self.mMessage)
+
+        messageNameRecvRes = 'Command_DescribeCrittwork_Res'
+        message = aCommandProcessor.mRite.mPostOffice.encode({
+            'messageName': messageNameRecvRes,
+            'critthash':   critthash,
+            'dummy':       'Dummy'
+        })
+        aCommandProcessor.mRite.deleteRecvRequest(messageNameRecvReq, critthash)
+        aCommandProcessor.mLogger.debug("Sending the %s message." % messageNameRecvRes)
+        aCommandProcessor.mRite.mPostOffice.putOutgoingAnnouncement(message)
+
 class DatabaseCommand_Handle_Command_DetermineGraphCycle_Req(object):
     def __init__(self, aMessage):
         self.mMessage = aMessage

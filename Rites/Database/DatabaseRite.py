@@ -15,7 +15,9 @@ class DatabaseRite(Rite):
                       DatabaseMessageProcessor)
 
         # The dictionary of received requests.
+        # TODO: Add perl's auto-vivification.
         self.mRecvReq = {}
+        self.mRecvReq['Command_DescribeCrittwork_Req'  ] = {}
         self.mRecvReq['Command_DetermineGraphCycle_Req'] = {}
         self.mRecvReq['Command_DetermineWorkCycle_Req' ] = {}
         self.mRecvReq['Command_LoadGraphAndWork_Req'   ] = {}
