@@ -1,11 +1,5 @@
-"""The broadcast daemon."""
-
-# TODO: Should abstract from the transport as well.
-
 import logging
 import threading
-# TODO: Import of time should not be needed.
-import time
 import zmq
 
 from Critter.PostOffice import MessageDecoder
@@ -13,23 +7,10 @@ from Queue              import Queue
 
 logging.basicConfig(format='[%(asctime)s][%(threadName)15s][%(levelname)8s] - %(message)s')
 
+# TODO: Should abstract from the transport as well.
+
 class Publisher(threading.Thread):
-    """The publisher of broadcast daemon.
-
-    Attributes:
-        mLogger:          The logger.
-        mSocket:          The socket to subscribe.
-        mBroadcastDaemon: The broadcast daemon.
-
-    """
-
     def __init__(self, aBroadcastDaemon):
-        """Initializes the publisher.
-
-        Arguments:
-            aBroadcastDaemon: The broadcast daemon.
-
-        """
         self.mLogger = logging.getLogger('Publisher')
         self.mLogger.setLevel(logging.DEBUG)
 
@@ -42,11 +23,6 @@ class Publisher(threading.Thread):
         threading.Thread.__init__(self, name='Publisher')
 
     def run(self):
-        """Starts the main loop of the publisher.
-
-        Gets bytes from the queue sends it. Repeats forever.
-
-        """
         #
         # A simple performance test on i7 4.2 GHz has shown that if each message were decoded 1000 times,
         # then it would be too much for Crittwork of 5 elements and there would be delays. However, for now we will
@@ -65,22 +41,7 @@ class Publisher(threading.Thread):
                 self.mBroadcastDaemon.mResponder.respond(bytesRead)
 
 class Subscriber(threading.Thread):
-    """The subscriber of broadcast daemon.
-
-    Attributes:
-        mLogger:          The logger.
-        mSocket:          The socket to subscribe.
-        mBroadcastDaemon: The broadcast daemon.
-
-    """
-
     def __init__(self, aBroadcastDaemon):
-        """Initializes the subscriber.
-
-        Arguments:
-            aBroadcastDaemon: The broadcast daemon.
-
-        """
         self.mLogger = logging.getLogger('Subscriber')
         self.mLogger.setLevel(logging.DEBUG)
 
@@ -94,11 +55,6 @@ class Subscriber(threading.Thread):
         threading.Thread.__init__(self, name='Subscriber')
 
     def run(self):
-        """Starts the main loop of the subscriber.
-
-        Receives bytes from the socket and puts them it into the queue. Repeats forever.
-
-        """
         while True:
             bytesRead = self.mSocket.recv()
             self.mBroadcastDaemon.mQueue.put(bytesRead)
