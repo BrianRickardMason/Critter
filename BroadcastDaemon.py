@@ -11,9 +11,6 @@ logging.basicConfig(format='[%(asctime)s][%(threadName)15s][%(levelname)8s] - %(
 
 class Publisher(threading.Thread):
     def __init__(self, aBroadcastDaemon):
-        self.mLogger = logging.getLogger('Publisher')
-        self.mLogger.setLevel(logging.DEBUG)
-
         self.mBroadcastDaemon = aBroadcastDaemon
 
         self.mSocket = aBroadcastDaemon.mCtx.socket(zmq.PUB)
@@ -42,9 +39,6 @@ class Publisher(threading.Thread):
 
 class Subscriber(threading.Thread):
     def __init__(self, aBroadcastDaemon):
-        self.mLogger = logging.getLogger('Subscriber')
-        self.mLogger.setLevel(logging.DEBUG)
-
         self.mBroadcastDaemon = aBroadcastDaemon
 
         self.mSocket = aBroadcastDaemon.mCtx.socket(zmq.SUB)
@@ -61,9 +55,6 @@ class Subscriber(threading.Thread):
 
 class Responder(threading.Thread):
     def __init__(self, aBroadcastDaemon):
-        self.mLogger = logging.getLogger('Responder')
-        self.mLogger.setLevel(logging.DEBUG)
-
         self.mBroadcastDaemon = aBroadcastDaemon
 
         self.mSocket = aBroadcastDaemon.mCtx.socket(zmq.PAIR)
