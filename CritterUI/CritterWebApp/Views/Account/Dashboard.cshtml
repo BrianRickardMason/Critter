@@ -1,0 +1,66 @@
+﻿@{    
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Dashboard</h2>
+<div class="row-fluid">
+    <div class="span9">
+        <h3>Time Line</h3>
+        <div class="row-fluid">
+            <div class="well alert-error">
+                <div class="span2">
+                    <p><strong>@DateTime.Now</strong></p>
+                </div>
+                <div class="span9">
+                    <p>Buid Fail</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-fluid">
+            <div class="well alert-info">
+                <div class="span2">
+                    <p><strong>@DateTime.Now</strong></p>
+                </div>
+                <div class="span9">
+                    <p>Tests: 10 Success | 2 Fails</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-fluid">
+            <div class="well alert-success">
+                <div class="span2">
+                    <p><strong>@DateTime.Now</strong></p>
+                </div>
+                <div class="span9">
+                    <p>Build success</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="span3">
+        <h3>Your Account</h3>
+        <div class="row-fluid">
+            <div class="span7">
+                <address>
+                  <strong>Critter User</strong><br>
+                  795 Folsom Ave, Suite 600<br>
+                  San Francisco, CA 94107<br>
+                  <abbr title="Phone">P:</abbr> (123) 456-7890<br />
+                  <abbr title="Email">E:</abbr> user@critter.com
+                </address>
+            </div>
+            <div class="span5">
+                <ul class="thumbnails">
+                    <li class="span12">
+                        <a href="#" class="thumbnail">
+                            <img src="http://placehold.it/140x120" alt="">
+                        </a>
+                    </li>            
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

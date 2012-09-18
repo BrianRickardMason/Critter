@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title - Critter</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/Content/bootstrap.css")
+        @Styles.Render("~/Content/css")        
+        @Scripts.Render("~/bundles/modernizr")
+    </head>
+    <body>
+        <header>            
+            <div id="main-navigation" class="navbar navbar-inverse navbar-static-top">
+                <div class="navbar-inner">
+                    <a class="project-name brand" href="/"></a>
+                     @Html.MvcSiteMap().Menu(false, true, false)
+                    <div class="btn-group pull-right">
+                      <button class="btn btn-danger"><i class="icon-user"></i> User Name</button>
+                      <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><a href="#">Account</a></li>
+                        <li>@Html.ActionLink("Login","Login","Membership")</li>
+                        <li><a href="#">Logout</a></li>
+                      </ul>
+                    </div>
+                </div>
+            </div>    
+        </header>
+        <div id="body" class="main-content">            
+            <section class="container-fluid">
+                <div class="row-fluid">
+                    @Html.MvcSiteMap().SiteMapPath()
+                </div>               
+                <div class="row-fluid">
+                    @RenderBody()      
+               </div>
+                 
+            </section>
+        </div>
+        <footer>
+            
+        </footer>
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+    </body>
+</html>
