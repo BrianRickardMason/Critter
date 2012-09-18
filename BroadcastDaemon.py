@@ -151,9 +151,9 @@ class BroadcastDaemon(object):
         self.mResponder.start()
 
     def run(self):
-        while True:
-            # FIXME: Do it somehow different.
-            time.sleep(1)
+        self.mPublisher.join()
+        self.mSubscriber.join()
+        self.mResponder.join()
 
 if __name__ == "__main__":
     broadcastDaemon = BroadcastDaemon()
