@@ -127,23 +127,7 @@ class Responder(threading.Thread):
         self.mSocket.send(aBytes)
 
 class BroadcastDaemon(object):
-    """The broadcast daemon.
-
-    Attributes:
-        mCtx:        The 0MQ context.
-        mQueue:      The queue of read bytes.
-        mSubscriber: The subscriber.
-        mPublisher:  The publisher.
-
-    """
-
     def __init__(self):
-        """Initializes the post office.
-
-        Arguments:
-            aCritter: The critter.
-
-        """
         self.mLogger = logging.getLogger('BroadcastDaemon')
         self.mLogger.setLevel(logging.DEBUG)
 
@@ -151,19 +135,16 @@ class BroadcastDaemon(object):
 
         self.mQueue = Queue()
 
-        # Spawning the publisher.
         self.mLogger.debug("Spawning the publisher.")
         self.mPublisher = Publisher(self)
         self.mPublisher.setDaemon(True)
         self.mPublisher.start()
 
-        # Spawning the subscriber.
         self.mLogger.debug("Spawning the subscriber.")
         self.mSubscriber = Subscriber(self)
         self.mSubscriber.setDaemon(True)
         self.mSubscriber.start()
 
-        # Spawning the responder.
         self.mLogger.debug("Spawning the responder.")
         self.mResponder = Responder(self)
         self.mResponder.setDaemon(True)
