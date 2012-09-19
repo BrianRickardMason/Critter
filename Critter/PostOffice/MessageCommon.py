@@ -1,9 +1,3 @@
-"""The common part of message decoder/encoder.
-
-Contains the identifiers of messages.
-
-"""
-
 # TODO: Organize ids.
 
 COMMAND_DETERMINE_GRAPH_CYCLE_REQ  =  2
