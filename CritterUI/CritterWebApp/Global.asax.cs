@@ -25,10 +25,10 @@ namespace CritterWebApp
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
             //Creating dirs
-            if(!Directory.Exists("Messages"))
-            {
-                Directory.CreateDirectory("Messages");
-            }
+            //if(!Directory.Exists("Messages"))
+            //{
+            //    Directory.CreateDirectory("Messages");
+            //}
             
         }
 
