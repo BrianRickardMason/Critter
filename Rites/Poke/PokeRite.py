@@ -2,12 +2,16 @@ import time
 
 import Rites.RiteCommon
 
-from Rites.Poke.PokeMessageProcessor import PokeMessageProcessor
-from Rites.Rite                      import Rite
+from Critter.PostOffice.SubscriptionChannels import SUBSCRIPTION_CHANNEL_ALL
+from Rites.Poke.PokeMessageProcessor         import PokeMessageProcessor
+from Rites.Rite                              import Rite
 
 class PokeRite(Rite):
     def __init__(self, aCritter, aSettings, aPostOffice):
         Rite.__init__(self, aCritter, aSettings, aPostOffice, Rites.RiteCommon.POKE, PokeMessageProcessor)
+
+        # Set subscription channels.
+        self.mPostOffice.addSubscriptionChannel(SUBSCRIPTION_CHANNEL_ALL)
 
     def run(self):
         while True:

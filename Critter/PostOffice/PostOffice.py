@@ -146,5 +146,11 @@ class PostOffice(object):
     def putMessage(self, aRite, aMessage, aPriority=PRIORITY_DEFAULT):
         self.mRiteConnector.putMessage(aRite, aMessage, aPriority)
 
+    def addSubscriptionChannel(self, aSubscriptionChannel):
+        self.mTransport.addSubscriptionChannel(aSubscriptionChannel)
+
+    def removeSubscriptionChannel(self, aSubscriptionChannel):
+        self.mTransport.removeSubscriptionChannel(aSubscriptionChannel)
+
     def getCorrespondingSubscriptionChannel(self, aMessage):
         return SUBSCRIPTION_CHANNEL_ALL

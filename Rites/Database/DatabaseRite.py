@@ -2,6 +2,7 @@ import time
 
 import Rites.RiteCommon
 
+from Critter.PostOffice.SubscriptionChannels import SUBSCRIPTION_CHANNEL_ALL
 from Rites.Database.DatabaseMessageProcessor import DatabaseMessageProcessor
 from Rites.Rite                              import Rite
 
@@ -13,6 +14,9 @@ class DatabaseRite(Rite):
                       aPostOffice,
                       Rites.RiteCommon.DATABASE,
                       DatabaseMessageProcessor)
+
+        # Set subscription channels.
+        self.mPostOffice.addSubscriptionChannel(SUBSCRIPTION_CHANNEL_ALL)
 
         # The dictionary of received requests.
         # TODO: Add perl's auto-vivification.

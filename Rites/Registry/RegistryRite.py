@@ -3,6 +3,7 @@ import time
 
 import Rites.RiteCommon
 
+from Critter.PostOffice.SubscriptionChannels import SUBSCRIPTION_CHANNEL_ALL
 from Rites.Registry.RegistryCommands         import RegistryCommand_Auto_CheckHeartbeats
 from Rites.Registry.RegistryMessageProcessor import RegistryMessageProcessor
 from Rites.Rite                              import Rite
@@ -18,6 +19,8 @@ class RegistryRite(Rite):
                       Rites.RiteCommon.REGISTRY,
                       RegistryMessageProcessor)
 
+        # Set subscription channels.
+        self.mPostOffice.addSubscriptionChannel(SUBSCRIPTION_CHANNEL_ALL)
 
         # The dictionary of received requests.
         self.mRecvReq = {}

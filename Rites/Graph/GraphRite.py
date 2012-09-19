@@ -2,9 +2,10 @@ import time
 
 import Rites.RiteCommon
 
-from Rites.Graph.GraphCommands         import GraphCommand_Auto_LoadGraphAndWork
-from Rites.Graph.GraphMessageProcessor import GraphMessageProcessor
-from Rites.Rite                        import Rite
+from Critter.PostOffice.SubscriptionChannels import SUBSCRIPTION_CHANNEL_ALL
+from Rites.Graph.GraphCommands               import GraphCommand_Auto_LoadGraphAndWork
+from Rites.Graph.GraphMessageProcessor       import GraphMessageProcessor
+from Rites.Rite                              import Rite
 
 class GraphRite(Rite):
     def __init__(self, aCritter, aSettings, aPostOffice):
@@ -15,8 +16,11 @@ class GraphRite(Rite):
                       Rites.RiteCommon.GRAPH,
                       GraphMessageProcessor)
 
-        # The state of the rite.
+        # Set the initial state of the rite.
         self.mState = Rites.RiteCommon.STATE_STARTING
+
+        # Set subscription channels.
+        self.mPostOffice.addSubscriptionChannel(SUBSCRIPTION_CHANNEL_ALL)
 
         # The dictionary of received requests.
         self.mRecvReq = {}

@@ -2,6 +2,7 @@ import time
 
 import Rites.RiteCommon
 
+from Critter.PostOffice.SubscriptionChannels   import SUBSCRIPTION_CHANNEL_ALL
 from Rites.Rite                                import Rite
 from Rites.Scheduler.SchedulerCommands         import SchedulerCommand_Auto_CheckSchedule
 from Rites.Scheduler.SchedulerCommands         import SchedulerCommand_Auto_LoadGraphAndWork
@@ -16,8 +17,11 @@ class SchedulerRite(Rite):
                       Rites.RiteCommon.SCHEDULER,
                       SchedulerMessageProcessor)
 
-        # The state of the rite.
+        # Set the initial state of the rite.
         self.mState = Rites.RiteCommon.STATE_STARTING
+
+        # Set subscription channels.
+        self.mPostOffice.addSubscriptionChannel(SUBSCRIPTION_CHANNEL_ALL)
 
         # The dictionary of sent requests.
         self.mSentReq = {}

@@ -2,13 +2,14 @@ import time
 
 import Rites.RiteCommon
 
-from Critter.PostOffice.Priorities         import PRIORITY_FAULT
-from Critter.PostOffice.Priorities         import PRIORITY_RECOVERY
-from Rites.Balance.BalanceCommands         import BalanceCommand_Auto_LoadGraphAndWork
-from Rites.Balance.BalanceCommands         import BalanceCommand_Fault_HardTimeout
-from Rites.Balance.BalanceCommands         import BalanceCommand_Fault_SoftTimeout
-from Rites.Balance.BalanceMessageProcessor import BalanceMessageProcessor
-from Rites.Rite                            import Rite
+from Critter.PostOffice.Priorities           import PRIORITY_FAULT
+from Critter.PostOffice.Priorities           import PRIORITY_RECOVERY
+from Critter.PostOffice.SubscriptionChannels import SUBSCRIPTION_CHANNEL_ALL
+from Rites.Balance.BalanceCommands           import BalanceCommand_Auto_LoadGraphAndWork
+from Rites.Balance.BalanceCommands           import BalanceCommand_Fault_HardTimeout
+from Rites.Balance.BalanceCommands           import BalanceCommand_Fault_SoftTimeout
+from Rites.Balance.BalanceMessageProcessor   import BalanceMessageProcessor
+from Rites.Rite                              import Rite
 
 class BalanceRite(Rite):
     def __init__(self, aCritter, aSettings, aPostOffice):
@@ -19,8 +20,11 @@ class BalanceRite(Rite):
                       Rites.RiteCommon.BALANCE,
                       BalanceMessageProcessor)
 
-        # The state of the rite.
+        # Set the initial state of the rite.
         self.mState = Rites.RiteCommon.STATE_STARTING
+
+        # Set subscription channels.
+        self.mPostOffice.addSubscriptionChannel(SUBSCRIPTION_CHANNEL_ALL)
 
         # The dictionary of received requests.
         self.mRecvReq = {}

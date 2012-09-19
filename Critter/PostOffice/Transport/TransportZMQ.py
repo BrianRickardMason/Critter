@@ -14,8 +14,6 @@ class TransportZMQ(Transport):
 
         self.mSocketSubscriber = self.mCtx.socket(zmq.SUB)
         self.mSocketSubscriber.connect(aAddressSubscriber)
-        # TODO: This has to be managed dynamically (dependent on the available rites).
-        self.mSocketSubscriber.setsockopt(zmq.SUBSCRIBE, '')
 
     def sendMessage(self, aSubscriptionChannel, aMessage):
         try:
@@ -25,3 +23,9 @@ class TransportZMQ(Transport):
 
     def recvMessage(self):
         return self.mSocketSubscriber.recv_multipart()
+
+    def addSubscriptionChannel(self, aSubscriptionChannel):
+        self.mSocketSubscriber.setsockopt(zmq.SUBSCRIBE, aSubscriptionChannel)
+
+    def removeSubscriptionChannel(self, aSubscriptionChannel):
+        self.mSocketSubscriber.setsockopt(zmq.UNSUBSCRIBE, aSubscriptionChannel)

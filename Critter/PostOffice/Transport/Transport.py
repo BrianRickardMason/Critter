@@ -7,3 +7,9 @@ class Transport(object):
 
     def recvMessage(self):
         raise NotImplementedError
+
+    def addSubscriptionChannel(self, aSubscriptionChannel):
+        raise NotImplementedError
+
+    def removeSubscriptionChannel(self, aSubscriptionChannel):
+        raise NotImplementedError

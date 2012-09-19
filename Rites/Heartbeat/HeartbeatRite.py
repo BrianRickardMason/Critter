@@ -2,6 +2,7 @@ import time
 
 import Rites.RiteCommon
 
+from Critter.PostOffice.SubscriptionChannels   import SUBSCRIPTION_CHANNEL_ALL
 from Rites.Heartbeat.HeartbeatMessageProcessor import HeartbeatMessageProcessor
 from Rites.Rite                                import Rite
 
@@ -29,6 +30,9 @@ class HeartbeatRite(Rite):
                       aPostOffice,
                       Rites.RiteCommon.HEARTBEAT,
                       HeartbeatMessageProcessor)
+
+        # Set subscription channels.
+        self.mPostOffice.addSubscriptionChannel(SUBSCRIPTION_CHANNEL_ALL)
 
     def run(self):
         """Starts the main loop of the rite."""
