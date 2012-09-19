@@ -80,7 +80,7 @@ class PostOffice(object):
         self.mAnnouncementSubscriber.setDaemon(True)
 
         # Spawning the message router.
-        # FIXME: Jealous class.
+        # FIXME: Jealous.
         self.mLogger.debug("Spawning the message router.")
         self.mMessageRouter = MessageRouter(self)
         self.mMessageRouter.setDaemon(True)
@@ -107,7 +107,7 @@ class PostOffice(object):
         return self.mMessageEncoder.putIntoAnEnvelope(aMessage)
 
     def putIncomingAnnouncement(self, aMessage):
-        """Puts an incoming announcement (in the form of a message class) into the queue.
+        """Puts an incoming announcement (in the form of a message) into the queue.
 
         Arguments:
             aMessage The message to be processed.
@@ -116,7 +116,7 @@ class PostOffice(object):
         self.mIncomingAnnouncementsQueue.put(aMessage)
 
     def putOutgoingAnnouncement(self, aMessage):
-        """Puts an outgoing announcement (in the form of a message class) into the queue.
+        """Puts an outgoing announcement (in the form of a message) into the queue.
 
         Arguments:
             aMessage The message to be sent.
@@ -125,7 +125,7 @@ class PostOffice(object):
         self.mOutgoingAnnouncementsQueue.put(aMessage)
 
     def getIncomingAnnouncement(self):
-        """Gets an incoming announcement (in the form of a message class) from the queue.
+        """Gets an incoming announcement (in the form of a message) from the queue.
 
         Returns The message to be processed.
 
@@ -133,7 +133,7 @@ class PostOffice(object):
         return self.mIncomingAnnouncementsQueue.get()
 
     def getOutgoingAnnouncement(self):
-        """Gets an outgoing announcement (in the form of a message class) from the queue.
+        """Gets an outgoing announcement (in the form of a message) from the queue.
 
         Returns The message to be sent.
 

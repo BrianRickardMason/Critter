@@ -14,31 +14,13 @@ class MessageEncoder(object):
 
     """
 
-    def encode(self, aMessage):
-        """Encodes a message based upon the dictionary.
-
-        Arguments:
-            aMessage: The data.
-
-        Returns:
-            A message.
-
-        """
-        classToBeInstantiated = getattr(Messages_pb2, aMessage['messageName'])
+    def encode(self, aMessageDictionary):
+        classToBeInstantiated = getattr(Messages_pb2, aMessageDictionary['messageName'])
         message = classToBeInstantiated()
-        self.__setMessageField(message, aMessage)
+        self.__setMessageField(message, aMessageDictionary)
         return message
 
     def putIntoAnEnvelope(self, aMessage):
-        """A method needed to have one interface for creating messages everywhere.
-
-        Arguments:
-            aMessage: The message.
-
-        Returns:
-            The message in an envelope.
-
-        """
         try:
             if False: pass
             elif aMessage.messageName == 'Announcement_Heartbeat':          return self.__putIntoAnEnvelope(ANNOUNCEMENT_HEARTBEAT, aMessage)
@@ -75,40 +57,23 @@ class MessageEncoder(object):
             print e
             sys.exit(1)
 
-    def __setMessageField(self, aPayload, aDictionary):
-        """Recursively sets a message field.
-
-        Arguments:
-            aPayload:    The payload holding the message.
-            aDictionary: The dictionary describing the message.
-
-        """
-        for key in aDictionary.iterkeys():
-            if type(aDictionary[key]) is dict:
+    def __setMessageField(self, aPayload, aMessageDictionary):
+        for key in aMessageDictionary.iterkeys():
+            if type(aMessageDictionary[key]) is dict:
                 payload    = getattr(aPayload, key)
-                dictionary = aDictionary[key]
+                dictionary = aMessageDictionary[key]
                 self.__setMessageField(payload, dictionary)
-            elif type(aDictionary[key]) is list:
+            elif type(aMessageDictionary[key]) is list:
                 payload    = getattr(aPayload, key)
-                dictionary = aDictionary[key]
+                dictionary = aMessageDictionary[key]
                 for item in dictionary:
                     tmpPayload = payload.add()
                     self.__setMessageField(tmpPayload, item)
             else:
-                setattr(aPayload, key, aDictionary[key])
+                setattr(aPayload, key, aMessageDictionary[key])
 
-    def __putIntoAnEnvelope(self, aId, aPayload):
-        """Puts the payload into an envelope.
-
-        Arguments:
-            aId:      The id of a header.
-            aPayload: The payload.
-
-        Returns:
-            The envelope.
-
-        """
+    def __putIntoAnEnvelope(self, aId, aMessage):
         envelope = Messages_pb2.Envelope()
         envelope.header.id       = aId
-        envelope.payload.payload = aPayload.SerializeToString()
+        envelope.payload.payload = aMessage.SerializeToString()
         return envelope

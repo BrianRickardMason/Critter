@@ -41,9 +41,9 @@ class AnnouncementSubscriber(threading.Thread):
         """
         while True:
             # FIXME: A jealous class.
-            [subscriptionChannel, bytesRead] = self.mPostOffice.mTransport.recvMessage()
+            [subscriptionChannel, serializedEnvelope] = self.mPostOffice.mTransport.recvMessage()
 
-            message = self.mMessageDecoder.decode(bytesRead)
+            message = self.mMessageDecoder.decode(serializedEnvelope)
 
             if message:
                 self.mPostOffice.putIncomingAnnouncement(message)

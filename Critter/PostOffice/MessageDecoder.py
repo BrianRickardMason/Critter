@@ -11,15 +11,15 @@ class MessageDecoder(object):
 
     """
 
-    def decode(self, aBytesRead):
-        """Decodes the bytes into the form of a message.
+    def decode(self, aSerializedEnvelope):
+        """Decodes the serialized envelope into the form of a message.
 
-        Returns a class representing the message, None if decode error happened.
+        Returns a message, None if decode error happened.
 
         """
         envelope = Messages_pb2.Envelope()
         # TODO: Protect if from the garbage.
-        envelope.ParseFromString(aBytesRead)
+        envelope.ParseFromString(aSerializedEnvelope)
 
         # TODO: Clean me up fast!
 
