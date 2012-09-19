@@ -14,6 +14,7 @@ class TransportZMQ(Transport):
 
         self.mSocketSubscriber = self.mCtx.socket(zmq.SUB)
         self.mSocketSubscriber.connect(aAddressSubscriber)
+        # TODO: This has to be managed dynamically (dependent on the available rites).
         self.mSocketSubscriber.setsockopt(zmq.SUBSCRIBE, '')
 
     def sendMessage(self, aSubscriptionChannel, aMessage):
