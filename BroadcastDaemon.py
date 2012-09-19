@@ -2,8 +2,9 @@ import logging
 import threading
 import zmq
 
-from Critter.PostOffice import MessageDecoder
-from Queue              import Queue
+from Critter.PostOffice.SubscriptionChannels import SUBSCRIPTION_CHANNEL_ALL
+from Critter.PostOffice                      import MessageDecoder
+from Queue                                   import Queue
 
 logging.basicConfig(format='[%(asctime)s][%(threadName)15s][%(levelname)8s] - %(message)s')
 
@@ -29,8 +30,8 @@ class Publisher(threading.Thread):
         messageDecoder = MessageDecoder.MessageDecoder()
 
         while True:
-            bytesRead = self.mBroadcastDaemon.mQueue.get()
-            self.mSocket.send(bytesRead)
+            [subscriptionChannel, bytesRead] = self.mBroadcastDaemon.mQueue.get()
+            self.mSocket.send_multipart([subscriptionChannel, bytesRead])
 
             message = messageDecoder.decode(bytesRead)
             # TODO: Implement me in a more beautiful way.
@@ -50,8 +51,8 @@ class Subscriber(threading.Thread):
 
     def run(self):
         while True:
-            bytesRead = self.mSocket.recv()
-            self.mBroadcastDaemon.mQueue.put(bytesRead)
+            [subscriptionChannel, bytesRead] = self.mSocket.recv_multipart()
+            self.mBroadcastDaemon.mQueue.put([subscriptionChannel, bytesRead])
 
 class Responder(threading.Thread):
     def __init__(self, aBroadcastDaemon):
@@ -68,7 +69,8 @@ class Responder(threading.Thread):
             # TODO: Add registration of requests (so that you'd know whom to answer).
             # TODO: Discuss the sequence of messages.
             bytesRead = self.mSocket.recv()
-            self.mBroadcastDaemon.mQueue.put(bytesRead)
+            # FIXME: Remove the hardcoded value of the subscription channel.
+            self.mBroadcastDaemon.mQueue.put([SUBSCRIPTION_CHANNEL_ALL, bytesRead])
 
     def respond(self, aBytes):
         self.mSocket.send(aBytes)

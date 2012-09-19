@@ -3,7 +3,8 @@
 import logging
 import threading
 
-from Transport.Transport import TransportError
+from Critter.PostOffice.SubscriptionChannels import SUBSCRIPTION_CHANNEL_ALL
+from Transport.Transport                     import TransportError
 
 logging.basicConfig(format='[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
 
@@ -45,6 +46,7 @@ class AnnouncementPublisher(threading.Thread):
 
             try:
                 # FIXME: A jealous class.
-                self.mPostOffice.mTransport.sendAnnouncement(message)
+                # TODO: Remove the hardcoded value of the subscription channel.
+                self.mPostOffice.mTransport.sendMessage(SUBSCRIPTION_CHANNEL_ALL, message)
             except TransportError, e:
                 self.mLogger.warn("An error occurred while sending the message: %s." % e)

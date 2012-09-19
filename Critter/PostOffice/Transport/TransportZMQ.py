@@ -1,59 +1,26 @@
-"""The 0MQ based transport."""
-
 import zmq
 
 from Transport import Transport
 from Transport import TransportError
 
 class TransportZMQ(Transport):
-    """The 0MQ based transport layer.
-
-    Attributes:
-        mCtx:                          The ZMQ context.
-        mSocketAnnouncementSubscriber: The socket of announcement subscriber.
-        mSocketAnnouncementPublisher:  The socket of announcement publisher.
-
-    """
-
     def __init__(self, aAddressPublisher, aAddressSubscriber):
-        """Initializes the 0MQ transport layer.
-
-        Arguments:
-            aAddressPublisher:  The address that announcements are sent to (in a form of string).
-            aAddressSubscriber: The address that announcements come from (in a form of string).
-
-        """
         # TODO: Add error handling.
         self.mCtx = zmq.Context()
 
-        self.mSocketAnnouncementPublisher = self.mCtx.socket(zmq.PUB)
-        self.mSocketAnnouncementPublisher.setsockopt(zmq.LINGER, 0)   # Discard unsent messages on close.
-        self.mSocketAnnouncementPublisher.connect(aAddressPublisher)
+        self.mSocketPublisher = self.mCtx.socket(zmq.PUB)
+        self.mSocketPublisher.setsockopt(zmq.LINGER, 0)   # Discard unsent messages on close.
+        self.mSocketPublisher.connect(aAddressPublisher)
 
-        self.mSocketAnnouncementSubscriber = self.mCtx.socket(zmq.SUB)
-        self.mSocketAnnouncementSubscriber.connect(aAddressSubscriber)
-        self.mSocketAnnouncementSubscriber.setsockopt(zmq.SUBSCRIBE, '')
+        self.mSocketSubscriber = self.mCtx.socket(zmq.SUB)
+        self.mSocketSubscriber.connect(aAddressSubscriber)
+        self.mSocketSubscriber.setsockopt(zmq.SUBSCRIBE, '')
 
-    def sendAnnouncement(self, aMessage):
-        """Sends an announcement that should reach all members of CrittWork.
-
-        Arguments:
-            aMessage: The message.
-
-        Raises:
-            TransportError: if something went wrong while sending.
-
-        """
+    def sendMessage(self, aSubscriptionChannel, aMessage):
         try:
-            self.mSocketAnnouncementPublisher.send(aMessage)
+            self.mSocketPublisher.send_multipart([aSubscriptionChannel, aMessage])
         except zmq.ZMQError:
             raise TransportError
 
-    def recvAnnouncement(self):
-        """Receives an announcement that was broadcasted.
-
-        Returns:
-            The bytes read.
-
-        """
-        return self.mSocketAnnouncementSubscriber.recv()
+    def recvMessage(self):
+        return self.mSocketSubscriber.recv_multipart()
