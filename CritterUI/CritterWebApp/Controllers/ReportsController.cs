@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CritterWebApp.Services;
+using CritterWebApp.ViewModels;
 
 namespace CritterWebApp.Controllers
 {
@@ -14,10 +15,18 @@ namespace CritterWebApp.Controllers
 
         public ActionResult Index()
         {
+            DateTime start = DateTime.Now;
+
             ViewBag.Title = this.PageTitle;
             CritterConnector Conector = new CritterConnector();
-            Conector.PokeCreaterNetwork();
-            return View();
+            string message =  Conector.PokeCreaterNetwork();
+            ReportsIndexViewModel viewModel = new ReportsIndexViewModel();
+            viewModel.Message = message;            
+
+            var ts = DateTime.Now.Subtract(start).TotalSeconds;
+            viewModel.ExecutionTime = ts;
+
+            return View(viewModel);
         }
 
     }

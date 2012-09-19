@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Critter.Messages.Messages" Collapsed="true">
+    <Position X="4" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>nErAAgAgA2EA0AlQUIKIAAAyBEUCginQQgASBAAAgMc=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Header" Collapsed="true">
+    <Position X="2.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>VGECABAAAEAAACAAEAAgAAEAAAABAAIwEAAADAAAggA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Payload" Collapsed="true">
+    <Position X="5.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>VGEAQAAAAOAAAAAAAAAgAAEAAAABAAJwAAAAjAEAgIA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Envelope" Collapsed="true">
+    <Position X="0.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>VGEAAAAAIEIAAAAAAAAwAAGAgAJZAAIwAAAgDAAAgIA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Command_Election_Req" Collapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>XGEAADQAAUEgAAAAAAAoIBEABQABAAIwAAABDQAAhAA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Command_Election_Res" Collapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>XGEAADAAAcEgAAAAAAAoABEABQABAAIwAAABDQEAhAA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Command_ExecuteGraph_Req" Collapsed="true">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>VmEAACAACEBgCIAAAAAgAAECBABBAAowAAAFDAAIhAA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Command_ExecuteGraph_Res" Collapsed="true">
+    <Position X="9.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>VGEAACAAAEAgCAAAAAAgAAECBAABAAIwCAAFDAAIpAA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Command_DetermineGraphCycle_Req" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>VGEAACAACEBgCKAAAAAgAAECBABBAAIwAAAFDEAIhAA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Command_DetermineGraphCycle_Res" Collapsed="true">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>VGMAACAACEBgCKAAAAAgIAECBABBAgIwAAAFDEAIhAg=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Command_OrderWorkExecution_Req" Collapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>VGMAACBACEBgCIgQgAAgoIECBABBAgIwACAljAAIhJg=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Command_OrderWorkExecution_Res" Collapsed="true">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>VGMAACBACGBgCIgQgAAgoIEKBABBAgIwAAAljAAIhBg=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Command_ExecuteWork_Req" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>VGMAACBECEBgCIgQoAAgoIEDBABBAgI4BAAljQgIhBg=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Command_ExecuteWork_Res" Collapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>VGMAACBACEBgCIgQgAAgoJECBABDAgIwAAAljAAIhBg=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Command_DetermineWorkCycle_Req" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>VGMAACBACEBgCIoQgAAgoIECBABBAgIwAAAljAAIhBg=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Command_DetermineWorkCycle_Res" Collapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>VGMIACBgCEBgCKgQgAAgoIECBABFAgIwAAAljAAIhBg=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Data_Graph" Collapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>VGEAAAAACEBAAIAAAAIgAAEAAABBAAIwAAEADAAAgAA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Data_GraphDetails" Collapsed="true">
+    <Position X="2.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>1GUAAACMCEBgAIABIAAgBAEAAADBAAIxAAAADAAAgAA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Data_Work" Collapsed="true">
+    <Position X="5.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>VGEAAAAgCEBAAIAQgAAgQIEABABBAAIwAAAADAAAgBA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Data_WorkDetails" Collapsed="true">
+    <Position X="7.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>1GUAQgAMAEIgEAARoAAgBIEABACBAIJxAAAADAAQgBA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Data_WorkPredecessor" Collapsed="true">
+    <Position X="9.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>VGEAAAAAAkAAAAAQgAAgAIEABJABAAI1EAAIDAAAgBA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Command_LoadGraphAndWork_Req" Collapsed="true">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>3GUAACAMCUAgAAABIAAoBBEABQCBAAIxAAABDAAAhAA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Command_LoadGraphAndWork_Res" Collapsed="true">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>XGHACaAAiUA0AAgAAAEoBBEABUABBQIwAAQBDAAAjAA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Command_LoadGraphDetails_Req" Collapsed="true">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>3GUAACAMAUAgAAABIAAoBBEAFQCBAAIxAAABLAAAhAA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Command_LoadGraphDetails_Res" Collapsed="true">
+    <Position X="9.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>XGEAICAAEVAgAAAAAAAoABEAFQADIAIwAAABLAAAhAA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Command_LoadWorkDetails_Req" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>3GUAACCMAUAgAAABIAAoBBEABYCBAAIxAAABDAAAhAA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Command_LoadWorkDetails_Res" Collapsed="true">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>XGEAACgCAUAgAAAAAAAoAJEgBQABAAIwACABDAAAhBA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Data_Rite" Collapsed="true">
+    <Position X="4" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>VGEAAAAAAEAACAAAACAgAAEAAAABCAIwAAAADAwAgAA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Announcement_Heartbeat" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>VGEAADAAAEEgAAoAAAAiAAEABAARAAIwAAARDQAAhAA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Command_PresentYourself_Req" Collapsed="true">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>3GUAADAMAUMgAAIBIAAoBBEABQCBAAIxAAABDQAAhAA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Command_PresentYourself_Res" Collapsed="true">
+    <Position X="9.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>XGEACDAAgUEgAAgAAACoABEABQABAAIwAEADDQAAhAA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Announcement_Poke" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>VGEAADAAAEEgAAAAAAAgAAEABAABAAIwAAQBDQAAhAA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Command_DescribeCrittwork_Req">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <NestedTypes>
+      <Class Name="Critter.Messages.Command_DescribeCrittwork_Req.Builder" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Messages\Messages.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>XGEAACAAAUAgAAAAAAAoABEABQABAAIwAIABDBAAhAA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Critter.Messages.Command_DescribeCrittwork_Res" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>XGEAAiAAAUIgEAAAAAAoABEgBQBBAAJwAAABDAAQhAA=</HashCode>
+      <FileName>Messages\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
