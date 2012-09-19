@@ -10,6 +10,7 @@ from MessageEncoder         import MessageEncoder
 from MessageRouter          import MessageRouter
 from Priorities             import PRIORITY_DEFAULT
 from RiteConnector          import RiteConnector
+from SubscriptionChannels   import *
 from Transport.TransportZMQ import TransportZMQ
 
 logging.basicConfig(format='[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
@@ -144,3 +145,6 @@ class PostOffice(object):
 
     def putMessage(self, aRite, aMessage, aPriority=PRIORITY_DEFAULT):
         self.mRiteConnector.putMessage(aRite, aMessage, aPriority)
+
+    def getCorrespondingSubscriptionChannel(self, aMessage):
+        return SUBSCRIPTION_CHANNEL_ALL

@@ -38,15 +38,28 @@ class AnnouncementPublisher(threading.Thread):
 
         """
         while True:
-            internalMessage = self.mPostOffice.getOutgoingAnnouncement()
+            # The message sending algorithm.
+            # 1. Get a message.
+            # 2. Put it into an envelope.
+            # 3. Serialize the envelope.
+            # 4. Find a corresponding subscription channel.
+            # 5. Send the subscription channel / serialized envelope pair.
 
-            envelope = self.mPostOffice.putIntoAnEnvelope(internalMessage)
+            # Step 1.
+            message = self.mPostOffice.getOutgoingAnnouncement()
 
-            message = envelope.SerializeToString()
+            # Step 2.
+            envelope = self.mPostOffice.putIntoAnEnvelope(message)
+
+            # Step 3.
+            serializedEnvelope = envelope.SerializeToString()
+
+            # Step 4.
+            subscriptionChannel = self.mPostOffice.getCorrespondingSubscriptionChannel(message)
 
             try:
+                # Step 5.
                 # FIXME: A jealous class.
-                # TODO: Remove the hardcoded value of the subscription channel.
-                self.mPostOffice.mTransport.sendMessage(SUBSCRIPTION_CHANNEL_ALL, message)
+                self.mPostOffice.mTransport.sendMessage(subscriptionChannel, serializedEnvelope)
             except TransportError, e:
                 self.mLogger.warn("An error occurred while sending the message: %s." % e)
