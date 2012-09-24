@@ -3,7 +3,6 @@ import xml.etree.ElementTree as ElementTree
 from subprocess import PIPE
 from subprocess import Popen
 
-# TODO: Remove Piewik and pseudo-integration.
 # TODO: Discuss about the SCM side of the project.
 # TODO: Discuss about the code review and quality.
 
