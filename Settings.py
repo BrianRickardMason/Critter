@@ -21,23 +21,23 @@ class Settings(object):
         # An empty dictionary for the beginning.
         self.mSettings = {}
 
-        # Read the manifest.
-        configParser = ConfigParser.RawConfigParser()
-        configParser.read('Manifest')
-
         # Put the maniest into the dictionary.
         # TODO: Auto-vivification needed (?)
         self.mSettings['crittwork'] = {}
         self.mSettings['crittwork']['policy'] = 'broker' # configParser.get('crittwork', 'policy')
 
-        self.mSettings['crittwork']['multicast'] = configParser.get('crittworkMulticast', 'multicast')
+        # TODO: Remove me!
+        self.mSettings['crittwork']['multicast'] = 'fake'
 
         self.mSettings['crittwork']['brokerPublisher']  = aBrokerPublisher
         self.mSettings['crittwork']['brokerSubscriber'] = aBrokerSubscriber
 
         self.mSettings['heartbeat'] = {}
-        self.mSettings['heartbeat']['period']   = int(configParser.get('heartbeat', 'period'))
-        self.mSettings['heartbeat']['maxDelay'] = int(configParser.get('heartbeat', 'maxDelay'))
+
+        # TODO: Remove me!
+        self.mSettings['heartbeat']['period']   = 1 # int(configParser.get('heartbeat', 'period'))
+        # TODO: Remove me!
+        self.mSettings['heartbeat']['maxDelay'] = 2 # int(configParser.get('heartbeat', 'maxDelay'))
 
         # TODO: Hardcoded for now.
         self.mSettings['logging'] = {}
