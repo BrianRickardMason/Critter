@@ -10,7 +10,7 @@ from subprocess import Popen
 # TODO: Error codes!
 class Crittstarter(object):
     def __init__(self):
-        self.mTree = ElementTree.parse('CrittworkPlan.xml')
+        self.mTree = ElementTree.parse('CrittWorkPlan.xml')
         self.mRoot = self.mTree.getroot()
         self.mSettings = {}
 
