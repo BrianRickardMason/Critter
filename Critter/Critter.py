@@ -30,21 +30,13 @@ class Critter(object):
     """
 
     # TODO: Remove aType.
-    def __init__(self, aType, aNick, aRites):
-        """Initializes the critter.
+    def __init__(self, aArgv):
+        self.mSettings = Settings(aArgv[3]+aArgv[4]+':'+aArgv[5], aArgv[6]+aArgv[7]+':'+aArgv[8])
 
-        Arguments:
-            aType:  The type of the critter.
-            aNick:  The nick of the critter.
-            aRites: The rites to be started (specific ones).
-
-        """
-        self.mSettings = Settings()
-
-        self.mLogger = logging.getLogger(aType)
+        self.mLogger = logging.getLogger(aArgv[1])
         self.mLogger.setLevel(self.mSettings.get('logging', 'level'))
 
-        self.mCrittnick = aNick
+        self.mCrittnick = aArgv[1]
 
         # TODO: Implement sequential starting (in order of dependencies).
         #       This is a matter of performing full startup procedure properly.
@@ -56,7 +48,8 @@ class Critter(object):
         self.mGracefulShutdown = False
 
         # FIXME: Rites should be started in appropriate sequence, according to dependencies.
-        rites = [Rites.RiteCommon.REGISTRY, Rites.RiteCommon.HEARTBEAT] + aRites
+        # TODO: Remove the hardcoded number of services.
+        rites = [Rites.RiteCommon.REGISTRY, Rites.RiteCommon.HEARTBEAT] + [aArgv[9]]
         for rite in rites:
             self.mLogger.info("Spawning the %s rite." % rite)
             if rite in self.mRites:

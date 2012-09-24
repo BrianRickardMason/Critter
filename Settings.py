@@ -16,7 +16,7 @@ class Settings(object):
     # TODO: Pass the path to the file as a parameter. If not provided then try to read the default file.
     # TODO: Should be somehow smarter.
 
-    def __init__(self):
+    def __init__(self, aBrokerPublisher, aBrokerSubscriber):
         """Initializes the settings."""
         # An empty dictionary for the beginning.
         self.mSettings = {}
@@ -28,12 +28,12 @@ class Settings(object):
         # Put the maniest into the dictionary.
         # TODO: Auto-vivification needed (?)
         self.mSettings['crittwork'] = {}
-        self.mSettings['crittwork']['policy'] = configParser.get('crittwork', 'policy')
+        self.mSettings['crittwork']['policy'] = 'broker' # configParser.get('crittwork', 'policy')
 
         self.mSettings['crittwork']['multicast'] = configParser.get('crittworkMulticast', 'multicast')
 
-        self.mSettings['crittwork']['brokerPublisher']  = configParser.get('crittworkBroker', 'brokerPublisher')
-        self.mSettings['crittwork']['brokerSubscriber'] = configParser.get('crittworkBroker', 'brokerSubscriber')
+        self.mSettings['crittwork']['brokerPublisher']  = aBrokerPublisher
+        self.mSettings['crittwork']['brokerSubscriber'] = aBrokerSubscriber
 
         self.mSettings['heartbeat'] = {}
         self.mSettings['heartbeat']['period']   = int(configParser.get('heartbeat', 'period'))
