@@ -2,8 +2,6 @@
 
 import logging
 
-import ConfigParser
-
 class Settings(object):
     """Holds the settings read from the manifest
 
