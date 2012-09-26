@@ -1,9 +1,3 @@
-"""The common part of rites.
-
-Contains the names of rites.
-
-"""
-
 # Names of the rites.
 BALANCE   = 'Balance'
 DATABASE  = 'Database'
