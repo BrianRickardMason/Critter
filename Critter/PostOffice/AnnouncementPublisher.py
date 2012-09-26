@@ -1,8 +1,7 @@
 import logging
 import threading
 
-from Critter.PostOffice.SubscriptionChannels import SUBSCRIPTION_CHANNEL_ALL
-from Transport.Transport                     import TransportError
+from Transport.Transport import TransportError
 
 logging.basicConfig(format='[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
 
