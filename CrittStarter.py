@@ -1,6 +1,5 @@
 import xml.etree.ElementTree as ElementTree
 
-from subprocess import PIPE
 from subprocess import Popen
 
 # TODO: Discuss about the SCM side of the project.
