@@ -17,7 +17,7 @@ class SchedulerCommand_Auto_CheckSchedule(object):
 class SchedulerCommand_Auto_CheckSchedule_Operable(object):
     def doExecute(self, aCommandProcessor):
         # FIXME: This simulates the need of graph execution.
-        if random.randint(1, 100) > 50:
+        if random.randint(1, 100) > 95:
             aCommandProcessor.mLogger.info("New graph execution needed.")
 
             graphNames = ['GraphName1', 'GraphName2', 'GraphName3', 'GraphName4']
