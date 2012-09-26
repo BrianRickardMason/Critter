@@ -4,8 +4,6 @@ import logging
 import threading
 import time
 
-logging.basicConfig(format='[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
-
 class CritterBehavior(threading.Thread):
     """The Critter's behavior.
 
@@ -24,7 +22,13 @@ class CritterBehavior(threading.Thread):
         """
         self.mCritter = aCritter
 
-        self.mLogger = logging.getLogger('CritterBehavior')
+        # Configuring the logger.
+        self.mLogger = logging.getLogger(self.__class__.__name__)
+        self.mLogger.propagate = False
+        handler = logging.FileHandler('/tmp/' + self.mCritter.mCrittnick + '.log')
+        formatter = logging.Formatter('[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
+        handler.setFormatter(formatter)
+        self.mLogger.addHandler(handler)
         self.mLogger.setLevel(self.mCritter.mSettings.get('logging', 'level'))
 
         threading.Thread.__init__(self, name='CritterBehavior')

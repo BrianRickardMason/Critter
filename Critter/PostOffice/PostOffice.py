@@ -13,8 +13,6 @@ from RiteConnector          import RiteConnector
 from SubscriptionChannels   import *
 from Transport.TransportZMQ import TransportZMQ
 
-logging.basicConfig(format='[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
-
 class PostOffice(object):
     """The PostOffice that handles all the communication.
 
@@ -43,7 +41,15 @@ class PostOffice(object):
 
         settings = self.mCritter.getSettings()
 
-        self.mLogger = logging.getLogger('PostOffice')
+        # Configuring the logger.
+        self.mLogger = logging.getLogger(self.__class__.__name__)
+        self.mLogger.propagate = False
+        # TODO: Remove the hardcoded value of the path.
+        handler = logging.FileHandler('/tmp/' + self.mCritter.mCrittnick + '.log')
+        # TODO: Remove the hardcoded value of the formatter.
+        formatter = logging.Formatter('[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
+        handler.setFormatter(formatter)
+        self.mLogger.addHandler(handler)
         self.mLogger.setLevel(self.mCritter.mSettings.get('logging', 'level'))
 
         policy = settings.get('crittwork', 'policy')

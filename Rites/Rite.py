@@ -5,14 +5,18 @@ import time
 from Critter.PostOffice     import RiteConnector
 from Rites.CommandProcessor import CommandProcessor
 
-logging.basicConfig(format='[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
-
 class Rite(threading.Thread):
     def __init__(self, aCritter, aSettings, aPostOffice, aRiteName, aMessageProcessorType):
         self.mSettings = aSettings
 
+        # Configuring the logger.
         self.mLogger = logging.getLogger(aRiteName + 'Rite')
-        self.mLogger.setLevel(self.mSettings.get('logging', 'level'))
+        self.mLogger.propagate = False
+        handler = logging.FileHandler('/tmp/' + aCritter.mCrittnick + '.log')
+        formatter = logging.Formatter('[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
+        handler.setFormatter(formatter)
+        self.mLogger.addHandler(handler)
+        self.mLogger.setLevel(aSettings.get('logging', 'level'))
 
         self.mCritter    = aCritter
         self.mPostOffice = aPostOffice

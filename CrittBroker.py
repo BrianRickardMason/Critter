@@ -83,7 +83,12 @@ class CrittBroker(object):
         self.mName = aArgv[1]
         self.mHost = aArgv[2]
 
-        self.mLogger = logging.getLogger('CrittBroker')
+        self.mLogger = logging.getLogger(self.__class__.__name__)
+        self.mLogger.propagate = False
+        handler = logging.FileHandler('/tmp/' + aArgv[1] + '.log')
+        formatter = logging.Formatter('[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
+        handler.setFormatter(formatter)
+        self.mLogger.addHandler(handler)
         self.mLogger.setLevel(logging.DEBUG)
 
         self.mCtx = zmq.Context()

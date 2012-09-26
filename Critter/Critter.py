@@ -11,8 +11,6 @@ from PostOffice.PostOffice import PostOffice
 from Rites.RiteFactory     import createRite
 from Settings              import Settings
 
-logging.basicConfig(format='[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
-
 class Critter(object):
     """The Critter - the base for other critters.
 
@@ -31,9 +29,15 @@ class Critter(object):
 
     # TODO: Remove aType.
     def __init__(self, aArgv):
-        self.mSettings = Settings(aArgv[3]+aArgv[4]+':'+aArgv[5], aArgv[6]+aArgv[7]+':'+aArgv[8])
+        self.mSettings = Settings(aArgv[3] + aArgv[4] + ':' + aArgv[5], aArgv[6] + aArgv[7] + ':' + aArgv[8])
 
+        # Configuring the logger.
         self.mLogger = logging.getLogger(aArgv[1])
+        self.mLogger.propagate = False
+        handler = logging.FileHandler('/tmp/' + aArgv[1] + '.log')
+        formatter = logging.Formatter('[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
+        handler.setFormatter(formatter)
+        self.mLogger.addHandler(handler)
         self.mLogger.setLevel(self.mSettings.get('logging', 'level'))
 
         self.mCrittnick = aArgv[1]

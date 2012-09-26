@@ -3,12 +3,16 @@ import threading
 
 from MessageDecoder import MessageDecoder
 
-logging.basicConfig(format='[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
-
 class AnnouncementSubscriber(threading.Thread):
     def __init__(self, aPostOffice):
-        self.mLogger = logging.getLogger('AnnouncementSubscriber')
-        self.mLogger.setLevel(logging.DEBUG)
+        # Configuring the logger.
+        self.mLogger = logging.getLogger(self.__class__.__name__)
+        self.mLogger.propagate = False
+        handler = logging.FileHandler('/tmp/' + aPostOffice.mCritter.mCrittnick + '.log')
+        formatter = logging.Formatter('[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
+        handler.setFormatter(formatter)
+        self.mLogger.addHandler(handler)
+        self.mLogger.setLevel(aPostOffice.mCritter.mSettings.get('logging', 'level'))
 
         self.mPostOffice = aPostOffice
 

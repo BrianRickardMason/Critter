@@ -9,8 +9,6 @@ import threading
 
 from Queue import PriorityQueue
 
-logging.basicConfig(format='[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
-
 class CommandProcessor(threading.Thread):
     """The command processor of a rite.
 
@@ -30,8 +28,14 @@ class CommandProcessor(threading.Thread):
         """
         self.mRite = aRite
 
-        self.mLogger = logging.getLogger(aRite.mRiteName + 'CommandProcessor')
-        self.mLogger.setLevel(self.mRite.mSettings.get('logging', 'level'))
+        # Configuring the logger.
+        self.mLogger = logging.getLogger(self.__class__.__name__)
+        self.mLogger.propagate = False
+        handler = logging.FileHandler('/tmp/' + aRite.mCritter.mCrittnick + '.log')
+        formatter = logging.Formatter('[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
+        handler.setFormatter(formatter)
+        self.mLogger.addHandler(handler)
+        self.mLogger.setLevel(aRite.mCritter.mSettings.get('logging', 'level'))
 
         self.mQueue = PriorityQueue()
 

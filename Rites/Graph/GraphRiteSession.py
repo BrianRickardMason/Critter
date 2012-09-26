@@ -4,8 +4,6 @@ import os
 import time
 import threading
 
-logging.basicConfig(format='[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
-
 # TODO: Introduce a graph timeout.
 # TODO: Consider introduction of a work timeout.
 # FIXME: Many threads access work states.
@@ -20,8 +18,14 @@ class GraphRiteSession(threading.Thread):
     STATE_FAILED      = 3
 
     def __init__(self, aRite, aGraphExecutionCritthash, aGraphName, aGraphCycle):
-        self.mLogger = logging.getLogger('GraphRiteSession')
-        self.mLogger.setLevel(logging.INFO)
+        # Configuring the logger.
+        self.mLogger = logging.getLogger(self.__class__.__name__)
+        self.mLogger.propagate = False
+        handler = logging.FileHandler('/tmp/' + aRite.mCritter.mCrittnick + '.log')
+        formatter = logging.Formatter('[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
+        handler.setFormatter(formatter)
+        self.mLogger.addHandler(handler)
+        self.mLogger.setLevel(aRite.mCritter.mSettings.get('logging', 'level'))
 
         self.mRite                    = aRite
         self.mGraphExecutionCritthash = aGraphExecutionCritthash
