@@ -33,7 +33,7 @@ class DatabaseCommand_Handle_Command_DetermineGraphCycle_Req(object):
         aCommandProcessor.mRite.insertRecvRequest(messageNameRecvReq, graphExecutionCritthash, self.mMessage)
 
         try:
-            connection = psycopg2.connect("host='localhost' dbname='critter' user='crittuser' password='crittpassword'")
+            connection = psycopg2.connect("host='192.168.1.100' dbname='critter' user='crittuser' password='crittpassword'")
             cursor = connection.cursor()
         except psycopg2.DatabaseError, e:
             sys.exit(1)
@@ -86,7 +86,7 @@ class DatabaseCommand_Handle_Command_DetermineWorkCycle_Req(object):
         aCommandProcessor.mRite.insertRecvRequest(messageNameRecvReq, workExecutionCritthash, self.mMessage)
 
         try:
-            connection = psycopg2.connect("host='localhost' dbname='critter' user='crittuser' password='crittpassword'")
+            connection = psycopg2.connect("host='192.168.1.100' dbname='critter' user='crittuser' password='crittpassword'")
             cursor = connection.cursor()
         except psycopg2.DatabaseError, e:
             sys.exit(1)
@@ -138,7 +138,7 @@ class DatabaseCommand_Handle_Command_Election_Req(object):
     def execute(self, aCommandProcessor):
         # TODO: Register the requests!
         try:
-            connection = psycopg2.connect("host='localhost' dbname='critter' user='crittuser' password='crittpassword'")
+            connection = psycopg2.connect("host='192.168.1.100' dbname='critter' user='crittuser' password='crittpassword'")
             cursor = connection.cursor()
         except psycopg2.DatabaseError, e:
             sys.exit(1)
@@ -204,7 +204,7 @@ class DatabaseCommand_Handle_Command_LoadGraphAndWork_Req(object):
         workPredecessorDictionaries = []
 
         try:
-            connection = psycopg2.connect("host='localhost' dbname='critter' user='crittuser' password='crittpassword'")
+            connection = psycopg2.connect("host='192.168.1.100' dbname='critter' user='crittuser' password='crittpassword'")
             cursor = connection.cursor()
         except psycopg2.DatabaseError, e:
             sys.exit(1)
@@ -252,7 +252,7 @@ class DatabaseCommand_Handle_Command_LoadGraphDetails_Req(object):
         graphDetailsDictionaries = []
 
         try:
-            connection = psycopg2.connect("host='localhost' dbname='critter' user='crittuser' password='crittpassword'")
+            connection = psycopg2.connect("host='192.168.1.100' dbname='critter' user='crittuser' password='crittpassword'")
             cursor = connection.cursor()
         except psycopg2.DatabaseError, e:
             sys.exit(1)
@@ -290,7 +290,7 @@ class DatabaseCommand_Handle_Command_LoadWorkDetails_Req(object):
         workDetailsDictionaries = []
 
         try:
-            connection = psycopg2.connect("host='localhost' dbname='critter' user='crittuser' password='crittpassword'")
+            connection = psycopg2.connect("host='192.168.1.100' dbname='critter' user='crittuser' password='crittpassword'")
             cursor = connection.cursor()
         except psycopg2.DatabaseError, e:
             sys.exit(1)
