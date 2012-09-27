@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <crittwork>
     <settings>
-        <username>brian</username>
-        <workingDirectory>/home/brian/workspace/Critter</workingDirectory>
+        <username>crittuser</username>
+        <workingDirectory>/home/crittuser/sandbox/Critter</workingDirectory>
         <heartbeat>1</heartbeat>
         <maxDelay>2</maxDelay>
     </settings>
