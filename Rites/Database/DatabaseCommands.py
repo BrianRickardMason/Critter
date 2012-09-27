@@ -36,6 +36,8 @@ class DatabaseCommand_Handle_Command_DetermineGraphCycle_Req(object):
             connection = psycopg2.connect("host='192.168.1.100' dbname='critter' user='crittuser' password='crittpassword'")
             cursor = connection.cursor()
         except psycopg2.DatabaseError, e:
+            # TODO: Consider fatal.
+            aCommandProcessor.mLogger.error("Cannot connect to the database. Error: %s." % e)
             sys.exit(1)
 
         query = """
@@ -89,6 +91,7 @@ class DatabaseCommand_Handle_Command_DetermineWorkCycle_Req(object):
             connection = psycopg2.connect("host='192.168.1.100' dbname='critter' user='crittuser' password='crittpassword'")
             cursor = connection.cursor()
         except psycopg2.DatabaseError, e:
+            aCommandProcessor.mLogger.error("Cannot connect to the database. Error: %s." % e)
             sys.exit(1)
 
         query = """
@@ -141,6 +144,7 @@ class DatabaseCommand_Handle_Command_Election_Req(object):
             connection = psycopg2.connect("host='192.168.1.100' dbname='critter' user='crittuser' password='crittpassword'")
             cursor = connection.cursor()
         except psycopg2.DatabaseError, e:
+            aCommandProcessor.mLogger.error("Cannot connect to the database. Error: %s." % e)
             sys.exit(1)
 
         query = """
@@ -207,6 +211,7 @@ class DatabaseCommand_Handle_Command_LoadGraphAndWork_Req(object):
             connection = psycopg2.connect("host='192.168.1.100' dbname='critter' user='crittuser' password='crittpassword'")
             cursor = connection.cursor()
         except psycopg2.DatabaseError, e:
+            aCommandProcessor.mLogger.error("Cannot connect to the database. Error: %s." % e)
             sys.exit(1)
 
         cursor.execute("SELECT * FROM graphs")
@@ -255,6 +260,7 @@ class DatabaseCommand_Handle_Command_LoadGraphDetails_Req(object):
             connection = psycopg2.connect("host='192.168.1.100' dbname='critter' user='crittuser' password='crittpassword'")
             cursor = connection.cursor()
         except psycopg2.DatabaseError, e:
+            aCommandProcessor.mLogger.error("Cannot connect to the database. Error: %s." % e)
             sys.exit(1)
 
         cursor.execute("SELECT * FROM graphDetails")
@@ -293,6 +299,7 @@ class DatabaseCommand_Handle_Command_LoadWorkDetails_Req(object):
             connection = psycopg2.connect("host='192.168.1.100' dbname='critter' user='crittuser' password='crittpassword'")
             cursor = connection.cursor()
         except psycopg2.DatabaseError, e:
+            aCommandProcessor.mLogger.error("Cannot connect to the database. Error: %s." % e)
             sys.exit(1)
 
         cursor.execute("SELECT * FROM workDetails")
