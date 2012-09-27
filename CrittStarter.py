@@ -84,7 +84,7 @@ class Crittstarter(object):
             'ssh',
             'crittuser@' + self.mCrittBrokerData[aName]['host'],
             'python',
-            'CrittBroker.py',
+            '/home/crittuser/sandbox/Critter/CrittBroker.py',
             self.mCrittBrokerData[aName]['name'],
             self.mCrittBrokerData[aName]['host'],
             self.mCrittBrokerData[aName]['connections']['publish']['protocol'],
