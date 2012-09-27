@@ -98,9 +98,9 @@ class Crittstarter(object):
     def __startCritter(self, aCritterData):
         Popen([
             'ssh',
+            'crittuser@' + self.aCritterData['host'],
             'python',
             '/home/crittuser/sandbox/Critter/CrittInit.py',
-            'crittuser@' + self.aCritterData['host'],
             aCritterData['crittnick'],
             aCritterData['host'],
             aCritterData['connections']['publish']['protocol'],
