@@ -81,6 +81,8 @@ class Crittstarter(object):
 
     def __startCrittBroker(self, aName):
         Popen([
+            'ssh',
+            'crittuser@' + self.mCrittBrokerData[aName]['host'],
             'python',
             'CrittBroker.py',
             self.mCrittBrokerData[aName]['name'],
@@ -94,6 +96,8 @@ class Crittstarter(object):
         ])
 
     def __startCritter(self, aCritterData):
+        # TODO: Start from here.
+        return
         Popen([
             'python',
             'CrittInit.py',

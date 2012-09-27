@@ -10,7 +10,7 @@
         <crittBrokers>
             <crittBroker>
                 <name>CrittBroker0</name>
-                <host>127.0.0.1</host>
+                <host>192.168.1.100</host>
                 <connections>
                     <publish>
                         <protocol>tcp://</protocol>
@@ -28,7 +28,7 @@
             </crittBroker>
             <crittBroker>
                 <name>CrittBroker1</name>
-                <host>127.0.0.1</host>
+                <host>192.168.1.101</host>
                 <connections>
                     <publish>
                         <protocol>tcp://</protocol>
@@ -48,7 +48,7 @@
         <critters>
             <critter>
                 <crittnick>Cribrarian0</crittnick>
-                <host>127.0.0.1</host>
+                <host>192.168.1.100</host>
                 <crittBroker>CrittBroker0</crittBroker>
                 <services>
                     <name>Database</name>
@@ -56,7 +56,7 @@
             </critter>
             <critter>
                 <crittnick>Criduler0</crittnick>
-                <host>127.0.0.1</host>
+                <host>192.168.1.100</host>
                 <crittBroker>CrittBroker0</crittBroker>
                 <services>
                     <name>Scheduler</name>
@@ -64,7 +64,7 @@
             </critter>
             <critter>
                 <crittnick>GraphYeeti0</crittnick>
-                <host>127.0.0.1</host>
+                <host>192.168.1.100</host>
                 <crittBroker>CrittBroker0</crittBroker>
                 <services>
                     <name>Graph</name>
@@ -72,7 +72,7 @@
             </critter>
             <critter>
                 <crittnick>Balancer0</crittnick>
-                <host>127.0.0.1</host>
+                <host>192.168.1.100</host>
                 <crittBroker>CrittBroker0</crittBroker>
                 <services>
                     <name>Balance</name>
@@ -80,7 +80,7 @@
             </critter>
             <critter>
                 <crittnick>Worker0</crittnick>
-                <host>127.0.0.1</host>
+                <host>192.168.1.100</host>
                 <crittBroker>CrittBroker0</crittBroker>
                 <services>
                     <name>Work</name>
@@ -88,7 +88,7 @@
             </critter>
             <critter>
                 <crittnick>Cribrarian1</crittnick>
-                <host>127.0.0.1</host>
+                <host>192.168.1.101</host>
                 <crittBroker>CrittBroker1</crittBroker>
                 <services>
                     <name>Database</name>
@@ -96,7 +96,7 @@
             </critter>
             <critter>
                 <crittnick>Criduler1</crittnick>
-                <host>127.0.0.1</host>
+                <host>192.168.1.101</host>
                 <crittBroker>CrittBroker1</crittBroker>
                 <services>
                     <name>Scheduler</name>
@@ -104,7 +104,7 @@
             </critter>
             <critter>
                 <crittnick>GraphYeeti1</crittnick>
-                <host>127.0.0.1</host>
+                <host>192.168.1.101</host>
                 <crittBroker>CrittBroker1</crittBroker>
                 <services>
                     <name>Graph</name>
@@ -112,7 +112,7 @@
             </critter>
             <critter>
                 <crittnick>Balancer1</crittnick>
-                <host>127.0.0.1</host>
+                <host>192.168.1.101</host>
                 <crittBroker>CrittBroker1</crittBroker>
                 <services>
                     <name>Balance</name>
@@ -120,7 +120,7 @@
             </critter>
             <critter>
                 <crittnick>Worker1</crittnick>
-                <host>127.0.0.1</host>
+                <host>192.168.1.101</host>
                 <crittBroker>CrittBroker1</crittBroker>
                 <services>
                     <name>Work</name>
