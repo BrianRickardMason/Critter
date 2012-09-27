@@ -96,11 +96,11 @@ class Crittstarter(object):
         ])
 
     def __startCritter(self, aCritterData):
-        # TODO: Start from here.
-        return
         Popen([
+            'ssh',
             'python',
-            'CrittInit.py',
+            '/home/crittuser/sandbox/Critter/CrittInit.py',
+            'crittuser@' + self.aCritterData['host'],
             aCritterData['crittnick'],
             aCritterData['host'],
             aCritterData['connections']['publish']['protocol'],
