@@ -12,5 +12,5 @@ CREATE DATABASE critter
 
 DROP USER IF EXISTS crittuser;
 
-CREATE USER brian WITH PASSWORD 'crittpassword';
+CREATE USER crittuser WITH PASSWORD 'crittpassword';
 
