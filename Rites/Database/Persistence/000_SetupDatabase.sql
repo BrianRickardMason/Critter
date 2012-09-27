@@ -10,7 +10,7 @@ CREATE DATABASE critter
     TEMPLATE template0
 ;
 
--- DROP USER IF EXISTS brian;
+DROP USER IF EXISTS crittuser;
 
--- CREATE USER brian WITH PASSWORD 'brianpassword';
+CREATE USER brian WITH PASSWORD 'crittpassword';
 
