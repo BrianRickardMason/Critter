@@ -95,14 +95,6 @@
                 </services>
             </critter>
             <critter>
-                <crittnick>Criduler1</crittnick>
-                <host>192.168.1.101</host>
-                <crittBroker>CrittBroker1</crittBroker>
-                <services>
-                    <name>Scheduler</name>
-                </services>
-            </critter>
-            <critter>
                 <crittnick>GraphYeeti1</crittnick>
                 <host>192.168.1.101</host>
                 <crittBroker>CrittBroker1</crittBroker>
