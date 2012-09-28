@@ -3,20 +3,22 @@ import sys
 import threading
 import zmq
 
+from Queue    import Queue
+from optparse import OptionParser
+
 from Critter.PostOffice.SubscriptionChannels import SUBSCRIPTION_CHANNEL_ALL
 from Critter.PostOffice                      import MessageDecoder
-from Queue                                   import Queue
 
 logging.basicConfig(format='[%(asctime)s][%(threadName)15s][%(levelname)8s] - %(message)s')
 
 # TODO: Should abstract from the transport as well.
 
 class Publisher(threading.Thread):
-    def __init__(self, aCrittBroker, aProtocol, aPort):
+    def __init__(self, aCrittBroker, aAddress):
         self.mCrittBroker = aCrittBroker
 
         self.mSocket = aCrittBroker.mCtx.socket(zmq.PUB)
-        self.mSocket.bind(aProtocol + '*:' + aPort)
+        self.mSocket.bind(aAddress)
 
         threading.Thread.__init__(self, name='Publisher')
 
@@ -39,11 +41,11 @@ class Publisher(threading.Thread):
                 self.mCrittBroker.mResponder.respond(bytesRead)
 
 class Subscriber(threading.Thread):
-    def __init__(self, aCrittBroker, aProtocol, aPort):
+    def __init__(self, aCrittBroker, aAddress):
         self.mCrittBroker = aCrittBroker
 
         self.mSocket = aCrittBroker.mCtx.socket(zmq.SUB)
-        self.mSocket.bind(aProtocol + aCrittBroker.mHost + ':' + aPort)
+        self.mSocket.bind(aAddress)
         self.mSocket.setsockopt(zmq.SUBSCRIBE, '')
 
         threading.Thread.__init__(self, name='Subscriber')
@@ -54,11 +56,12 @@ class Subscriber(threading.Thread):
             self.mCrittBroker.mQueue.put([subscriptionChannel, bytesRead])
 
 class Responder(threading.Thread):
-    def __init__(self, aCrittBroker, aProtocol, aPort):
+    def __init__(self, aCrittBroker, aAddress):
         self.mCrittBroker = aCrittBroker
 
+        # TODO: Pair is not recommended. Change it.
         self.mSocket = aCrittBroker.mCtx.socket(zmq.PAIR)
-        self.mSocket.bind(aProtocol + aCrittBroker.mHost + ':' + aPort)
+        self.mSocket.bind(aAddress)
 
         threading.Thread.__init__(self, name='Responder')
 
@@ -75,17 +78,27 @@ class Responder(threading.Thread):
 
 class CrittBroker(object):
     def __init__(self, aArgv):
-        # TODO: Further analysis of parameters.
-        if len(aArgv) != 9:
-            # TODO: Make meaningful.
-            raise Exception
+        # Parse the options.
+        usage = "Usage: %prog [options]"
+        parser = OptionParser(usage)
+        parser.add_option("--name",      dest="name",      help="the name of the broker")
+        parser.add_option("--host",      dest="host",      help="the name of the host")
+        parser.add_option("--publish",   dest="publish",   help="the CrittWork address of the publisher")
+        parser.add_option("--subscribe", dest="subscribe", help="the CrittWork address of the subscriber")
+        parser.add_option("--ui",        dest="ui",        help="the CrittWork address of the ui interface")
+        parser.add_option("--broker",    action="append",
+                                         dest="broker",    help="the CrittWork address of another broker that the broker should listen to")
+        # TODO: Make it more safe, remark mandatory parameters, etc.
+        (options, args) = parser.parse_args()
+        if len(args) != 0:
+            parser.error("incorrect number of arguments")
 
-        self.mName = aArgv[1]
-        self.mHost = aArgv[2]
+        self.mName = options.name
+        self.mHost = options.host
 
         self.mLogger = logging.getLogger(self.__class__.__name__)
         self.mLogger.propagate = False
-        handler = logging.FileHandler('/tmp/' + aArgv[1] + '.log')
+        handler = logging.FileHandler('/tmp/' + self.mName + '.log')
         formatter = logging.Formatter('[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
         handler.setFormatter(formatter)
         self.mLogger.addHandler(handler)
@@ -96,18 +109,18 @@ class CrittBroker(object):
         self.mQueue = Queue()
 
         self.mLogger.debug("Spawning the publisher.")
-        self.mPublisher = Publisher(self, aArgv[3], aArgv[4])
+        self.mPublisher = Publisher(self, options.publish)
         self.mPublisher.setDaemon(True)
         self.mPublisher.start()
 
         self.mLogger.debug("Spawning the subscriber.")
-        self.mSubscriber = Subscriber(self, aArgv[5], aArgv[6])
+        self.mSubscriber = Subscriber(self, options.subscribe)
         self.mSubscriber.setDaemon(True)
         self.mSubscriber.start()
 
         # TODO: Common naming convention.
         self.mLogger.debug("Spawning the responder.")
-        self.mResponder = Responder(self, aArgv[7], aArgv[8])
+        self.mResponder = Responder(self, options.ui)
         self.mResponder.setDaemon(True)
         self.mResponder.start()
 

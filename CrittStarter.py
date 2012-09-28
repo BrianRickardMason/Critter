@@ -93,27 +93,24 @@ class Crittstarter(object):
                 self.mCritterData[crittnick]['services'].append(service.text)
 
     def __startCrittBrokers(self):
-        # TODO: Implement me!
-        pass
+        for crittBrokerData in self.mCrittBrokerData.itervalues():
+            self.__startCrittBroker(crittBrokerData)
 
     def __startCritters(self):
         # TODO: Implement me!
         pass
 
-    def __startCrittBroker(self, aName):
+    def __startCrittBroker(self, aCrittBrokerData):
         Popen([
             'ssh',
-            'crittuser@' + self.mCrittBrokerData[aName]['host'],
+            'crittuser@' + aCrittBrokerData['host'],
             'python',
             '/home/crittuser/sandbox/Critter/CrittBroker.py',
-            self.mCrittBrokerData[aName]['name'],
-            self.mCrittBrokerData[aName]['host'],
-            self.mCrittBrokerData[aName]['connections']['publish']['protocol'],
-            self.mCrittBrokerData[aName]['connections']['publish']['port'],
-            self.mCrittBrokerData[aName]['connections']['subscribe']['protocol'],
-            self.mCrittBrokerData[aName]['connections']['subscribe']['port'],
-            self.mCrittBrokerData[aName]['connections']['ui']['protocol'],
-            self.mCrittBrokerData[aName]['connections']['ui']['port']
+            '--name', aCrittBrokerData['name'],
+            '--host', aCrittBrokerData['host'],
+            '--publish', aCrittBrokerData['connections']['publish']['protocol'] + '*:' + aCrittBrokerData['connections']['publish']['port'],
+            '--subscribe', aCrittBrokerData['connections']['subscribe']['protocol'] + aCrittBrokerData['host'] + ':' + aCrittBrokerData['connections']['subscribe']['port'],
+            '--ui', aCrittBrokerData['connections']['ui']['protocol'] + aCrittBrokerData['host'] + ':' + aCrittBrokerData['connections']['ui']['port']
         ])
 
     def __startCritter(self, aCritterData):
