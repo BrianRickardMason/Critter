@@ -101,7 +101,7 @@ class Crittstarter(object):
         pass
 
     def __startCrittBroker(self, aCrittBrokerData):
-        Popen([
+        parameters = [
             'ssh',
             'crittuser@' + aCrittBrokerData['host'],
             'python',
@@ -111,7 +111,18 @@ class Crittstarter(object):
             '--publish', aCrittBrokerData['connections']['publish']['protocol'] + '*:' + aCrittBrokerData['connections']['publish']['port'],
             '--subscribe', aCrittBrokerData['connections']['subscribe']['protocol'] + aCrittBrokerData['host'] + ':' + aCrittBrokerData['connections']['subscribe']['port'],
             '--ui', aCrittBrokerData['connections']['ui']['protocol'] + aCrittBrokerData['host'] + ':' + aCrittBrokerData['connections']['ui']['port']
-        ])
+        ]
+        # TODO: Remove the hardcoded separator.
+        for neighbour in aCrittBrokerData['connections']['brokers']:
+            merged = neighbour + \
+               ',publish,' + aCrittBrokerData['connections']['brokers'][neighbour]['publish']['protocol'] + aCrittBrokerData['host'] + ':' + aCrittBrokerData['connections']['brokers'][neighbour]['publish']['port'] + \
+               ',subscribe,' + aCrittBrokerData['connections']['brokers'][neighbour]['subscribe']['protocol'] + self.mCrittBrokerData[neighbour]['host'] + ':' + aCrittBrokerData['connections']['brokers'][neighbour]['subscribe']['port']
+            broker = [
+                '--broker',
+                merged
+            ]
+            parameters += broker
+        Popen(parameters)
 
     def __startCritter(self, aCritterData):
         Popen([
