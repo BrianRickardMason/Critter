@@ -24,28 +24,16 @@
                         <protocol>tcp://</protocol>
                         <port>33330</port>
                     </ui>
+                    <brokerPublish>
+                        <protocol>tcp://</protocol>
+                        <port>44440</port>
+                    </brokerPublish>
                     <brokers>
                         <broker>
                             <name>CrittBroker1</name>
-                            <publish>
-                                <protocol>tcp://</protocol>
-                                <port>44001</port>
-                            </publish>
-                            <subscribe>
-                                <protocol>tcp://</protocol>
-                                <port>44010</port>
-                            </subscribe>
                         </broker>
                         <broker>
                             <name>CrittBroker2</name>
-                            <publish>
-                                <protocol>tcp://</protocol>
-                                <port>44002</port>
-                            </publish>
-                            <subscribe>
-                                <protocol>tcp://</protocol>
-                                <port>44020</port>
-                            </subscribe>
                         </broker>
                     </brokers>
                 </connections>
@@ -66,28 +54,16 @@
                         <protocol>tcp://</protocol>
                         <port>33331</port>
                     </ui>
+                    <brokerPublish>
+                        <protocol>tcp://</protocol>
+                        <port>44441</port>
+                    </brokerPublish>
                     <brokers>
                         <broker>
                             <name>CrittBroker0</name>
-                            <publish>
-                                <protocol>tcp://</protocol>
-                                <port>44010</port>
-                            </publish>
-                            <subscribe>
-                                <protocol>tcp://</protocol>
-                                <port>44001</port>
-                            </subscribe>
                         </broker>
                         <broker>
                             <name>CrittBroker2</name>
-                            <publish>
-                                <protocol>tcp://</protocol>
-                                <port>44012</port>
-                            </publish>
-                            <subscribe>
-                                <protocol>tcp://</protocol>
-                                <port>44021</port>
-                            </subscribe>
                         </broker>
                     </brokers>
                 </connections>
@@ -108,28 +84,16 @@
                         <protocol>tcp://</protocol>
                         <port>33332</port>
                     </ui>
+                    <brokerPublish>
+                        <protocol>tcp://</protocol>
+                        <port>44442</port>
+                    </brokerPublish>
                     <brokers>
                         <broker>
                             <name>CrittBroker0</name>
-                            <publish>
-                                <protocol>tcp://</protocol>
-                                <port>44020</port>
-                            </publish>
-                            <subscribe>
-                                <protocol>tcp://</protocol>
-                                <port>44002</port>
-                            </subscribe>
                         </broker>
                         <broker>
                             <name>CrittBroker1</name>
-                            <publish>
-                                <protocol>tcp://</protocol>
-                                <port>44021</port>
-                            </publish>
-                            <subscribe>
-                                <protocol>tcp://</protocol>
-                                <port>44012</port>
-                            </subscribe>
                         </broker>
                     </brokers>
                 </connections>
