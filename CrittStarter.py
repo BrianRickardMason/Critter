@@ -45,7 +45,7 @@ class Crittstarter(object):
             self.mCrittBrokerData[name]['connections']['publish'] = {}
             self.mCrittBrokerData[name]['connections']['subscribe'] = {}
             self.mCrittBrokerData[name]['connections']['ui'] = {}
-            self.mCrittBrokerData[name]['connections']['brokers'] = {}
+            self.mCrittBrokerData[name]['connections']['brokerPublish'] = {}
             connections = crittBroker.find('connections')
             self.mCrittBrokerData[name]['connections']['publish']['protocol'] = connections.find('publish').find('protocol').text
             self.mCrittBrokerData[name]['connections']['publish']['port'] = connections.find('publish').find('port').text
@@ -53,16 +53,12 @@ class Crittstarter(object):
             self.mCrittBrokerData[name]['connections']['subscribe']['port'] = connections.find('subscribe').find('port').text
             self.mCrittBrokerData[name]['connections']['ui']['protocol'] = connections.find('ui').find('protocol').text
             self.mCrittBrokerData[name]['connections']['ui']['port'] = connections.find('ui').find('port').text
+            self.mCrittBrokerData[name]['connections']['brokerPublish']['protocol'] = connections.find('brokerPublish').find('protocol').text
+            self.mCrittBrokerData[name]['connections']['brokerPublish']['port'] = connections.find('brokerPublish').find('port').text
 
+            self.mCrittBrokerData[name]['brokers'] = []
             for brokerConnection in connections.find('brokers'):
-                neighbourName = brokerConnection.find('name').text
-                self.mCrittBrokerData[name]['connections']['brokers'][neighbourName] = {}
-                self.mCrittBrokerData[name]['connections']['brokers'][neighbourName]['publish'] = {}
-                self.mCrittBrokerData[name]['connections']['brokers'][neighbourName]['subscribe'] = {}
-                self.mCrittBrokerData[name]['connections']['brokers'][neighbourName]['publish']['protocol'] = brokerConnection.find('publish').find('protocol').text
-                self.mCrittBrokerData[name]['connections']['brokers'][neighbourName]['publish']['port'] = brokerConnection.find('publish').find('port').text
-                self.mCrittBrokerData[name]['connections']['brokers'][neighbourName]['subscribe']['protocol'] = brokerConnection.find('subscribe').find('protocol').text
-                self.mCrittBrokerData[name]['connections']['brokers'][neighbourName]['subscribe']['port'] = brokerConnection.find('subscribe').find('port').text
+                self.mCrittBrokerData[name]['brokers'].append(brokerConnection.find('name').text)
 
     def __readCritters(self):
         critters = self.mRoot.find('infrastructure').find('critters')
@@ -97,8 +93,8 @@ class Crittstarter(object):
             self.__startCrittBroker(crittBrokerData)
 
     def __startCritters(self):
-        # TODO: Implement me!
-        pass
+        for critterData in self.mCritterData.itervalues():
+            self.__startCritter(critterData)
 
     def __startCrittBroker(self, aCrittBrokerData):
         parameters = [
@@ -110,18 +106,12 @@ class Crittstarter(object):
             '--host', aCrittBrokerData['host'],
             '--publish', aCrittBrokerData['connections']['publish']['protocol'] + '*:' + aCrittBrokerData['connections']['publish']['port'],
             '--subscribe', aCrittBrokerData['connections']['subscribe']['protocol'] + aCrittBrokerData['host'] + ':' + aCrittBrokerData['connections']['subscribe']['port'],
-            '--ui', aCrittBrokerData['connections']['ui']['protocol'] + aCrittBrokerData['host'] + ':' + aCrittBrokerData['connections']['ui']['port']
+            '--ui', aCrittBrokerData['connections']['ui']['protocol'] + aCrittBrokerData['host'] + ':' + aCrittBrokerData['connections']['ui']['port'],
+            '--brokerPublish', aCrittBrokerData['connections']['brokerPublish']['protocol'] + '*:' + aCrittBrokerData['connections']['brokerPublish']['port']
         ]
         # TODO: Remove the hardcoded separator.
-        for neighbour in aCrittBrokerData['connections']['brokers']:
-            merged = neighbour + \
-               ',publish,' + aCrittBrokerData['connections']['brokers'][neighbour]['publish']['protocol'] + aCrittBrokerData['host'] + ':' + aCrittBrokerData['connections']['brokers'][neighbour]['publish']['port'] + \
-               ',subscribe,' + aCrittBrokerData['connections']['brokers'][neighbour]['subscribe']['protocol'] + self.mCrittBrokerData[neighbour]['host'] + ':' + aCrittBrokerData['connections']['brokers'][neighbour]['subscribe']['port']
-            broker = [
-                '--broker',
-                merged
-            ]
-            parameters += broker
+        for neighbour in aCrittBrokerData['brokers']:
+            parameters += ['--broker', neighbour + ',' + self.mCrittBrokerData[neighbour]['connections']['brokerPublish']['protocol'] + self.mCrittBrokerData[neighbour]['host'] + ':' + self.mCrittBrokerData[neighbour]['connections']['brokerPublish']['port']]
         Popen(parameters)
 
     def __startCritter(self, aCritterData):
