@@ -28,6 +28,7 @@
                         <protocol>tcp://</protocol>
                         <port>44440</port>
                     </brokerPublish>
+                    <!-- TODO: This entry is redundant. Remove it. -->
                     <brokers>
                         <broker>
                             <name>CrittBroker1</name>
