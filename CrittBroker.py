@@ -166,6 +166,7 @@ class CrittBroker(object):
         self.mCrittBrokerTubePub.setDaemon(True)
         self.mCrittBrokerTubePub.start()
 
+        # ISSUE: What if there's only one broker?
         for brokerOption in options.broker:
             brokerOptions = brokerOption.split(',')
             self.mLogger.info("Spawning the CrittBrokerTubeSub to CrittBroker %s." % brokerOptions[0])
