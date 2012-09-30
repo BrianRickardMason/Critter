@@ -1,0 +1,35 @@
+1) Problems with GraphRiteSession that is spawned although not all information about the Graph is available.
+
+Reproducible @perun. To be investigated.
+
+2)
+
+brian@perun:~/workspace/Critter$ python CrittStarter.py
+brian@perun:~/workspace/Critter$ Exception in thread DatabaseCommandProcessor:
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/threading.py", line 551, in __bootstrap_inner
+    self.run()
+  File "/home/brian/workspace/Critter/Rites/CommandProcessor.py", line 54, in run
+    command.execute(self)
+  File "/home/brian/workspace/Critter/Rites/Database/DatabaseCommands.py", line 116, in execute
+    cursor.execute(query)
+IntegrityError: duplicate key value violates unique constraint "workcycles_workname_cycle_key"
+DETAIL:  Key (workname, cycle)=(WorkName3_1, 65) already exists.
+
+3)
+
+brian@perun:~/workspace/Critter$
+brian@perun:~/workspace/Critter$ python CrittStarter.py
+brian@perun:~/workspace/Critter$ Exception in thread GraphCommandProcessor:
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/threading.py", line 551, in __bootstrap_inner
+    self.run()
+  File "/home/brian/workspace/Critter/Rites/CommandProcessor.py", line 54, in run
+    command.execute(self)
+  File "/home/brian/workspace/Critter/Rites/Graph/GraphCommands.py", line 189, in execute
+    executor.doExecute(self, aCommandProcessor, self.mMessage)
+  File "/home/brian/workspace/Critter/Rites/Graph/GraphCommands.py", line 212, in doExecute
+    graphCycle)
+  File "/home/brian/workspace/Critter/Rites/Graph/GraphRiteSession.py", line 35, in __init__
+    assert aGraphName in self.mRite.mWorks, "The graph name has not any works associated."
+AssertionError: The graph name has not any works associated.
