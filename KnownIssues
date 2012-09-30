@@ -33,3 +33,7 @@ Traceback (most recent call last):
   File "/home/brian/workspace/Critter/Rites/Graph/GraphRiteSession.py", line 35, in __init__
     assert aGraphName in self.mRite.mWorks, "The graph name has not any works associated."
 AssertionError: The graph name has not any works associated.
+
+4) Too many ssh at a time causes the server to drop connections.
+
+SOLUTION: A "sleep" to be introduced in CrittStarter.
