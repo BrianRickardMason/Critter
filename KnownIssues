@@ -15,7 +15,8 @@ Traceback (most recent call last):
     assert aGraphName in self.mRite.mWorks, "The graph name has not any works associated."
 AssertionError: The graph name has not any works associated.
 
-The Cribrarians must be started first.
+a) The Cribrarians must be started first.
+b) The subscription channels must prevent messages from being got from the queue.
 
 2)
 
