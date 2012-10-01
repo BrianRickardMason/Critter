@@ -69,3 +69,16 @@ Traceback (most recent call last):
     for critthash in aMessages[requestName]:
 RuntimeError: dictionary changed size during iteration
 
+6) Multithread dictionary issue.
+
+brian@perun:~/workspace/Critter$ killall pythonException in thread BalanceRite:
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/threading.py", line 551, in __bootstrap_inner
+    self.run()
+  File "/home/brian/workspace/Critter/Rites/Balance/BalanceRite.py", line 55, in run
+    self.checkTimeouts()
+  File "/home/brian/workspace/Critter/Rites/Balance/BalanceRite.py", line 72, in checkTimeouts
+    self.checkTimeoutsForSpecificMessages(self.mSentReq, timestamp)
+  File "/home/brian/workspace/Critter/Rites/Balance/BalanceRite.py", line 76, in checkTimeoutsForSpecificMessages
+    for critthash in aMessages[requestName]:
+RuntimeError: dictionary changed size during iteration
