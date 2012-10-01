@@ -2,6 +2,21 @@
 
 Reproducible @perun. To be investigated.
 
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/threading.py", line 551, in __bootstrap_inner
+    self.run()
+  File "/home/brian/workspace/Critter/Rites/CommandProcessor.py", line 54, in run
+    command.execute(self)
+  File "/home/brian/workspace/Critter/Rites/Graph/GraphCommands.py", line 189, in execute
+    executor.doExecute(self, aCommandProcessor, self.mMessage)
+  File "/home/brian/workspace/Critter/Rites/Graph/GraphCommands.py", line 212, in doExecute
+    graphCycle)
+  File "/home/brian/workspace/Critter/Rites/Graph/GraphRiteSession.py", line 35, in __init__
+    assert aGraphName in self.mRite.mWorks, "The graph name has not any works associated."
+AssertionError: The graph name has not any works associated.
+
+The Cribrarians must be started first.
+
 2)
 
 brian@perun:~/workspace/Critter$ python CrittStarter.py
@@ -37,3 +52,19 @@ AssertionError: The graph name has not any works associated.
 4) Too many ssh at a time causes the server to drop connections.
 
 SOLUTION: A "sleep" to be introduced in CrittStarter.
+
+5)
+
+[2012-10-01 07:57:22,068][             WorkRiteSession][    INFO] - Work ended: GraphName3@80: WorkName3_1@74.
+Exception in thread BalanceRite:
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/threading.py", line 551, in __bootstrap_inner
+    self.run()
+  File "/home/brian/workspace/Critter/Rites/Balance/BalanceRite.py", line 55, in run
+    self.checkTimeouts()
+  File "/home/brian/workspace/Critter/Rites/Balance/BalanceRite.py", line 71, in checkTimeouts
+    self.checkTimeoutsForSpecificMessages(self.mRecvReq, timestamp)
+  File "/home/brian/workspace/Critter/Rites/Balance/BalanceRite.py", line 76, in checkTimeoutsForSpecificMessages
+    for critthash in aMessages[requestName]:
+RuntimeError: dictionary changed size during iteration
+
