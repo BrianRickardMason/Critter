@@ -166,13 +166,13 @@ class CrittBroker(object):
         self.mCrittBrokerTubePub.setDaemon(True)
         self.mCrittBrokerTubePub.start()
 
-        # ISSUE: What if there's only one broker?
-        for brokerOption in options.broker:
-            brokerOptions = brokerOption.split(',')
-            self.mLogger.info("Spawning the CrittBrokerTubeSub to CrittBroker %s." % brokerOptions[0])
-            self.mCrittBrokerTubesSub[brokerOptions[0]] = CrittBrokerTubeSub(self, brokerOptions[1])
-            self.mCrittBrokerTubesSub[brokerOptions[0]].setDaemon(True)
-            self.mCrittBrokerTubesSub[brokerOptions[0]].start()
+        if options.broker:
+            for brokerOption in options.broker:
+                brokerOptions = brokerOption.split(',')
+                self.mLogger.info("Spawning the CrittBrokerTubeSub to CrittBroker %s." % brokerOptions[0])
+                self.mCrittBrokerTubesSub[brokerOptions[0]] = CrittBrokerTubeSub(self, brokerOptions[1])
+                self.mCrittBrokerTubesSub[brokerOptions[0]].setDaemon(True)
+                self.mCrittBrokerTubesSub[brokerOptions[0]].start()
 
     def run(self):
         self.mPublisher.join()
