@@ -19,7 +19,8 @@ class GraphRiteSession(threading.Thread):
 
     def __init__(self, aRite, aGraphExecutionCritthash, aGraphName, aGraphCycle):
         # Configuring the logger.
-        self.mLogger = logging.getLogger(self.__class__.__name__)
+        # FIXME: Loggers have to have a different names. Otherwise there are many log lines in a file.
+        self.mLogger = logging.getLogger(os.urandom(32).encode('hex'))
         self.mLogger.propagate = False
         handler = logging.FileHandler('/tmp/' + aRite.mCritter.mCrittnick + '.log')
         formatter = logging.Formatter('[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
