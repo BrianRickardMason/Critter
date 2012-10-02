@@ -29,7 +29,7 @@ class CommandProcessor(threading.Thread):
         self.mRite = aRite
 
         # Configuring the logger.
-        self.mLogger = logging.getLogger(self.__class__.__name__)
+        self.mLogger = logging.getLogger(aRite.mRiteName + self.__class__.__name__)
         self.mLogger.propagate = False
         handler = logging.FileHandler('/tmp/' + aRite.mCritter.mCrittnick + '.log')
         formatter = logging.Formatter('[%(asctime)s][%(threadName)28s][%(levelname)8s] - %(message)s')
